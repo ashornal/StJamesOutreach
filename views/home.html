@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+    <link type="text/css" rel="stylesheet" href="styles/home.css">
+    <title>Home Page</title>
+</head>
+<body>
+    <include href="views/header.html"/>
+    <div class="container">
+        <div class="form-group col-14 has-warning" id="zipLabel">
+            <label class="form-control-label">Zip Code:
+                <input class="form-control" type="text" id="zipcode" name="zipcode" maxlength="5"></label>
+        </div>
+        <div class="btn-toolbar">
+            <div class="btn-group mb-2">
+                <button type="button" class="btn btn-primary" id="guestbtn">Guest Info</button>
+                <button type="button" class="btn btn-primary" id="needbtn">Needs</button>
+                <button type="button" class="btn btn-primary" id="incomebtn">Income</button>
+                <button type="button" class="btn btn-primary" id="addressbtn">Address</button>
+                <button type="button" class="btn btn-primary" id="housebtn">Household</button>
+            </div>
+        </div>
+    </div> <!-- Table selection and zip checker -->
+
+</body>
+</html>
