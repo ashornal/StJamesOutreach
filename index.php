@@ -16,6 +16,10 @@ error_reporting(E_ALL);
 //Create an instance of the Base Class
 $f3 = Base::instance();
 
+$f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
+$f3->set('membersArray', array('1','2','3','4','5','6','7','8','9','10'));
+$f3->set('voucherNumbers', array('1','2','3','4','5'));
+
 $f3->route('GET /', function()
 {
     $template = new Template();
