@@ -23,18 +23,43 @@
                 <legend>Guest's Information</legend>
                 <div class="row">
                     <div class="form-group col-8">
-                        <label class="form-control-label"><b>*Name:</b></label>
+                        <label class="form-control-label"><b>*Name:</b>
+                            <!-- check for valid fist and last name -->
+                            <check if="{{ isset(@invalidFirstName) }}">
+                                <span class="error font-weight-normal"> - Please enter a valid first name</span>
+                            </check>
+                            <check if="{{ isset(@invalidLastName) }}">
+                                <span class="error font-weight-normal"> - Please enter a valid Last name</span>
+                            </check>
+
+                        </label>
                         <div class="row">
                             <div class="form-group col-6">
-                                <input class="form-control" type="text" id="first" name="first" placeholder="First Name">
+                                <input class="form-control" type="text" id="first" name="first" placeholder="First Name"
+                                <check if="{{ isset(@firstName) }}">
+                                    value="{{ @firstName }}"
+                                </check>>
                             </div>
                             <div class="form-group col-6">
-                                <input class="form-control" type="text" id="last" name="last" placeholder="Last Name">
+                                <input class="form-control" type="text" id="last" name="last" placeholder="Last Name"
+                                <check if="{{ isset(@lastName) }}">
+                                    value="{{ @lastName }}"
+                                </check>>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-3">
-                        <label class="form-control-label"><b>*Date of Birth:</b></label><input type="date" class="form-control" id="birthdate" name="birthdate">
+
+                        <label for="birthdate" class="form-control-label"><b>*Date of Birth:</b>
+                            <check if="{{ isset(@invalidBirthdate) }}">
+                                <span class="error font-weight-normal"> - Please enter a valid birthdate</span>
+                            </check>
+                        </label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate"
+                        <check if="{{ isset(@birthdate) }}">
+                            value="{{ @birthdate }}"
+                        </check>>
+
                     </div>
                 </div> <!-- row -->
 
@@ -42,12 +67,22 @@
                     <div class="form-group col-4">
                         <div class="row">
                             <div class="form-group col-10">
-                                <label class="form-control-label">Phone:</label><input class="form-control" type="text" id="phone" name="phone" maxlength="10" placeholder="no spaces or dashes">
+                                <label class="form-control-label">Phone:
+                                    <check if="{{ isset(@invalidPhone) }}">
+                                        <span class="error font-weight-normal"> - Please enter a valid phone number</span>
+                                    </check>
+                                </label>
+                                <input class="form-control" type="text" id="phone" name="phone" maxlength="10" placeholder="no spaces or dashes"
+                                <check if="{{ isset(@phone) }}">
+                                    value="{{ @phone }}"
+                                </check>>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-4">
-                        <label class="form-control-label">Email:</label><input class="form-control" type="email" id="email" name="email">
+                        <label class="form-control-label">Email:
+                        </label>
+                        <input class="form-control" type="email" id="email" name="email">
                     </div>
                     <div class="form-group col-3">
                         <label class="form-check-label">Ethnicity:</label>
