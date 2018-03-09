@@ -13,5 +13,221 @@
 </head>
 <body>
     <include href="views/header.html"/>
+
+    <div class="container">
+        <form action="#" method="post" id="formGuest">
+            <h2>Outreach Contact Report</h2>
+            <p id="obligitory"><i>* obligatory fields</i></p>
+            <fieldset class="form-group">
+                <legend>Guest's Information</legend>
+                <div class="row">
+                    <div class="form-group col-8">
+                        <label class="form-control-label"><b>*Name:</b></label>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <input class="form-control" type="text" id="first" name="first" placeholder="First Name">
+                            </div>
+                            <div class="form-group col-6">
+                                <input class="form-control" type="text" id="last" name="last" placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-control-label"><b>*Date of Birth:</b></label><input type="date" class="form-control" id="birthdate" name="birthdate">
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="form-group col-4">
+                        <div class="row">
+                            <div class="form-group col-10">
+                                <label class="form-control-label">Phone:</label><input class="form-control" type="text" id="phone" name="phone" maxlength="10" placeholder="no spaces or dashes">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label class="form-control-label">Email:</label><input class="form-control" type="email" id="email" name="email">
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-check-label">Ethnicity:</label>
+                        <label class="d-block"></label>
+                        <select class="form-control dropdown" id="ethnicity" name="ethnicity">
+                            <option value="">-- select one --</option>
+                            <option value="white">White</option>
+                            <option value="black" >African American</option>
+                            <option value="hispanic">Hispanic or Latino</option>
+                            <option value="native">Native American</option>
+                            <option value="asian">Asian</option>
+                            <option value="pacific">Pacific Islander</option>
+                            <option value="eskimo">Eskimo</option>
+                            <option value="mixed" >Mixed</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="form-group col-10">
+                        <label class="form-control-label">Address:</label>
+                        <div class="row">
+                            <div class="form-group col-5">
+                                <input class="form-control" type="text" id="street" name="street" placeholder="Street" >
+                            </div>
+                            <div class="form-group col-4">
+                                <input class="form-control" type="text" id="city" name="city" placeholder="City" >
+                            </div>
+                            <div class="form-group col-3">
+                                <input class="form-control" type="text" id="zip" name="zip" placeholder="Zip" maxlength="5">
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="form-group col-3">
+                        <div class="form-check">
+                            <label class="d-block">Mental Disability:</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id='mental' name='mental'>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <div class="form-check">
+                            <label class="d-block">Physical Disability:</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id='physical' name='physical'>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <div class="form-check">
+                            <label class="d-block">Veteran:</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id='veteran' name='veteran' >
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <div class="form-check">
+                            <label class="d-block">Homeless:</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" id='homeless' name='homeless'>
+                            </label>
+                        </div>
+                    </div>
+                </div> <!-- row -->
+            </fieldset>	<!-- Guest Information fieldset -->
+
+            <fieldset class="form-group">
+                <legend>Income and Accounts</legend>
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label class="form-control-label">Monthly income:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span><input class="form-control" type="tel" id="income" name="income">
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-control-label">Monthly Rent:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="rent" name="rent">
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-control-label">Food Stamps:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="foodStamp" name="foodStamp">
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-control-label">Additional Support:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="addSupport" name="addSupport">
+                        </div>
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label class="form-control-label">Driver's License or Photo ID#:</label><input class="form-control" type="text" id="license" name="license">
+                    </div>
+                    <div class="form-group col-4">
+                        <label class="form-control-label">Puget Sound Energy Account #:</label><input class="form-control" type="tel" id="pse" name="pse">
+                    </div>
+                    <div class="form-group col-4">
+                        <label class="form-control-label">Water Account #:</label><input class="form-control" type="text" id="water" name="water">
+                    </div>
+                </div> <!-- row -->
+            </fieldset> <!-- Income and Accounts fieldset -->
+
+            <fieldset class="form-group">
+                <legend>Household Members</legend>
+                <div class="row" id="household">
+                    <div class="form-group col-4">
+                        <label class="form-checkNum-label">Members in household:</label>
+                        <select class="form-control dropdown" id="members" name="members">
+                            <option value="">-- (include yourself) --</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                            <option value="5" >5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8" >8</option>
+                            <option value="9" >9</option>
+                            <option value="10" >10</option>
+                        </select>
+                    </div>
+                </div> <!-- row -->
+            </fieldset> <!-- Household Member fieldset -->
+            <fieldset class="form-group">
+                <legend>Help Provided</legend>
+                <div class="row">
+                    <div class="form-group col-12">
+                        <label class="form-control-label">Interviewer's notes:</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4"></textarea>
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row" id="checkvoucher">
+                    <div class="form-group col-4">
+                        <label class="form-checkNum-label">Number of vouchers</label>
+                        <select class="form-control dropdown" id="vouchernum" name="vouchernum">
+                            <option value="">-- select number --</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                            <option value="5" >5</option>
+                        </select>
+                    </div>
+                </div> <!-- row -->
+            </fieldset> <!-- Help Provided Fieldset -->
+
+            <input id="preview" name="preview" type="button" value="Preview &raquo;" data-toggle='modal' data-target='#confirm-submit'>
+            <input id="submit" name="submit" type="submit" value="Submit Guest &raquo;">
+        </form>	<!-- Guest Form -->
+        <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"><h4>Preview Form</h4></div>
+                    <div class="modal-body" id="previewForm">
+                        <h6>Are you sure you want to submit the following details?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Return</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Preview Form -->
+    </div>
+    <!-- Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+     <script src="js/newGuest.js"></script>
+
 </body>
 </html>
