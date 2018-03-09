@@ -86,6 +86,14 @@ function formSubmit()
 				$previewForm.append("<p>Amount: " + $("#amount" + j).val() + "</p></div.");
 				$previewForm.append("<p>Resource needed: " + $("#resource" + j).val() + "</p></div.");
 			}
+
+			/*
+			$text = "<div>";
+				$text += "<p>Something</p>";
+			$text += "</div>";
+
+			$("#someDiv").append($text);
+			*/
 		}
 	});
 	
