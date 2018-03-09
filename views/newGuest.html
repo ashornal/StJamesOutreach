@@ -26,10 +26,10 @@
                         <label class="form-control-label"><b>*Name:</b>
                             <!-- check for valid fist and last name -->
                             <check if="{{ isset(@invalidFirstName) }}">
-                                <span class="error font-weight-normal"> - Please enter a valid first name</span>
+                                <span class="text-danger font-weight-normal"> - Invalid first name</span>
                             </check>
                             <check if="{{ isset(@invalidLastName) }}">
-                                <span class="error font-weight-normal"> - Please enter a valid Last name</span>
+                                <span class="text-danger font-weight-normal"> - Invalid Last name</span>
                             </check>
 
                         </label>
@@ -52,7 +52,7 @@
 
                         <label for="birthdate" class="form-control-label"><b>*Date of Birth:</b>
                             <check if="{{ isset(@invalidBirthdate) }}">
-                                <span class="error font-weight-normal"> - Please enter a valid birthdate</span>
+                                <span class="text-danger font-weight-normal"> - Invalid</span>
                             </check>
                         </label>
                         <input type="date" class="form-control" id="birthdate" name="birthdate"
@@ -69,7 +69,7 @@
                             <div class="form-group col-10">
                                 <label class="form-control-label">Phone:
                                     <check if="{{ isset(@invalidPhone) }}">
-                                        <span class="error font-weight-normal"> - Please enter a valid phone number</span>
+                                        <span class="text-danger font-weight-normal"> - Invalid</span>
                                     </check>
                                 </label>
                                 <input class="form-control" type="text" id="phone" name="phone" maxlength="10" placeholder="no spaces or dashes"
@@ -92,15 +92,10 @@
                         <label class="d-block"></label>
                         <select class="form-control dropdown" id="ethnicity" name="ethnicity">
                             <option value="">-- select one --</option>
-                            <option value="white">White</option>
-                            <option value="black" >African American</option>
-                            <option value="hispanic">Hispanic or Latino</option>
-                            <option value="native">Native American</option>
-                            <option value="asian">Asian</option>
-                            <option value="pacific">Pacific Islander</option>
-                            <option value="eskimo">Eskimo</option>
-                            <option value="mixed" >Mixed</option>
-                            <option value="other">Other</option>
+
+                            <repeat group="{{@ethnicities}}" value="{{@ethnicity1}}">
+                                <option <check if="{{ @ethnicity1 == @ethnicity }}">selected</check>  value="{{ @ethnicity1 }}" > {{ @ethnicity1 }}</option>
+                            </repeat>
                         </select>
                     </div>
                 </div> <!-- row -->
@@ -110,13 +105,22 @@
                         <label class="form-control-label">Address:</label>
                         <div class="row">
                             <div class="form-group col-5">
-                                <input class="form-control" type="text" id="street" name="street" placeholder="Street" >
+                                <input class="form-control" type="text" id="street" name="street" placeholder="Street"
+                                <check if="{{ isset(@street) }}">
+                                    value="{{ @street }}"
+                                </check>>
                             </div>
                             <div class="form-group col-4">
-                                <input class="form-control" type="text" id="city" name="city" placeholder="City" >
+                                <input class="form-control" type="text" id="city" name="city" placeholder="City"
+                                <check if="{{ isset(@city) }}">
+                                    value="{{ @city }}"
+                                </check>>
                             </div>
                             <div class="form-group col-3">
-                                <input class="form-control" type="text" id="zip" name="zip" placeholder="Zip" maxlength="5">
+                                <input class="form-control" type="text" id="zip" name="zip" placeholder="Zip" maxlength="5"
+                                <check if="{{ isset(@zip) }}">
+                                    value="{{ @zip }}"
+                                </check>>
                             </div>
                         </div>
                     </div>
@@ -127,7 +131,10 @@
                         <div class="form-check">
                             <label class="d-block">Mental Disability:</label>
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id='mental' name='mental'>
+                                <input class="form-check-input" type="checkbox" id='mental' name='mental'
+                                <check if="{{ isset(@mental) }}">
+                                    checked
+                                </check>>
                             </label>
                         </div>
                     </div>
@@ -135,7 +142,10 @@
                         <div class="form-check">
                             <label class="d-block">Physical Disability:</label>
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id='physical' name='physical'>
+                                <input class="form-check-input" type="checkbox" id='physical' name='physical'
+                                <check if="{{ isset(@physical) }}">
+                                    checked
+                                </check>>
                             </label>
                         </div>
                     </div>
@@ -143,7 +153,10 @@
                         <div class="form-check">
                             <label class="d-block">Veteran:</label>
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id='veteran' name='veteran' >
+                                <input class="form-check-input" type="checkbox" id='veteran' name='veteran'
+                                <check if="{{ isset(@veteran) }}">
+                                    checked
+                                </check>>
                             </label>
                         </div>
                     </div>
@@ -151,7 +164,10 @@
                         <div class="form-check">
                             <label class="d-block">Homeless:</label>
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id='homeless' name='homeless'>
+                                <input class="form-check-input" type="checkbox" id='homeless' name='homeless'
+                                <check if="{{ isset(@homeless) }}">
+                                    checked
+                                </check>>
                             </label>
                         </div>
                     </div>
@@ -162,40 +178,77 @@
                 <legend>Income and Accounts</legend>
                 <div class="row">
                     <div class="form-group col-3">
-                        <label class="form-control-label">Monthly income:</label>
+                        <label class="form-control-label">Monthly income:
+                            <check if="{{ isset(@invalidIncome) }}">
+                                <span class="text-danger font-weight-normal"> - Invalid</span>
+                            </check>
+                        </label>
                         <div class="input-group">
-                            <span class="input-group-addon">$</span><input class="form-control" type="tel" id="income" name="income">
+                            <span class="input-group-addon">$</span><input class="form-control" type="tel" id="income" name="income"
+                            <check if="{{ isset(@income) }}">
+                                value="{{ @income }}"
+                            </check>>
                         </div>
                     </div>
                     <div class="form-group col-3">
-                        <label class="form-control-label">Monthly Rent:</label>
+                        <label class="form-control-label">Monthly Rent:
+                            <check if="{{ isset(@invalidRent) }}">
+                                <span class="text-danger font-weight-normal"> - Invalid</span>
+                            </check>
+                        </label>
                         <div class="input-group">
-                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="rent" name="rent">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="rent" name="rent"
+                            <check if="{{ isset(@rent) }}">
+                                value="{{ @rent }}"
+                            </check>>
                         </div>
                     </div>
                     <div class="form-group col-3">
-                        <label class="form-control-label">Food Stamps:</label>
+                        <label class="form-control-label">Food Stamps:
+                            <check if="{{ isset(@invalidFoodstamps) }}">
+                                <span class="text-danger font-weight-normal"> - Invalid</span>
+                            </check>
+                        </label>
                         <div class="input-group">
-                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="foodStamp" name="foodStamp">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="foodStamp" name="foodStamp"
+                            <check if="{{ isset(@foodStamp) }}">
+                                value="{{ @foodStamp }}"
+                            </check>>
                         </div>
                     </div>
                     <div class="form-group col-3">
-                        <label class="form-control-label">Additional Support:</label>
+                        <label class="form-control-label">Additional Support:
+                            <check if="{{ isset(@invalidAddSupport) }}">
+                                <span class="text-danger font-weight-normal"> - Invalid</span>
+                            </check>
+                        </label>
                         <div class="input-group">
-                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="addSupport" name="addSupport">
+                            <span class="input-group-addon">$</span><input class="form-control" type="text" id="addSupport" name="addSupport"
+                            <check if="{{ isset(@addSupport) }}">
+                                value="{{ @addSupport }}"
+                            </check>>
                         </div>
                     </div>
                 </div> <!-- row -->
 
                 <div class="row">
                     <div class="form-group col-4">
-                        <label class="form-control-label">Driver's License or Photo ID#:</label><input class="form-control" type="text" id="license" name="license">
+                        <label class="form-control-label">Driver's License or Photo ID#:</label><input class="form-control" type="text" id="license" name="license"
+                        <check if="{{ isset(@license) }}">
+                            value="{{ @license }}"
+                        </check>>
                     </div>
                     <div class="form-group col-4">
-                        <label class="form-control-label">Puget Sound Energy Account #:</label><input class="form-control" type="tel" id="pse" name="pse">
+                        <label class="form-control-label">Puget Sound Energy Account #:</label><input class="form-control" type="tel" id="pse" name="pse"
+                        <check if="{{ isset(@pse) }}">
+                            value="{{ @pse }}"
+                        </check>>
                     </div>
                     <div class="form-group col-4">
-                        <label class="form-control-label">Water Account #:</label><input class="form-control" type="text" id="water" name="water">
+                        <label class="form-control-label">Water Account #:</label><input class="form-control" type="text" id="water" name="water"
+                        <check if="{{ isset(@water) }}">
+                            value="{{ @water }}"
+                        </check>>
                     </div>
                 </div> <!-- row -->
             </fieldset> <!-- Income and Accounts fieldset -->
@@ -205,19 +258,12 @@
                 <div class="row" id="household">
                     <div class="form-group col-4">
                         <label class="form-checkNum-label">Members in household:</label>
-                        <select class="form-control dropdown" id="members" name="members">
-                            <option value="">-- (include yourself) --</option>
-                            <option value="1" >1</option>
-                            <option value="2" >2</option>
-                            <option value="3" >3</option>
-                            <option value="4" >4</option>
-                            <option value="5" >5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8" >8</option>
-                            <option value="9" >9</option>
-                            <option value="10" >10</option>
-                        </select>
+                        <button onclick="addHousehold()">Add member</button>
+
+                        <div id="member-div">
+
+                        </div>
+
                     </div>
                 </div> <!-- row -->
             </fieldset> <!-- Household Member fieldset -->
@@ -226,7 +272,9 @@
                 <div class="row">
                     <div class="form-group col-12">
                         <label class="form-control-label">Interviewer's notes:</label>
-                        <textarea class="form-control" id="notes" name="notes" rows="4"></textarea>
+                        <textarea class="form-control" id="notes" name="notes" rows="4"><check if="{{ isset(@notes) }}">{{ @notes }}
+                            </check>
+                        </textarea>
                     </div>
                 </div> <!-- row -->
 
@@ -235,11 +283,10 @@
                         <label class="form-checkNum-label">Number of vouchers</label>
                         <select class="form-control dropdown" id="vouchernum" name="vouchernum">
                             <option value="">-- select number --</option>
-                            <option value="1" >1</option>
-                            <option value="2" >2</option>
-                            <option value="3" >3</option>
-                            <option value="4" >4</option>
-                            <option value="5" >5</option>
+
+                        <repeat group="{{@voucherNumbers}}" value="{{@vouchNum}}">
+                            <option <check if="{{ @vouchNum == @vouchernum }}">selected</check>  value="{{ @vouchNum }}" > {{ @vouchNum }}</option>
+                        </repeat>
                         </select>
                     </div>
                 </div> <!-- row -->
@@ -263,10 +310,25 @@
         </div> <!-- Preview Form -->
     </div>
     <!-- Bootstrap and jQuery -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- <script src="js/newGuest.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-     <script src="js/newGuest.js"></script>
+-->
+    <script>
+        var text = '<div class="row">';
+            text += '<div class="form-group col-5">';
+                text += '</label><input class=\'form-control\' type=\'text\' id=\'name$i\' name=\'name$i\' value=\'".$name.">';
+
+        function addHousehold() {
+            var x = document.createElement("INPUT");
+            x.setAttribute("type", "text");
+            x.setAttribute("value", "Hello World!");
+            document.body.appendChild(x);
+        }
+    </script>
+
 
 </body>
 </html>
