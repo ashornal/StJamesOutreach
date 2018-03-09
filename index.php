@@ -83,15 +83,72 @@ $f3->route('GET|POST /newGuest', function($f3)
         $f3->set('water', $water);
         $f3->set('members', $members);
         $f3->set('notes', $notes);
-        $f3->set('voucherum', $voucherNum);
+        $f3->set('vouchernum', $voucherNum);
 
         include('model/validation.php');
         $isValid = true;
 
-        //validate using if(functionName())...
+        //validate first Name
+        if(!validFirst($firstName)){
+            $f3->set('invalidFirstName', "invalid");
+            $isValid  = false;
+        }
+
+        //validate last name
+        if (!validLast($lastName)) {
+            $f3->set('invalidLastName', "invalid");
+            $isValid = false;
+        }
+
+        //validate birthdate
+        if(!validBirth($birthdate)){
+            $f3->set('invalidBirthdate', "invalid");
+            $isValid = false;
+        }
+
+        //validate phone number
+        if(!validPhone($phone)){
+            $f3->set('invalidPhone', "invalid");
+            $isValid = false;
+        }
+
+        //validate zipcode
+        if(!validZip($zip)){
+            $f3->set('invalidZip', "invalid");
+            $isValid = false;
+        }
+
+        //validate monthly income
+        if(!validIncome($income)){
+            $f3->set('invalidIncome', "invalid");
+            $isValid = false;
+        }
+
+        //validate monthly rent
+        if(!validRent($rent)) {
+            $f3->set('invalidRent', "invalid");
+            $isValid = false;
+        }
+
+        //validate foodstamps
+        if(!validfoodstamps($foodStamp)){
+            $f3->set('invalidFoodstamps', "invalid");
+            $isValid = false;
+        }
+
+        //validate gender
+
+        //validate addsupport
+        if(!validAddSupport($addSupport)){
+            $f3->set('invalidAddSupport', "invalid");
+            $isValid = false;
+        }
+
 
         if($isValid){
-            //create guest object
+
+            $guest = new Guest($firstName,$lastName,$birthdate);
+            print_r($guest);
         }
 
     }

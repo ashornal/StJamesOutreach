@@ -37,13 +37,13 @@ function validPhone($phone) {
 
 function validZip($zip){
     if(empty($zip)){
-        return false;
+        return true;
     }
     return (strlen($zip) == 5) && (is_numeric($zip));
 }
 
-function validMonthly($monthly){
-    return empty($monthly) || is_numeric($monthly);
+function validIncome($income){
+    return empty($income) || is_numeric($income);
 }
 
 function validRent($rent){
@@ -60,8 +60,4 @@ function validGender($gender){
 
 function validAddSupport($support){
     return empty($support) || is_numeric($support);
-}
-
-function validAmountGiven($given){
-    return empty($given) || is_numeric($given);
 }
