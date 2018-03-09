@@ -16,9 +16,15 @@ error_reporting(E_ALL);
 //Create an instance of the Base Class
 $f3 = Base::instance();
 
+$f3->route('GET /', function()
+{
+    $template = new Template();
+    echo $template->render('views/home.html');
+}
+);
 
 //Define a default route(home)
-$f3->route('GET /', function()
+$f3->route('GET /home', function()
 {
     $template = new Template();
     echo $template->render('views/home.html');
