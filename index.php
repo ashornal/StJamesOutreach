@@ -148,7 +148,8 @@ $f3->route('GET|POST /newGuest', function($f3)
         if($isValid){
 
             $guest = new Guest($firstName,$lastName,$birthdate);
-            print_r($guest);
+            //add setters for all variables
+            //print_r($guest);
         }
 
     }
