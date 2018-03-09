@@ -20,16 +20,38 @@ $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', '
 $f3->set('membersArray', array('1','2','3','4','5','6','7','8','9','10'));
 $f3->set('voucherNumbers', array('1','2','3','4','5'));
 
-$f3->route('GET /', function()
+$f3->route('GET|POST /', function($f3, $params)
 {
+    $database = new Database();
+
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
+
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
+    $households = $database->getHouseholds();
+    $f3->set('households', $households);
+
     $template = new Template();
     echo $template->render('views/home.html');
 }
 );
 
 //Define a default route(home)
-$f3->route('GET /home', function()
+$f3->route('GET /home', function($f3, $params)
 {
+    $database = new Database();
+
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
+
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
+    $households = $database->getHouseholds();
+    $f3->set('households', $households);
+
     $template = new Template();
     echo $template->render('views/home.html');
 }
