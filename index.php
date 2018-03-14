@@ -18,8 +18,19 @@ $f3 = Base::instance();
 
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
 
-$f3->route('GET /', function()
+$f3->route('GET /', function($f3,$params)
 {
+    $database = new Database();
+
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
+
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
+    $households = $database->getHouseholds();
+    $f3->set('households', $households);
+
     $template = new Template();
     echo $template->render('views/home.html');
 }
@@ -29,8 +40,15 @@ $f3->route('GET /', function()
 $f3->route('GET /home', function($f3,$params)
 {
     $database = new Database();
+
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
+
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
+    $households = $database->getHouseholds();
+    $f3->set('households', $households);
 
     $template = new Template();
     echo $template->render('views/home.html');

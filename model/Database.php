@@ -160,7 +160,7 @@ class Database
     function getHouseholds()
     {
         // Define the query
-        $sql = "SELECT * FROM Household ";
+        $sql = "SELECT * FROM Household";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
