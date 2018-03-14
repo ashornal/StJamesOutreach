@@ -28,8 +28,12 @@ $f3->route('GET /', function()
 );
 
 //Define a default route(home)
-$f3->route('GET /home', function()
+$f3->route('GET /home', function($f3,$params)
 {
+    $database = new Database();
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
+
     $template = new Template();
     echo $template->render('views/home.html');
 }

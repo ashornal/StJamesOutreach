@@ -55,7 +55,7 @@
                     <td><a href='$url' class="clickForm">View/Edit</a></td>
                 </tr>
             </repeat>
-            <?php
+           <!-- <?php
 						//Define the SELECT query
 						$sql = "SELECT * FROM Guests";
 						//Send the query to the database
@@ -82,7 +82,7 @@
 							}
 							// print table rows
 							echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$birthdate</td><td>$phone</td><td>$visitDate</td><td>
-                <a href='$url' class=\"clickForm\">View/Edit</a>
+                <a href='$url' class="clickForm">View/Edit</a>
             </td></tr>";
 
             // select all tables together for clicking the edit button
@@ -98,7 +98,7 @@
             $guest = $guest_row['first'];
             }
             }
-            ?>
+            ?> -->
             </tbody>
             <tfoot>
             <tr>
@@ -139,42 +139,42 @@
                     <td><a href='$url' class="clickForm">View/Edit</a></td>
                 </tr>
             </repeat>
-            <?php
-						//Define the SELECT query
-						$sql = "SELECT * FROM Needs ORDER BY visitDate";
-						//Send the query to the database
-						$result = @mysqli_query($cnxn, $sql);
-						//Process the rows
-						while ($row = mysqli_fetch_assoc($result))
-						{
-							$id = $row['Guests_ClientId'];
-							$resource = $row['resource'];
-							$amount = $row['amount'];
-							$visitDate = $row['visitDate'];
-							// get another select query
-							$sql2 = "SELECT * FROM Guests WHERE ClientId = $id ";
-							$result2 = @mysqli_query($cnxn, $sql2);
-							while ($row = mysqli_fetch_assoc($result2))
-							{
-							  $first = $row['first'];
-							  $last = $row['last'];
-							}
-							// print table rows
-							echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$resource</td><td>$amount</td><td>$visitDate</td></tr>";
-            }
-            ?>
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>First</th>
-                <th>Last</th>
-                <th>Resource</th>
-                <th>Amount</th>
-                <th>Visit Date</th>
-            </tr>
-            </tfoot>
-        </table> <!-- Need Table -->
+            <!-- <?php
+                         //Define the SELECT query
+                         $sql = "SELECT * FROM Needs ORDER BY visitDate";
+                         //Send the query to the database
+                         $result = @mysqli_query($cnxn, $sql);
+                         //Process the rows
+                         while ($row = mysqli_fetch_assoc($result))
+                         {
+                             $id = $row['Guests_ClientId'];
+                             $resource = $row['resource'];
+                             $amount = $row['amount'];
+                             $visitDate = $row['visitDate'];
+                             // get another select query
+                             $sql2 = "SELECT * FROM Guests WHERE ClientId = $id ";
+                             $result2 = @mysqli_query($cnxn, $sql2);
+                             while ($row = mysqli_fetch_assoc($result2))
+                             {
+                               $first = $row['first'];
+                               $last = $row['last'];
+                             }
+                             // print table rows
+                             echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$resource</td><td>$amount</td><td>$visitDate</td></tr>";
+             }
+             ?>-->
+             </tbody>
+             <tfoot>
+             <tr>
+                 <th>ID</th>
+                 <th>First</th>
+                 <th>Last</th>
+                 <th>Resource</th>
+                 <th>Amount</th>
+                 <th>Visit Date</th>
+             </tr>
+             </tfoot>
+         </table> <!-- Need Table -->
     </div> <!-- Container -->
 
     <div class="container" id="income">
@@ -203,38 +203,38 @@
                     <td>{{@guest['addSuport']}}</td>
                 </tr>
             </repeat>
-            <?php
-						//Define the SELECT query
-						$sql = "SELECT * FROM Guests ";
-						//Send the query to the database
-						$result = @mysqli_query($cnxn, $sql);
-						//Process the rows
-						while ($row = mysqli_fetch_assoc($result))
-						{
-							$id = $row['ClientId'];
-							$first = $row['first'];
-							$last = $row['last'];
-							$income = $row['income'];
-							$rent = $row['rent'];
-							$foodstamp = $row['foodStamp'];
-							$additional = $row['addSupport'];
-							// print table rows
-							echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$income</td><td>$rent</td><td>$foodstamp</td><td>$additional</td></tr>";
-            }
-            ?>
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Monthly Income</th>
-                <th>Monthly Rent</th>
-                <th>Food Stamps</th>
-                <th>Additional Support</th>
-            </tr>
-            </tfoot>
-        </table> <!-- Income Table -->
+            <!--   <?php
+                           //Define the SELECT query
+                           $sql = "SELECT * FROM Guests ";
+                           //Send the query to the database
+                           $result = @mysqli_query($cnxn, $sql);
+                           //Process the rows
+                           while ($row = mysqli_fetch_assoc($result))
+                           {
+                               $id = $row['ClientId'];
+                               $first = $row['first'];
+                               $last = $row['last'];
+                               $income = $row['income'];
+                               $rent = $row['rent'];
+                               $foodstamp = $row['foodStamp'];
+                               $additional = $row['addSupport'];
+                               // print table rows
+                               echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$income</td><td>$rent</td><td>$foodstamp</td><td>$additional</td></tr>";
+               }
+               ?>-->
+               </tbody>
+               <tfoot>
+               <tr>
+                   <th>ID</th>
+                   <th>First Name</th>
+                   <th>Last Name</th>
+                   <th>Monthly Income</th>
+                   <th>Monthly Rent</th>
+                   <th>Food Stamps</th>
+                   <th>Additional Support</th>
+               </tr>
+               </tfoot>
+           </table> <!-- Income Table -->
     </div> <!-- Container -->
     <div class="container" id="address">
         <h3 class="text-muted">Guest Addresses</h3>
@@ -262,38 +262,38 @@
                     <td>{{@guest['email']}}</td>
                 </tr>
             </repeat>
-            <?php
-						//Define the SELECT query
-						$sql = "SELECT * FROM Guests ";
-						//Send the query to the database
-						$result = @mysqli_query($cnxn, $sql);
-						//Process the rows
-						while ($row = mysqli_fetch_assoc($result))
-						{
-							$id = $row['ClientId'];
-							$first = $row['first'];
-							$last = $row['last'];
-							$city = $row['city'];
-							$street = $row['street'];
-							$zip = $row['zip'];
-							$email = $row['email'];
-							// print table rows
-							echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$city</td><td>$street</td><td>$zip</td><td>$email</td></tr>";
-            }
-            ?>
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>City</th>
-                <th>Street</th>
-                <th>Zip</th>
-                <th>Email</th>
-            </tr>
-            </tfoot>
-        </table> <!-- Address Table -->
+            <!-- <?php
+                         //Define the SELECT query
+                         $sql = "SELECT * FROM Guests ";
+                         //Send the query to the database
+                         $result = @mysqli_query($cnxn, $sql);
+                         //Process the rows
+                         while ($row = mysqli_fetch_assoc($result))
+                         {
+                             $id = $row['ClientId'];
+                             $first = $row['first'];
+                             $last = $row['last'];
+                             $city = $row['city'];
+                             $street = $row['street'];
+                             $zip = $row['zip'];
+                             $email = $row['email'];
+                             // print table rows
+                             echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$city</td><td>$street</td><td>$zip</td><td>$email</td></tr>";
+             }
+             ?>-->
+             </tbody>
+             <tfoot>
+             <tr>
+                 <th>ID</th>
+                 <th>First Name</th>
+                 <th>Last Name</th>
+                 <th>City</th>
+                 <th>Street</th>
+                 <th>Zip</th>
+                 <th>Email</th>
+             </tr>
+             </tfoot>
+         </table> <!-- Address Table -->
     </div> <!-- Container -->
     <div class="container" id="household">
         <h3 class="text-muted">Household Info</h3>
@@ -319,42 +319,42 @@
                     <td>{{@household['gender']}}</td>
                 </tr>
             </repeat>
-            <?php
-						//Define the SELECT query
-						$sql = "SELECT * FROM Household ";
-						//Send the query to the database
-						$result = @mysqli_query($cnxn, $sql);
-						//Process the rows
-						while ($row = mysqli_fetch_assoc($result))
-						{
-							$id = $row['Guests_ClientId'];
-							$name = $row['name'];
-							$age = $row['age'];
-							$gender = $row['gender'];
-							// select matching guest from Guests table
-							$sql2 = "SELECT * FROM Guests WHERE ClientId = $id ";
-							$result2 = @mysqli_query($cnxn, $sql2);
-							while ($row = mysqli_fetch_assoc($result2))
-							{
-								$first = $row['first'];
-								$last = $row['last'];
-							}
-							// print table rows
-							echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$name</td><td>$age</td><td>$gender</td></tr>";
-            }
-            ?>
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>First</th>
-                <th>Last</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-            </tr>
-            </tfoot>
-        </table> <!-- Houshold Table -->
+            <!-- <?php
+                         //Define the SELECT query
+                         $sql = "SELECT * FROM Household ";
+                         //Send the query to the database
+                         $result = @mysqli_query($cnxn, $sql);
+                         //Process the rows
+                         while ($row = mysqli_fetch_assoc($result))
+                         {
+                             $id = $row['Guests_ClientId'];
+                             $name = $row['name'];
+                             $age = $row['age'];
+                             $gender = $row['gender'];
+                             // select matching guest from Guests table
+                             $sql2 = "SELECT * FROM Guests WHERE ClientId = $id ";
+                             $result2 = @mysqli_query($cnxn, $sql2);
+                             while ($row = mysqli_fetch_assoc($result2))
+                             {
+                                 $first = $row['first'];
+                                 $last = $row['last'];
+                             }
+                             // print table rows
+                             echo "<tr><td>$id</td><td>$first</td><td>$last</td><td>$name</td><td>$age</td><td>$gender</td></tr>";
+             }
+             ?>-->
+             </tbody>
+             <tfoot>
+             <tr>
+                 <th>ID</th>
+                 <th>First</th>
+                 <th>Last</th>
+                 <th>Name</th>
+                 <th>Age</th>
+                 <th>Gender</th>
+             </tr>
+             </tfoot>
+         </table> <!-- Houshold Table -->
     </div> <!-- Container -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="//code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
