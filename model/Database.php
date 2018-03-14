@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/ashornal/config.php';
+require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
@@ -75,7 +75,7 @@ class Database
             //Instantiate a database object
             $this->dbh = new PDO(DB_DSN, DB_USERNAME,
                 DB_PASSWORD );
-            //echo "Connected to database!!!";
+            echo "<h1>Connected to database!!!</h1>";
         }
         catch (PDOException $e) {
             echo $e->getMessage();

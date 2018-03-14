@@ -258,14 +258,12 @@
                 <div class="row" id="household">
                     <div class="form-group col-4">
                         <label class="form-checkNum-label">Members in household:</label>
-                        <button onclick="addHousehold()">Add member</button>
-
-                        <div id="member-div">
-
-                        </div>
-
+                        <button class="btn btn-light" id="member-button">Add member</button>
                     </div>
                 </div> <!-- row -->
+                        <span id="member-div">
+
+                        </span>
             </fieldset> <!-- Household Member fieldset -->
             <fieldset class="form-group">
                 <legend>Help Provided</legend>
@@ -280,16 +278,14 @@
 
                 <div class="row" id="checkvoucher">
                     <div class="form-group col-4">
-                        <label class="form-checkNum-label">Number of vouchers</label>
-                        <select class="form-control dropdown" id="vouchernum" name="vouchernum">
-                            <option value="">-- select number --</option>
-
-                        <repeat group="{{@voucherNumbers}}" value="{{@vouchNum}}">
-                            <option <check if="{{ @vouchNum == @vouchernum }}">selected</check>  value="{{ @vouchNum }}" > {{ @vouchNum }}</option>
-                        </repeat>
-                        </select>
+                        <label class="form-checkNum-label">Vouchers</label>
+                        <button class="btn btn-light" id="voucher-button">Add voucher</button>
                     </div>
                 </div> <!-- row -->
+
+                    <span id="voucher-div">
+
+                    </span>
             </fieldset> <!-- Help Provided Fieldset -->
 
             <input id="preview" name="preview" type="button" value="Preview &raquo;" data-toggle='modal' data-target='#confirm-submit'>
@@ -311,22 +307,113 @@
     </div>
     <!-- Bootstrap and jQuery -->
     <script src="http://code.jquery.com/jquery.js"></script>
-    <!-- <script src="js/newGuest.js"></script>
+    <script src="js/newGuest.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
--->
-    <script>
-        var text = '<div class="row">';
-            text += '<div class="form-group col-5">';
-                text += '</label><input class=\'form-control\' type=\'text\' id=\'name$i\' name=\'name$i\' value=\'".$name.">';
 
-        function addHousehold() {
-            var x = document.createElement("INPUT");
-            x.setAttribute("type", "text");
-            x.setAttribute("value", "Hello World!");
-            document.body.appendChild(x);
-        }
+    <script>
+
+        $( "#member-button" ).click(function(event) { // event,the click
+            event.preventDefault();
+
+            var anyMembersOnPage = $('.new-member');
+            console.log(anyMembersOnPage);
+
+            var newMemberIdNumber = "";
+            if(anyMembersOnPage.length > 0) {
+                console.log("Getting the new Id: ");
+
+                var lastElement = anyMembersOnPage[anyMembersOnPage.length-1];
+                console.log(lastElement);
+
+                newIncrement = parseInt(($(lastElement).attr("id")).substring(6)) + 1;
+                newMemberIdNumber = "member" + newIncrement;
+                console.log(newMemberIdNumber);
+            } else {
+                newMemberIdNumber = "member1"
+            }
+
+            var text = "<div class='new-member row' id='" + newMemberIdNumber + "'>";
+                text += "<div class='form-group col-5'>";
+                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' name='name'>";
+                text+= "</div>";
+
+                text += "<div class='form-group col-2'>";
+                    text += "<label class='form-control-label'>Age:</label><input class='form-control' type='text' name='age' maxlength='3'>";
+                text += "</div>";
+
+                text += "<div class='form-group col-2'>";
+                    text += "<label class='form-check-label'>Gender:</label>";
+                    text += "<label class='d-block'></label>";
+                    text += "<select class='form-control dropdown' name='gender'>";
+                        text += "<option value=''>select one</option>";
+                        text += "<option value='male'>Male</option>";
+                        text += "<option value='female'>Female</option>";
+                        text += "<option value='other'>Other</option>";
+                    text += "</select>";
+                text += "</div>";
+            text += "</div>";
+
+            $( "#member-div" ).append(text);
+            //createElement
+        });
+
+
+        $( "#voucher-button" ).click(function(event) { // event,the click
+            event.preventDefault();
+
+            var anyVocuhersOnPage = $('.new-voucher');
+            console.log(anyVocuhersOnPage);
+
+            var newVoucherIdNumber = "";
+            if(anyVocuhersOnPage.length > 0) {
+                console.log("Getting the new Id: ");
+
+                var lastElement = anyVocuhersOnPage[anyVocuhersOnPage.length-1];
+                console.log(lastElement);
+
+                newIncrement = parseInt(($(lastElement).attr("id")).substring(6)) + 1;
+                newVoucherIdNumber = "member" + newIncrement;
+                console.log(newVoucherIdNumber);
+            } else {
+                newVoucherIdNumber = "member1"
+            }
+
+            var vouch = "<div class='new-voucher' id='" + newVoucherIdNumber + "'>";
+                vouch += "<div class='row' id='need'>";
+                    vouch += "<div class='form-group col-3'>";
+                        vouch += "<label class='form-control-label'>Voucher#:</label><input class='form-control' type='text' id='voucher' name='voucher'>";
+                    vouch += "</div>";
+                    vouch += "<div class='form-group col-3'>";
+                        vouch += "<label class='form-control-label'>Check#:</label><input class='form-control' type='text' id='checkNum' name='checkNum'>";
+                    vouch += "</div>";
+                    vouch += "<div class='form-group col-2'>";
+                        vouch += "<label class='form-control-label'>Amount:</label>";
+                        vouch += "<div class='input-group'>";
+                            vouch += "<span class='input-group-addon'>$</span><input class='form-control' type='amount' id='amount' name='amount'>";
+                        vouch += "</div>";
+                    vouch += "</div>";
+                    vouch += "<div class='form-group col-3'>";
+                        vouch += "<label class='form-check-label'>Resource needed:</label>";
+                        vouch += "<label class='d-block'></label>";
+                        vouch += "<select class='form-control dropdown' id='resource' name='resource'>";
+                            vouch += "<option value=''>-- select one --</option>";
+                            vouch += "<option value='thriftshop'>Thrift Shop</option>";
+                            vouch += "<option value='gas'>Gas</option>";
+                            vouch += "<option value='waterbill'>Water Bill</option>";
+                            vouch += "<option value='energybill'>Energy Bill</option>";
+                            vouch += "<option value='food'>Food</option>";
+                            vouch += "<option value='dol'>Dept of Lisencing</option>";
+                            vouch += "<option value='other'>Other</option>";
+                        vouch += "</select>";
+                    vouch += "</div>";
+                vouch += "</div>";
+            vouch += "</div>";
+
+            $( "#voucher-div" ).append(vouch);
+         });
+
     </script>
 
 

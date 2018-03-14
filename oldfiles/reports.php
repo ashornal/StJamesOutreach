@@ -27,7 +27,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 		<link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
 		<link type="text/css" rel="stylesheet" href="css/index.css">
-		<link type="text/css" rel="stylesheet" href="css/reports.css"> 
+		<link type="text/css" rel="stylesheet" href="../styles/reports.css">
 		<title>Salary Data</title>
     
 	</head>
