@@ -17,8 +17,6 @@ error_reporting(E_ALL);
 $f3 = Base::instance();
 
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
-$f3->set('membersArray', array('1','2','3','4','5','6','7','8','9','10'));
-$f3->set('voucherNumbers', array('1','2','3','4','5'));
 
 $f3->route('GET /', function()
 {
@@ -163,7 +161,35 @@ $f3->route('GET|POST /newGuest', function($f3)
 
             $guest = new Guest($firstName,$lastName,$birthdate);
             //add setters for all variables
-            //print_r($guest);
+            $guest->setPhone($phone);
+            $guest->setEmail($email);
+            $guest->setEthnicity($ethnicity);
+            $guest->setStreet($street);
+            $guest->setCity($city);
+            $guest->setZip($zip);
+            $guest->setMental($mental);
+            $guest->setPhysical($physical);
+            $guest->setVeteran($veteran);
+            $guest->setHomeless($homeless);
+            $guest->setIncome($income);
+            $guest->setRent($rent);
+            $guest->setFoodStamp($foodStamp);
+            $guest->setAddSupport($addSupport);
+            $guest->setLicense($license);
+            $guest->setPse($pse);
+            $guest->setWater($water);
+            $guest->setNotes($notes);
+            $guest->setVoucherNum($voucherNum);
+
+            $database = new Database();
+            $database->insertGuest($guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
+                $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
+                $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
+                $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
+                $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getVoucherNum(),
+                $guest->getNotes());
+
+
         }
 
     }

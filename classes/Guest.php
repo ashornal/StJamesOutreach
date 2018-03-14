@@ -5,6 +5,8 @@
  * Date: 3/7/2018
  * Time: 12:55 PM
  */
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 class Guest
 {
@@ -29,6 +31,7 @@ class Guest
     protected $veteran;
     protected $homeless;
     protected $members;
+    protected $voucherNum;
     protected $notes;
 
     function __construct($fname,$lname,$birthdate){
@@ -276,6 +279,20 @@ class Guest
     public function setMembers($members)
     {
         $this->members = $members;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVoucherNum()
+    {
+        return $this->voucherNum;
+    }/**
+     * @param mixed $voucherNum
+     */
+    public function setVoucherNum($voucherNum)
+    {
+        $this->voucherNum = $voucherNum;
     }
 
     /**
