@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/pvashchu/config2.php';
+require_once '/home/ashornal/config.php';
 class Database
 {
     protected $dbh;
@@ -185,6 +185,137 @@ class Database
 
         return $row;
     }
+
+    function getThrift($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'thrift'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getGas($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'gas'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getWater($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'waterbill'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getEnergy($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'energybill'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getFood($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'food'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getDol($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'dol'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getOther($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'
+								AND resource = 'other'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    function getTotal($start, $end)
+    {
+        // Define the query
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
+								WHERE visitDate BETWEEN '$start' AND '$end'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+
+
+
 
 
 }

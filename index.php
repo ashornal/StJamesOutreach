@@ -44,9 +44,6 @@ $f3->route('GET /home', function($f3,$params)
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
 
-    $needs = $database->getNeeds();
-    $f3->set('needs', $needs);
-
     $households = $database->getHouseholds();
     $f3->set('households', $households);
 
@@ -56,8 +53,10 @@ $f3->route('GET /home', function($f3,$params)
 );
 
 //reports
-$f3->route('GET|POST /reports', function()
+$f3->route('GET|POST /reports', function($f3,$params)
 {
+
+
     $template = new Template();
     echo $template->render('views/reports.html');
 }
