@@ -40,8 +40,62 @@
         </tr>
         </thead>
         <tbody>
-
-
+        <repeat group="{{ @thrift}}" value="{{ @data }}">
+            <tr>
+                <td>Thrift</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @gas}}" value="{{ @data }}">
+            <tr>
+                <td>Gas</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @water}}" value="{{ @data }}">
+            <tr>
+                <td>Water</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @energy}}" value="{{ @data }}">
+            <tr>
+                <td>Energy</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @food}}" value="{{ @data }}">
+            <tr>
+                <td>Food</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @dol}}" value="{{ @data }}">
+            <tr>
+                <td>Dept of Lisencing</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @other}}" value="{{ @data }}">
+            <tr>
+                <td>Other</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
+        <repeat group="{{ @total}}" value="{{ @data }}">
+            <tr>
+                <td>Total</td>
+                <td>{{@data['COUNT(amount)']}} </td>
+                <td>{{@data['SUM(amount)']}} </td>
+            </tr>
+        </repeat>
         </tbody>
     </table> <!-- Reports Table -->
 </div> <!-- container -->
@@ -50,6 +104,7 @@
     <table id="vouchers" class="display">
         <thead>
         <tr>
+            <th>ID</th>
             <th>First</th>
             <th>Last</th>
             <th>Voucher</th>
@@ -60,11 +115,22 @@
         </tr>
         </thead>
         <tbody>
-
-
+        <repeat group="{{ @guests}}" value="{{ @guest }}">
+            <tr>
+                <td>{{@guest['ClientId']}} </td>
+                <td>{{@guest['first']}} </td>
+                <td>{{@guest['last']}}</td>
+                <td>{{@guest['voucher']}}</td>
+                <td>{{@guest['checkNum']}}</td>
+                <td>{{@guest['resource']}}</td>
+                <td>{{@guest['amount']}}</td>
+                <td>{{@guest['visitDate']}}</td>
+            </tr>
+        </repeat>
         </tbody>
         <tfoot>
         <tr>
+            <th>ID</th>
             <th>First</th>
             <th>Last</th>
             <th>Voucher</th>
