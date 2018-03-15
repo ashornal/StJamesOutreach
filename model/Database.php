@@ -142,6 +142,19 @@ class Database
         return $row;
     }
 
+    function getGuest($id)
+    {
+        // Define the query
+        $sql = "SELECT * FROM Guests WHERE ClientID = $id";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
     function getNeeds()
     {
         // Define the query

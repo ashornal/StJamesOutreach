@@ -52,7 +52,7 @@
                     <td>{{@guest['birthdate']}}</td>
                     <td>{{@guest['phone']}}</td>
                     <td>{{@guest['visitDate']}}</td>
-                    <td><a href='$url' class="clickForm">View/Edit</a></td>
+                    <td><a href="{{ @BASE }}/{{@guest['ClientId']}}" class="clickForm">View/Edit</a></td>
                 </tr>
             </repeat>
            <!-- <?php
