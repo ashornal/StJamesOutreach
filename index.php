@@ -204,8 +204,7 @@ $f3->route('GET|POST /newGuest', function($f3)
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
                 $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
-                $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getVoucherNum(),
-                $guest->getNotes());
+                $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getNotes());
 
 
         }
