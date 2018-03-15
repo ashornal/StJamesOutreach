@@ -16,6 +16,7 @@ error_reporting(E_ALL);
 //Create an instance of the Base Class
 $f3 = Base::instance();
 
+
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
 
 $f3->route('GET /', function($f3,$params)
@@ -66,6 +67,8 @@ $f3->route('GET|POST /reports', function()
 //newGuest
 $f3->route('GET|POST /newGuest', function($f3)
 {
+
+
     if(isset($_POST['submit'])){
        $firstName = $_POST['first'];
        $lastName = $_POST['last'];
@@ -89,7 +92,14 @@ $f3->route('GET|POST /newGuest', function($f3)
        $water = $_POST['water'];
        $members = $_POST['members'];
        $notes = $_POST['notes'];
-       $voucherNum = $_POST['vouchernum'];
+
+       //echo print_r($_POST['name']);
+        foreach($_POST['name'] as $row => $innerArray){
+            foreach($innerArray as $innerRow => $value){
+                echo $value . "<br/>";
+            }
+        }
+
 
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
@@ -113,7 +123,7 @@ $f3->route('GET|POST /newGuest', function($f3)
         $f3->set('water', $water);
         $f3->set('members', $members);
         $f3->set('notes', $notes);
-        $f3->set('vouchernum', $voucherNum);
+        //$f3->set('vouchernum', $voucherNum);
 
         include('model/validation.php');
         $isValid = true;
@@ -197,9 +207,9 @@ $f3->route('GET|POST /newGuest', function($f3)
             $guest->setPse($pse);
             $guest->setWater($water);
             $guest->setNotes($notes);
-            $guest->setVoucherNum($voucherNum);
+            //$guest->setVoucherNum($voucherNum);
 
-            //guest object
+            //guest object(class)
             //print_r($guest);
 
             $database = new Database();
@@ -274,7 +284,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $water = $_POST['water'];
         $members = $_POST['members'];
         $notes = $_POST['notes'];
-        $voucherNum = $_POST['vouchernum'];
+        $vouchers = $_POST['vouchernum'];
 
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
@@ -298,7 +308,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $f3->set('water', $water);
         $f3->set('members', $members);
         $f3->set('notes', $notes);
-        $f3->set('vouchernum', $voucherNum);
+        $f3->set('vouchers', $vouchers);
 
         include('model/validation.php');
         $isValid = true;
@@ -361,7 +371,37 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 
 
         if ($isValid) {
-            //set the variables to the guest object
+            $guest = new Guest($firstName,$lastName,$birthdate);
+            //add setters for all variables
+            $guest->setPhone($phone);
+            $guest->setEmail($email);
+            $guest->setEthnicity($ethnicity);
+            $guest->setStreet($street);
+            $guest->setCity($city);
+            $guest->setZip($zip);
+            $guest->setMental($mental);
+            $guest->setPhysical($physical);
+            $guest->setVeteran($veteran);
+            $guest->setHomeless($homeless);
+            $guest->setIncome($income);
+            $guest->setRent($rent);
+            $guest->setFoodStamp($foodStamp);
+            $guest->setAddSupport($addSupport);
+            $guest->setLicense($license);
+            $guest->setPse($pse);
+            $guest->setWater($water);
+            $guest->setNotes($notes);
+            //$guest->setVoucherNum($vouchers);
+
+            //guest object(class)
+            //print_r($guest);
+
+            $database = new Database();
+            $database->EditGuest($id,$guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
+                $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
+                $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
+                $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
+                $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getNotes());
 
         }
 
