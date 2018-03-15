@@ -138,20 +138,20 @@ class Database
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
-
         return $row;
     }
 
     function getNeeds()
     {
         // Define the query
-        $sql = "SELECT * FROM Needs ORDER BY visitDate";
+        $sql = "SELECT * FROM Guests LEFT JOIN Needs ON  Guests.ClientId = Needs.Guests_ClientId ORDER BY visitDate";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
 
         return $row;
     }
@@ -160,13 +160,14 @@ class Database
     function getHouseholds()
     {
         // Define the query
-        $sql = "SELECT * FROM Household";
+        $sql = "SELECT * FROM Guests LEFT JOIN Household ON  Guests.ClientId = Household.Guests_ClientId";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
 
         return $row;
     }
