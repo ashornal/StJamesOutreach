@@ -26,9 +26,6 @@ $f3->route('GET /', function($f3,$params)
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
 
-    $needs = $database->getNeeds();
-    $f3->set('needs', $needs);
-
     $households = $database->getHouseholds();
     $f3->set('households', $households);
 
@@ -56,7 +53,54 @@ $f3->route('GET /home', function($f3,$params)
 //reports
 $f3->route('GET|POST /reports', function($f3,$params)
 {
+    // initialize variable
+    $start = date("Y-m-01");
+    $end = date("Y-m-d");
 
+    // set to new value when submitting
+    if (isset($_POST['submit']))
+    {
+        if (!empty($_POST['start']))
+        {
+            $start = $_POST['start'];
+        }
+        if (!empty($_POST['end']))
+        {
+            $end = $_POST['end'];
+        }
+    }
+    $f3->set('start', $start);
+    $f3->set('end', $end);
+
+
+    $database = new Database();
+
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
+
+    $thrift = $database->getThrift($start,$end);
+    $f3->set('thrift', $thrift);
+
+    $gas = $database->getGas($start,$end);
+    $f3->set('gas', $gas);
+
+    $water = $database->getWater($start,$end);
+    $f3->set('water', $water);
+
+    $energy = $database->getEnergy($start,$end);
+    $f3->set('energy', $energy);
+
+    $food = $database->getFood($start,$end);
+    $f3->set('food', $food);
+
+    $dol = $database->getDol($start,$end);
+    $f3->set('dol', $dol);
+
+    $other = $database->getOther($start,$end);
+    $f3->set('other', $other);
+
+    $total = $database->getTotal($start,$end);
+    $f3->set('total', $total);
 
     $template = new Template();
     echo $template->render('views/reports.html');

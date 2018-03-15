@@ -120,9 +120,6 @@ class Database
         //$statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 
-
-
-
         //4. Execute the query
         $statement->execute();
 
@@ -345,9 +342,4 @@ class Database
 
         return $row;
     }
-
-
-
-
-
 }
