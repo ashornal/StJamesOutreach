@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/ashornal/config.php';
+require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
@@ -83,13 +83,14 @@ class Database
         }
     }
 
-    function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $members, $voucher, $notes)
+    function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $members, $notes)
     {
         //global $dbh;
 
         //1. Define the query
-         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, members, voucher, notes)
-						VALUES (':first', ':last',':birthdate',':phone',':email', ':ethnicity', ':street',':city',':zip',':license',':pse',':water',':income',':rent', ':foodStamp',':addSupport',':mental',':physical',':veteran', ':homeless', ':members', ':voucher', ':notes')";
+         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, members, notes)
+						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :members, :notes)";
+
         //2. Prepare the statement
         $statement = $this->dbh->prepare($sql);
 
@@ -116,7 +117,7 @@ class Database
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
         $statement->bindParam(':members', $members, PDO::PARAM_STR);
-        $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
+        //$statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 
 
@@ -138,6 +139,19 @@ class Database
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    function getGuest($id)
+    {
+        // Define the query
+        $sql = "SELECT * FROM Guests WHERE ClientID = $id";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
 
