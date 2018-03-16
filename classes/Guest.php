@@ -31,7 +31,6 @@ class Guest
     protected $veteran;
     protected $homeless;
     protected $members;
-    protected $voucherNum;
     protected $notes;
 
     function __construct($fname,$lname,$birthdate){
@@ -279,20 +278,6 @@ class Guest
     public function setMembers($members)
     {
         $this->members = $members;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVoucherNum()
-    {
-        return $this->voucherNum;
-    }/**
-     * @param mixed $voucherNum
-     */
-    public function setVoucherNum($voucherNum)
-    {
-        $this->voucherNum = $voucherNum;
     }
 
     /**

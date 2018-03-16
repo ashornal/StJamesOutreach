@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/ashornal/config.php';
+require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
@@ -117,7 +117,6 @@ class Database
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
         $statement->bindParam(':members', $members, PDO::PARAM_STR);
-        //$statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 
         //4. Execute the query
@@ -152,6 +151,31 @@ class Database
         return $row;
     }
 
+    function insertHousehold($name, $age, $gender){
+        $sql= "INSERT INTO Household (name, age, gender)
+                VALUES (:name,:age,:gender)";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->bindParam(':name', $name, PDO::PARAM_STR);
+        $statement->bindParam(':age', $name, PDO::PARAM_STR);
+        $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    function insertNeeds($resource, $visitDate, $amount, $voucher, $checkNum){
+        $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum)
+                VALUES (:resource, :visitDate, :amount, :voucher, :checkNum)";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
+        $statement->bindParam(':visitDate', $visitDate, PDO::PARAM_STR);
+        $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
+        $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
+        $statement->bindParam(':checkNum', $checkNum, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
 
     function getHouseholds()
     {
@@ -169,15 +193,15 @@ class Database
     }
 
     function editGuest($id, $first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license,
-                       $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $members, $notes){
+                       $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes){
         $sql = "DELETE FROM Guests WHERE ClientID = $id";
 
         $statement = $this->dbh->prepare($sql);
 
         $statement->execute();
 
-        $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, members, notes)
-						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :members, :notes)";
+        $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, notes)
+						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :notes)";
 
         $statement = $this->dbh->prepare($sql);
 
@@ -203,7 +227,7 @@ class Database
         $statement->bindParam(':physical', $physical, PDO::PARAM_STR);
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
-        $statement->bindParam(':members', $members, PDO::PARAM_STR);
+        //$statement->bindParam(':members', $members, PDO::PARAM_STR);
         //$statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 

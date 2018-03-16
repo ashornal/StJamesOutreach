@@ -6,20 +6,24 @@
  * Time: 12:40 PM
  */
 
-class Needs extends Guest
+class Needs
 {
-    private $_resource;
-    private $_visitDate;
-    private $_amount;
-    private $_voucher;
-    private $_checkNum;
+    protected $resource;
+    protected $visitDate;
+    protected $amount;
+    protected $voucher;
+    protected $checkNum;
+
+    function __construct($visitDate){
+        $this->visitDate = $visitDate;
+    }
 
     /**
      * @return mixed
      */
     public function getResource()
     {
-        return $this->_resource;
+        return $this->resource;
     }
 
     /**
@@ -27,7 +31,7 @@ class Needs extends Guest
      */
     public function setResource($resource)
     {
-        $this->_resource = $resource;
+        $this->resource = $resource;
     }
 
     /**
@@ -35,7 +39,7 @@ class Needs extends Guest
      */
     public function getVisitDate()
     {
-        return $this->_visitDate;
+        return $this->visitDate;
     }
 
     /**
@@ -43,7 +47,7 @@ class Needs extends Guest
      */
     public function setVisitDate($visitDate)
     {
-        $this->_visitDate = $visitDate;
+        $this->visitDate = $visitDate;
     }
 
     /**
@@ -51,7 +55,7 @@ class Needs extends Guest
      */
     public function getAmount()
     {
-        return $this->_amount;
+        return $this->amount;
     }
 
     /**
@@ -59,7 +63,7 @@ class Needs extends Guest
      */
     public function setAmount($amount)
     {
-        $this->_amount = $amount;
+        $this->amount = $amount;
     }
 
     /**
@@ -67,7 +71,7 @@ class Needs extends Guest
      */
     public function getVoucher()
     {
-        return $this->_voucher;
+        return $this->voucher;
     }
 
     /**
@@ -75,7 +79,7 @@ class Needs extends Guest
      */
     public function setVoucher($voucher)
     {
-        $this->_voucher = $voucher;
+        $this->voucher = $voucher;
     }
 
     /**
@@ -83,7 +87,7 @@ class Needs extends Guest
      */
     public function getCheckNum()
     {
-        return $this->_checkNum;
+        return $this->checkNum;
     }
 
     /**
@@ -91,7 +95,7 @@ class Needs extends Guest
      */
     public function setCheckNum($checkNum)
     {
-        $this->_checkNum = $checkNum;
+        $this->checkNum = $checkNum;
     }
 
 

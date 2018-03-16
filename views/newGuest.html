@@ -264,6 +264,8 @@
                         <span id="member-div">
 
                         </span>
+
+                <button id="submit-members">Submit Members</button>
             </fieldset> <!-- Household Member fieldset -->
             <fieldset class="form-group">
                 <legend>Help Provided</legend>
@@ -317,39 +319,98 @@
 
     <script>
 
+        //var previousVouchers = [];
+
+        $(document).ready(function(){
+            //when the document is ready (meaning rendered)
+            //make ajax call to php route for json_encoded array of the stickyVouchers
+            //assign to results to previousVouchers
+
+            //loop over previousVouchers
+                //create a voucher element on the page
+
+
+            $.ajax({
+                url: "./get-vouchersSticky_JSON",
+                method: "POST",
+                dataType: "json",
+                success: function(result){
+                    // console.log("success");
+                    console.log("Voucher/Needs Results are:");
+                    console.log(result);
+                    for(i = 0; i < result.length; i++) {
+                        // console.log("Result: " + result[i]);
+                        //call the add voucher button
+                        $( "#voucher-button" ).click();
+                        //set the result
+                    }
+
+                },
+                error: function (result, error) {
+                    //console.log("error");
+                    //console.log(result);
+                    //console.log(error)
+                }
+            });
+
+            $.ajax({
+                url: "./get-membersSticky_JSON",
+                method: "POST",
+                dataType: "json",
+                success: function(result){
+                    // console.log("success");
+                    console.log("Members/Household Results are:");
+                    console.log(result);
+                    for(i = 0; i < result.length; i++) {
+                        console.log("Result: " + result[i]);
+                        //call the add voucher button
+                        $( "#member-button" ).click();
+                        //set the result
+                    }
+
+                },
+                error: function (result, error) {
+                    //console.log("error");
+                    //console.log(result);
+                    //console.log(error)
+                }
+            });
+
+        });
+
         $( "#member-button" ).click(function(event) { // event,the click
             event.preventDefault();
 
             var anyMembersOnPage = $('.new-member');
-            console.log(anyMembersOnPage);
+            //console.log(anyMembersOnPage);
 
             var newMemberIdNumber = "";
             if(anyMembersOnPage.length > 0) {
-                console.log("Getting the new Id: ");
+                //console.log("Getting the new Id: ");
 
                 var lastElement = anyMembersOnPage[anyMembersOnPage.length-1];
-                console.log("LastElement: " + lastElement);
+                //console.log("LastElement: " + lastElement);
 
                 newIncrement = parseInt(($(lastElement).attr("id")).substring(6)) + 1;
                 newMemberIdNumber = "member" + newIncrement;
-                console.log(newMemberIdNumber);
+                //console.log(newMemberIdNumber);
             } else {
                 newMemberIdNumber = "member1"
             }
 
             var text = "<div class='new-member row' id='" + newMemberIdNumber + "'>";
                 text += "<div class='form-group col-5'>";
-                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' name='name'>";
+                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' id='name' name='name'>";
                 text+= "</div>";
 
                 text += "<div class='form-group col-2'>";
-                    text += "<label class='form-control-label'>Age:</label><input class='form-control' type='text' name='age' maxlength='3'>";
+                    text += "<label class='form-control-label'>Age:</label><input class='form-control' type='text' id='age' name='age' maxlength='3'>";
                 text += "</div>";
 
                 text += "<div class='form-group col-2'>";
                     text += "<label class='form-check-label'>Gender:</label>";
                     text += "<label class='d-block'></label>";
-                    text += "<select class='form-control dropdown' name='gender'>";
+                    text += "<select class='form-control dropdown' name='gender' id='gender'>";
                         text += "<option value=''>select one</option>";
                         text += "<option value='male'>Male</option>";
                         text += "<option value='female'>Female</option>";
@@ -367,18 +428,18 @@
             event.preventDefault();
 
             var anyVouchersOnPage = $('.new-voucher');
-            console.log(anyVouchersOnPage);
+            // console.log(anyVouchersOnPage);
 
             var newVoucherIdNumber = "";
             if(anyVouchersOnPage.length > 0) {
-                console.log("Getting the new Id: ");
+                // console.log("Getting the new Id: ");
 
                 var lastElement = anyVouchersOnPage[anyVouchersOnPage.length-1];
-                console.log("LastElement: " + lastElement);
+                // console.log("LastElement: " + lastElement);
 
                 newIncrement = parseInt(($(lastElement).attr("id")).substring(7)) + 1;
                 newVoucherIdNumber = "Voucher" + newIncrement;
-                console.log(newVoucherIdNumber);
+                // console.log(newVoucherIdNumber);
             } else {
                 newVoucherIdNumber = "voucher1"
             }
@@ -428,27 +489,129 @@
                 tempArray.push($(this).find("#voucher").val());
                 //console.log($(this).find("#checkNum").val());
                 tempArray.push($(this).find("#checkNum").val());
+                tempArray.push($(this).find("#amount").val());
+                tempArray.push($(this).find("#resource").val());
                 //console.log("End of Voucher");
                 //console.log(tempArray);
                 voucherArray.push(tempArray);
             });
 
             //submit array to ajax call
-
+            /*
             var data = $('#formGuest').serialize();
             $.post('./newGuest', {name:voucherArray} , function (result) {
                 alert(result);
             });
+            */
+
+            // console.log("Attempting Ajax");
+            // console.log("JSON.stringify(voucherArray)");
+            // console.log(JSON.stringify(voucherArray));
+
+            $.ajax({
+                url: "./get-vouchers_JSON",
+                method: "POST",
+                //dataType: "json",
+                data: { vouchers : voucherArray },
+                success: function(result){
+                    // console.log("success");
+                    // console.log("Results are");
+                    // console.log(result);
+
+                    //log results to global variable
+                    //previousVouchers = result;
+
+                    // console.log("Attempting to grab a single data value: result['data']");
+                    // console.log(result['data']);
+
+                    // for(i = 0; i < resultsFromJSONRoute.length; i++) {
+                    //     console.log(resultsFromJSONRoute[i]);
+                    // }
+
+                },
+                error: function (result, error) {
+                    console.log("error");
+                    console.log(result);
+                    console.log(error)
+                }
+            });
 
 
 
-            console.log(voucherArray);
+            //console.log(voucherArray);
         }
 
         $("#submit-vouchers").on("click", function(event) {
             event.preventDefault();
 
             sumbitVouchersToDatabase();
+        });
+
+
+        function sumbitMembersToDatabase() {
+            var members = $(".new-member");
+            var memberArray = [];
+            //var testString = "test";
+
+            members.each(function() {
+                var tempArray = [];
+                tempArray.push($(this).find("#name").val());
+                tempArray.push($(this).find("#age").val());
+                tempArray.push($(this).find("#gender").val());
+                console.log("End of Voucher");
+                console.log(tempArray);
+                memberArray.push(tempArray);
+            });
+
+            //submit array to ajax call
+            /*
+            var data = $('#formGuest').serialize();
+            $.post('./newGuest', {name:voucherArray} , function (result) {
+                alert(result);
+            });
+            */
+
+            // console.log("Attempting Ajax");
+            // console.log("JSON.stringify(voucherArray)");
+            // console.log(JSON.stringify(voucherArray));
+
+            $.ajax({
+                url: "./get-members_JSON",
+                method: "POST",
+                //dataType: "json",
+                data: { members : memberArray },
+                success: function(result){
+                    // console.log("success");
+                     //console.log("Results are");
+                     //console.log(result);
+
+                    //log results to global variable
+                    //previousVouchers = result;
+
+                    // console.log("Attempting to grab a single data value: result['data']");
+                    // console.log(result['data']);
+
+                    // for(i = 0; i < resultsFromJSONRoute.length; i++) {
+                    //     console.log(resultsFromJSONRoute[i]);
+                    // }
+
+                },
+                error: function (result, error) {
+                    console.log("error");
+                    console.log(result);
+                    console.log(error)
+                }
+            });
+
+
+
+            //console.log(voucherArray);
+        }
+
+        $("#submit-members").on("click", function(event) {
+            event.preventDefault();
+
+            sumbitMembersToDatabase();
         });
 
     </script>

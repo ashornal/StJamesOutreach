@@ -6,18 +6,23 @@
  * Time: 12:40 PM
  */
 
-class Household extends Guest
+class Household
 {
-    private $_name;
-    private $_age;
-    private $_gender;
+
+    protected $_name;
+    protected $_age;
+    protected $_gender;
+
+    function __construct($name){
+        $this->name = $name;
+    }
 
     /**
      * @return mixed
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -25,7 +30,7 @@ class Household extends Guest
      */
     public function setName($name)
     {
-        $this->_name = $name;
+        $this->name = $name;
     }
 
     /**
@@ -33,7 +38,7 @@ class Household extends Guest
      */
     public function getAge()
     {
-        return $this->_age;
+        return $this->age;
     }
 
     /**
@@ -41,7 +46,7 @@ class Household extends Guest
      */
     public function setAge($age)
     {
-        $this->_age = $age;
+        $this->age = $age;
     }
 
     /**
@@ -49,7 +54,7 @@ class Household extends Guest
      */
     public function getGender()
     {
-        return $this->_gender;
+        return $this->gender;
     }
 
     /**
@@ -57,7 +62,7 @@ class Household extends Guest
      */
     public function setGender($gender)
     {
-        $this->_gender = $gender;
+        $this->gender = $gender;
     }
 
 
