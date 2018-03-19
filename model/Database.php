@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/pvashchu/config2.php';
+require_once '/home/ashornal/config.php';
 class Database
 {
     protected $dbh;
@@ -356,6 +356,47 @@ class Database
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
 								WHERE visitDate BETWEEN '$start' AND '$end'";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+
+    //Get Ethinicity
+    function getEthnicity()
+    {
+        // Define the query
+        $sql = "select 'White' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'white'
+					union (
+					select 'Black' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'black' )
+					union (
+					select 'Histpanic' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'hispanic' )
+					union (
+					select 'Native' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'native' )
+					union (
+					select 'Asian' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'asian' )
+					union (
+					select 'Pacific' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'pacific' )
+					union (
+					select 'Eskimo' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'eskimo' )
+					union (
+					select 'Mixed' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'mixed' )
+					union (
+					select 'Other' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'other' )";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement

@@ -549,8 +549,14 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 );
 
 //demographics
-$f3->route('GET /demographics', function()
+$f3->route('GET /demographics', function($f3)
 {
+    $database = new Database();
+    $ethnicity = $database->getEthnicity();
+    echo"<pre>";var_dump($ethnicity);echo"</pre>";
+
+    $f3->set('ethnicity', $ethnicity);
+
     $template = new Template();
     echo $template->render('views/demographics.html');
 }
