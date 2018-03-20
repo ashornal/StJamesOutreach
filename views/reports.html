@@ -115,16 +115,16 @@
         </tr>
         </thead>
         <tbody>
-        <repeat group="{{ @guests}}" value="{{ @guest }}">
+        <repeat group="{{ @needs}}" value="{{ @need }}">
             <tr>
-                <td>{{@guest['ClientId']}} </td>
-                <td>{{@guest['first']}} </td>
-                <td>{{@guest['last']}}</td>
-                <td>{{@guest['voucher']}}</td>
-                <td>{{@guest['checkNum']}}</td>
-                <td>{{@guest['resource']}}</td>
-                <td>{{@guest['amount']}}</td>
-                <td>{{@guest['visitDate']}}</td>
+                <td>{{@need['ClientId']}} </td>
+                <td>{{@need['first']}} </td>
+                <td>{{@need['last']}}</td>
+                <td>{{@need['voucher']}}</td>
+                <td>{{@need['checkNum']}}</td>
+                <td>{{@need['resource']}}</td>
+                <td>{{@need['amount']}}</td>
+                <td>{{@need['visitDate']}}</td>
             </tr>
         </repeat>
         </tbody>

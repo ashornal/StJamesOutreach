@@ -118,8 +118,8 @@ $f3->route('GET|POST /reports', function($f3,$params)
     $database = new Database();
 
     //setters for the hive
-    $guest = $database->getGuests();
-    $f3->set('guests', $guest);
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
 
     $thrift = $database->getThrift($start,$end);
     $f3->set('thrift', $thrift);
