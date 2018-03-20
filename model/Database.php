@@ -253,7 +253,7 @@ class Database
     function insertNeeds($resource, $amount, $voucher, $checkNum){
         $id = $this->getLastId();
         $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
-                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, '$id)";
+                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
         $statement = $this->dbh->prepare($sql);
 
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);

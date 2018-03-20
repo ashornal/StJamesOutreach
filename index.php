@@ -118,8 +118,8 @@ $f3->route('GET|POST /reports', function($f3,$params)
     $database = new Database();
 
     //setters for the hive
-    $needs = $database->getNeeds();
-    $f3->set('needs', $needs);
+    $guest = $database->getGuests();
+    $f3->set('guests', $guest);
 
     $thrift = $database->getThrift($start,$end);
     $f3->set('thrift', $thrift);
@@ -598,7 +598,7 @@ $f3->route('GET /demographics', function($f3)
     $disabilities = $database->getDisabilities();
     $veterans = $database->getVeterans();
 
-    //set tot hive
+//
     $f3->set('ethnicity', $ethnicity);
     $f3->set('gender', $gender);
     $f3->set('zips', $zips);
