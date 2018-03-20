@@ -153,35 +153,14 @@ $f3->route('POST /get-vouchers_JSON', function()
 $f3->route('GET|POST /newGuest', function($f3)
 {
 
+    if(isset($_SESSION['stickyMembers']) || isset($_SESSION['stickyVouchers'])){
+        unset($_SESSION['stickyMembers']);
+        unset($_SESSION['stickyVouchers']);
+    }
 
-//    if(isset($_SESSION)){
-//        echo "Vouchers Session <pre>";
-////        var_dump($_SESSION['stickyVouchers'][0][0]); // voucher number
-////        var_dump($_SESSION['stickyVouchers'][0][1]); //check number
-////
-////        var_dump($_SESSION['stickyVouchers'][1][0]); //voucher number
-////        var_dump($_SESSION['stickyVouchers'][1][1]); //check number
-//
-//        var_dump($_SESSION['stickyVouchers']);
-//
-//        echo "</pre>";
-//        echo "<p>Length of stickyVouchers: ". sizeof($_SESSION['stickyVouchers'])."</p>";
-//        echo "<p>Length of stickyMembers[0]: ". sizeof($_SESSION['stickyMembers'][0])."Data: ". $_SESSION['stickyMembers'][0][0]."</p>";
-//
-//
-//        echo "Members session <pre>";
-//        var_dump($_SESSION['stickyMembers']);
-//        echo "</pre>";
-//        unset($_SESSION['stickyMembers']);
-//        unset($_SESSION['stickyVouchers']);
-//    }
 
     if(isset($_POST['submit'])){
 
-        if(isset($_SESSION['stickyMembers']) || isset($_SESSION['stickyVouchers'])){
-            unset($_SESSION['stickyMembers']);
-            unset($_SESSION['stickyVouchers']);
-        }
         $firstName = $_POST['first'];
         $lastName = $_POST['last'];
         $birthdate = $_POST['birthdate'];
