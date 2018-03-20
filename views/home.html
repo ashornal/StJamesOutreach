@@ -203,14 +203,16 @@
             </thead>
             <tbody>
             <repeat group="{{ @households}}" value="{{ @household }}">
-                <tr>
-                    <td>{{@household['ClientId']}}</td>
-                    <td>{{@household['first']}} </td>
-                    <td>{{@household['last']}}</td>
-                    <td>{{@household['name']}}</td>
-                    <td>{{@household['age']}}</td>
-                    <td>{{@household['gender']}}</td>
-                </tr>
+                <check if="{{ @household['name'] != null }}">
+                    <tr>
+                        <td>{{@household['ClientId']}}</td>
+                        <td>{{@household['first']}} </td>
+                        <td>{{@household['last']}}</td>
+                        <td>{{@household['name']}}</td>
+                        <td>{{@household['age']}}</td>
+                        <td>{{@household['gender']}}</td>
+                    </tr>
+                </check>
             </repeat>
              </tbody>
              <tfoot>
