@@ -64,11 +64,18 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 
  */
 require_once '/home/pvashchu/config2.php';
+
+/**
+ * Class Database, preforms sql statements to insert/delete/update/view
+ */
 class Database
 {
     protected $dbh;
     public $id;
 
+    /**
+     * Database constructor. connects to the database
+     */
     function __construct()
     {
         try {
@@ -83,6 +90,31 @@ class Database
         }
     }
 
+
+    /**
+     * Inserts a new guest into the database
+     * @param $first
+     * @param $last
+     * @param $birthdate
+     * @param $phone
+     * @param $email
+     * @param $ethnicity
+     * @param $street
+     * @param $city
+     * @param $zip
+     * @param $license
+     * @param $pse
+     * @param $water
+     * @param $income
+     * @param $rent
+     * @param $foodStamp
+     * @param $addSupport
+     * @param $mental
+     * @param $physical
+     * @param $veteran
+     * @param $homeless
+     * @param $notes
+     */
     function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes)
     {
         //global $dbh;
@@ -121,10 +153,13 @@ class Database
         //4. Execute the query
         $statement->execute();
 
-        //$this->id = $this->dbh->lastInsertId();
         $this->setLastId($this->dbh->lastInsertId());
-        //echo "<h2>".$this->id."</h2>";
     }
+
+    /**
+     * getter for all the guests in the database
+     * @return array of guests
+     */
     function getGuests()
     {
         // Define the query
@@ -138,6 +173,10 @@ class Database
         return $row;
     }
 
+    /**
+     * getter for all the needs in the database
+     * @return array of needs
+     */
     function getNeeds()
     {
         // Define the query
@@ -151,6 +190,11 @@ class Database
         return $row;
     }
 
+    /**
+     * getter for a single guest to edit
+     * @param $id, the guest id
+     * @return row, values of the guest
+     */
     function getGuest($id)
     {
         // Define the query
@@ -164,8 +208,13 @@ class Database
         return $row;
     }
 
+    /**
+     * insert new into the household table/database
+     * @param $name
+     * @param $age
+     * @param $gender
+     */
     function insertHousehold($name, $age, $gender){
-        //echo "<h3>insert: ". $this->getLastId()."</h3>";
         $id = $this->getLastId();
         $sql= "INSERT INTO Household (name, age, gender,Guests_ClientId)
                 VALUES (:name,:age,:gender,$id)";
@@ -178,17 +227,33 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * setter for the last id
+     * @param $id
+     */
     function setLastId($id){
         $this->id = $id;
     }
+
+    /**
+     * getter for the last id
+     * @return id
+     */
     function getLastId(){
         return $this->id;
     }
 
+    /**
+     * insert new needs into the database
+     * @param $resource
+     * @param $amount
+     * @param $voucher
+     * @param $checkNum
+     */
     function insertNeeds($resource, $amount, $voucher, $checkNum){
         $id = $this->getLastId();
         $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
-                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, '$id')";
+                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, '$id)";
         $statement = $this->dbh->prepare($sql);
 
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
@@ -199,6 +264,10 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * getter for the households database table
+     * @return array of household
+     */
     function getHouseholds()
     {
         // Define the query
@@ -214,6 +283,14 @@ class Database
         return $row;
     }
 
+    /**
+     * edit needs, removes the old and replaces with a new set of values
+     * @param $id
+     * @param $resource
+     * @param $amount
+     * @param $voucher
+     * @param $checkNum
+     */
     function editNeeds($id,$resource, $amount, $voucher, $checkNum){
         $sql = "DELETE FROM Needs WHERE Guests_ClientId = $id";
         $statement = $this->dbh->prepare($sql);
@@ -234,6 +311,13 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * edit households, removes the old and replaces witha new set of values
+     * @param $id
+     * @param $name
+     * @param $age
+     * @param $gender
+     */
     function editHousehold($id, $name, $age, $gender){
 
 
@@ -254,6 +338,31 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * edit guest, removes the old and replaces with new set of values
+     * @param $id
+     * @param $first
+     * @param $last
+     * @param $birthdate
+     * @param $phone
+     * @param $email
+     * @param $ethnicity
+     * @param $street
+     * @param $city
+     * @param $zip
+     * @param $license
+     * @param $pse
+     * @param $water
+     * @param $income
+     * @param $rent
+     * @param $foodStamp
+     * @param $addSupport
+     * @param $mental
+     * @param $physical
+     * @param $veteran
+     * @param $homeless
+     * @param $notes
+     */
     function editGuest($id, $first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license,
                        $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes){
         $sql = "DELETE FROM Guests WHERE ClientID = $id";
@@ -301,6 +410,12 @@ class Database
 
     }
 
+    /**
+     * getter method for thrift values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getThrift($start, $end)
     {
         // Define the query
@@ -317,6 +432,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the gas values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getGas($start, $end)
     {
         // Define the query
@@ -333,6 +455,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the water values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getWater($start, $end)
     {
         // Define the query
@@ -349,6 +478,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the energy values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getEnergy($start, $end)
     {
         // Define the query
@@ -365,6 +501,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the food values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getFood($start, $end)
     {
         // Define the query
@@ -381,6 +524,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the dol values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getDol($start, $end)
     {
         // Define the query
@@ -397,6 +547,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter for the other values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getOther($start, $end)
     {
         // Define the query
@@ -413,6 +570,13 @@ class Database
 
         return $row;
     }
+
+    /**
+     * getter fo the total values
+     * @param $start
+     * @param $end
+     * @return array
+     */
     function getTotal($start, $end)
     {
         // Define the query
@@ -429,6 +593,12 @@ class Database
         return $row;
     }
 
+    /**
+     * validates the user by checking the users in the database
+     * @param $username
+     * @param $password
+     * @return bool
+     */
     function validUser($username, $password)
     {
 
@@ -443,7 +613,10 @@ class Database
         return $row;
     }
 
-    //Get Ethinicity
+    /**
+     * getter for the ethnicity
+     * @return array
+     */
     function getEthnicity()
     {
         // Define the query
@@ -483,7 +656,11 @@ class Database
 
         return $row;
     }
-    //Get Gender
+
+    /**
+     * getter for the gender information
+     * @return array
+     */
     function getGender()
     {
         // Define the query
@@ -502,7 +679,11 @@ class Database
 
         return $row;
     }
-    //Get Gender
+
+    /**
+     * getter for the zip data
+     * @return array
+     */
     function getZips()
     {
         // Define the query
@@ -536,7 +717,11 @@ class Database
 
         return $row;
     }
-    //Get Disabilities
+
+    /**
+     * getter for the disabilities data
+     * @return array
+     */
     function getDisabilities()
     {
         // Define the query
@@ -561,7 +746,11 @@ class Database
 
         return $row;
     }
-    //Get Veterans
+
+    /**
+     * getter for the veterans data
+     * @return array
+     */
     function getVeterans()
     {
         // Define the query
@@ -581,5 +770,4 @@ class Database
         return $row;
     }
 
-    //fix
 }
