@@ -553,9 +553,17 @@ $f3->route('GET /demographics', function($f3)
 {
     $database = new Database();
     $ethnicity = $database->getEthnicity();
-    echo"<pre>";var_dump($ethnicity);echo"</pre>";
+    $gender = $database->getGender();
+    $zips = $database->getZips();
+    $disabilities = $database->getDisabilities();
+    $veterans = $database->getVeterans();
+
 
     $f3->set('ethnicity', $ethnicity);
+    $f3->set('gender', $gender);
+    $f3->set('zips', $zips);
+    $f3->set('disabilities', $disabilities);
+    $f3->set('veterans', $veterans);
 
     $template = new Template();
     echo $template->render('views/demographics.html');
