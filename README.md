@@ -5,7 +5,7 @@ It is used for the easy input of guests that visit the outreach center.
 Whatever information they think is necessary can be stored for later use and
 tracking for the outreach center. 
 
-###Implementation
+##Implementation
 **MVC and routing -** We used the Model-View-Controller paradigm
 and the F3 framework for this project. With this we were able to
 easily make a route for each page using the index and routing them all together that way.
