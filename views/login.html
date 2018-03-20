@@ -17,6 +17,9 @@
     <h1><a class="navbar-brand"><img id="logo" src="./images/StJamesLogo.png" alt="St. James Outreach"/></a></h1>
 </nav>
 <div class="container">
+    <check if="{{ isset(@error)}}">
+        <p class="text-danger">{{@error}}</p>
+    </check>
 
     <form class="form-signin" action="" method="post">
 
