@@ -19,27 +19,66 @@ $f3 = Base::instance();
 
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
 
-$f3->route('GET /', function($f3,$params)
+//$f3->route('GET /login', function($f3,$params)
+//{
+//
+//    $user = $_POST['username'];
+//    $pass = $_POST['password'];
+//    $database = new Database();
+//    if($database->validUser($user,$pass) == 1){
+//        $_SESSION['loggedin'] = 'true';
+//        $f3->reroute('/home');
+//    }
+//    $template = new Template();
+//    echo $template->render('views/login.html');
+//
+//});
+
+$f3->route('GET|POST /logout', function($f3,$params)
 {
-    $database = new Database();
-
-    $guest = $database->getGuests();
-    $f3->set('guests', $guest);
-
-    $needs = $database->getNeeds();
-    $f3->set('needs', $needs);
-
-    $households = $database->getHouseholds();
-    $f3->set('households', $households);
+   unset($_SESSION['username']);
+   unset($_SESSION['password']);
 
     $template = new Template();
-    echo $template->render('views/home.html');
+    echo $template->render('views/login.html');
+});
+
+$f3->route('GET|POST /', function($f3,$params)
+{
+    $f3->set('error', 'Please Sign In');
+    $_SESSION['username'] = "";
+    $_SESSION['password'] = "";
+    $database = new Database();
+    if(isset($_POST['login']))
+    {
+        if(!is_null($_POST['username'] && !is_null($_POST['password'])))
+        {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $data = $database->validUser($username,$password);
+            echo $data;
+            if($data == 1)
+            {
+                $_SESSION['username'] = $username;
+                $_SESSION['password'] = $password;
+                $f3->reroute('/home');
+            } else {
+                $f3->set('error', 'Incorrect Login');
+            }
+        }
+    }
+    $template = new Template();
+    echo $template->render('views/login.html');
 }
 );
 
 //Define a default route(home)
 $f3->route('GET /home', function($f3,$params)
 {
+    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    {
+        $f3->reroute('/');
+    }
     $database = new Database();
 
     $guest = $database->getGuests();
@@ -60,6 +99,10 @@ $f3->route('GET /home', function($f3,$params)
 //reports
 $f3->route('GET|POST /reports', function($f3,$params)
 {
+    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    {
+        $f3->reroute('/');
+    }
     // initialize variable
     $start = date("Y-m-01");
     $end = date("Y-m-d");
@@ -159,7 +202,10 @@ $f3->route('POST /get-vouchers_JSON', function()
 //newGuest
 $f3->route('GET|POST /newGuest', function($f3)
 {
-
+    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    {
+        $f3->reroute('/');
+    }
     if(isset($_SESSION['stickyMembers']) || isset($_SESSION['stickyVouchers'])){
         unset($_SESSION['stickyMembers']);
         unset($_SESSION['stickyVouchers']);
@@ -190,20 +236,6 @@ $f3->route('GET|POST /newGuest', function($f3)
         $water = $_POST['water'];
         $members = $_POST['members'];
         $notes = $_POST['notes'];
-
-//        if(isset($_SESSION)){
-//            for($i = 0; $i < sizeof($_SESSION['stickyVouchers']);$i++){
-//               $Vresource[$i] = $_SESSION['stickyVouchers'][i][3];
-//               $Vamount[$i] =  $_SESSION['stickyVouchers'][i][2];
-//               $Vvoucher[$i] = $_SESSION['stickyVouchers'][i][0];
-//               $VcheckNum[$i] = $_SESSION['stickyVouchers'][i][1];
-//            }
-//
-//            $f3->set('resource'.$i,$Vresource);
-//            $f3->set('amount',$Vamount);
-//            $f3->set('voucher',$Vvoucher);
-//            $f3->set('checkNum',$VcheckNum);
-//        }
 
 
         $f3->set('firstName', $firstName);
@@ -343,8 +375,11 @@ $f3->route('GET|POST /newGuest', function($f3)
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
                 $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
-                $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getNotes());
+                $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
+//            echo "<pre>";
+//            var_dump($guest);
+//            echo "</pre>";
             if(isset($_SESSION['stickyVouchers'])) {
                 for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
                     if($_SESSION['stickyVouchers'][$i][0] != null) {
@@ -379,6 +414,10 @@ $f3->route('GET|POST /newGuest', function($f3)
 );
 
 $f3->route('GET|POST /@client_id', function($f3,$params) {
+    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    {
+        $f3->reroute('/');
+    }
     $id = $params['client_id'];
 
     $database = new Database();
@@ -595,6 +634,10 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 //demographics
 $f3->route('GET /demographics', function($f3)
 {
+    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    {
+        $f3->reroute('/');
+    }
     $database = new Database();
     $ethnicity = $database->getEthnicity();
     $gender = $database->getGender();

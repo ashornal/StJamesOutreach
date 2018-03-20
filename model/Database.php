@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/ashornal/config.php';
+require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
@@ -83,13 +83,13 @@ class Database
         }
     }
 
-    function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $members, $notes)
+    function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes)
     {
         //global $dbh;
 
         //1. Define the query
-         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, members, notes)
-						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :members, :notes)";
+         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, notes)
+						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :notes)";
 
         //2. Prepare the statement
         $statement = $this->dbh->prepare($sql);
@@ -116,7 +116,6 @@ class Database
         $statement->bindParam(':physical', $physical, PDO::PARAM_STR);
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
-        $statement->bindParam(':members', $members, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 
         //4. Execute the query
@@ -189,7 +188,7 @@ class Database
     function insertNeeds($resource, $amount, $voucher, $checkNum){
         $id = $this->getLastId();
         $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
-                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
+                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, '$id')";
         $statement = $this->dbh->prepare($sql);
 
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
@@ -430,12 +429,12 @@ class Database
         return $row;
     }
 
-    function validUser($un, $pw)
+    function validUser($username, $password)
     {
 
         //Query the db
-        $sql = "SELECT * FROM `users`
-                    WHERE username='$un' and password=SHA1('$pw')";
+        $sql = "SELECT * FROM Users
+                    WHERE username=$username and password= $password";
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $row = $statement->execute();
