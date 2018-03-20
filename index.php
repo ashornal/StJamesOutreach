@@ -42,6 +42,9 @@ $f3->route('GET /home', function($f3,$params)
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
 
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
     $households = $database->getHouseholds();
     $f3->set('households', $households);
 
