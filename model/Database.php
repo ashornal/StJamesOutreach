@@ -29,7 +29,6 @@
   `physical` VARCHAR(1) NULL,
   `veteran` VARCHAR(1) NULL,
   `homeless` VARCHAR(1) NULL,
-  `members` TINYINT(2) NULL,
   `notes` TEXT NULL,
   PRIMARY KEY (`ClientId`))
 ;
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/ashornal/config.php';
+require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
@@ -126,6 +125,18 @@ class Database
         //$this->id = $this->dbh->lastInsertId();
         $this->setLastId($this->dbh->lastInsertId());
         //echo "<h2>".$this->id."</h2>";
+    }
+    function getGuests()
+    {
+        // Define the query
+        $sql = "SELECT * FROM Guests ";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
     }
 
     function getNeeds()

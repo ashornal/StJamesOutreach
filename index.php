@@ -26,6 +26,9 @@ $f3->route('GET /', function($f3,$params)
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
 
+    $needs = $database->getNeeds();
+    $f3->set('needs', $needs);
+
     $households = $database->getHouseholds();
     $f3->set('households', $households);
 
@@ -41,6 +44,10 @@ $f3->route('GET /home', function($f3,$params)
 
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
+
+    $needs = $database->getNeeds();
+    //echo $needs[0]['resource'];
+    $f3->set('needs', $needs);
 
     $households = $database->getHouseholds();
     $f3->set('households', $households);
@@ -340,19 +347,21 @@ $f3->route('GET|POST /newGuest', function($f3)
 
             if(isset($_SESSION['stickyVouchers'])) {
                 for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
-                    $database->insertNeeds($_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
-                        $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
-
+                    if($_SESSION['stickyVouchers'][$i][0] != null) {
+                        $database->insertNeeds($_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
+                            $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
+                    }
                 }
-            } else{
-                $database->insertNeeds("","","","");
             }
 
             if(isset($_SESSION['stickyMembers'])) {
                 for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
                     //echo "<p>Name: " . $_SESSION['stickyMembers'][$j][0] . ", Age: " . $_SESSION['stickyMembers'][$j][1] . ", gender: " . $_SESSION['stickyMembers'][$j][2] . "</p>";
                     //($name, $age, $gender){
-                    $database->insertHousehold($_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+                    if ($_SESSION['stickyMembers'][$j][0] != null) {
+                        $database->insertHousehold($_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+
+                    }
                 }
             }
 
@@ -374,6 +383,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 
     $database = new Database();
     $guest = $database->getGuest($id);
+
 
 
     $f3->set('firstName', $guest['first']);
@@ -542,31 +552,33 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             $guest->setWater($water);
             $guest->setNotes($notes);
 
-            $database = new Database();
+
             $database->EditGuest($id,$guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
                 $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
-
             if(isset($_SESSION['stickyVouchers'])) {
                 for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
-                    $database->editNeeds($id,$_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
-                        $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
+                    if($_SESSION['stickyVouchers'][$i][0] != null) {
+                        $database->editNeeds($id, $_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
+                            $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
+                    }
 
                 }
-            } else{
-                $database->insertNeeds("","","","");
             }
 
             if(isset($_SESSION['stickyMembers'])) {
                 for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
                     //echo "<p>Name: " . $_SESSION['stickyMembers'][$j][0] . ", Age: " . $_SESSION['stickyMembers'][$j][1] . ", gender: " . $_SESSION['stickyMembers'][$j][2] . "</p>";
                     //($name, $age, $gender){
-                    $database->editHousehold($id, $_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+                    if ($_SESSION['stickyMembers'][$j][0] != null) {
+                        $database->editHousehold($id, $_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+                    }
                 }
             }
+
 
         }
         //unset($_SESSION['stickyMembers']);

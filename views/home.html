@@ -39,7 +39,6 @@
                 <th>Last Name</th>
                 <th>Birthdate</th>
                 <th>Phone</th>
-                <th>Visit Date</th>
                 <th>View / Edit Form</th>
             </tr>
             </thead>
@@ -51,7 +50,6 @@
                     <td>{{@guest['last']}}</td>
                     <td>{{@guest['birthdate']}}</td>
                     <td>{{@guest['phone']}}</td>
-                    <td>{{@guest['visitDate']}}</td>
                     <td><a href="{{ @BASE }}/{{@guest['ClientId']}}" class="clickForm">View/Edit</a></td>
                 </tr>
             </repeat>
@@ -63,7 +61,6 @@
                 <th>Last Name</th>
                 <th>Birthdate</th>
                 <th>Phone</th>
-                <th>Visit Date</th>
                 <th>View / Edit Form</th>
             </tr>
             </tfoot>
@@ -84,15 +81,17 @@
             </tr>
             </thead>
             <tbody>
-            <repeat group="{{ @guests}}" value="{{ @guest }}">
-                <tr>
-                    <td>{{@guest['Guests_ClientId']}}</td>
-                    <td>{{@guest['first']}} </td>
-                    <td>{{@guest['last']}}</td>
-                    <td>{{@guest['resource']}}</td>
-                    <td>{{@guest['amount']}}</td>
-                    <td>{{@guest['visitDate']}}</td>
-                </tr>
+            <repeat group="{{ @needs}}" value="{{ @need }}">
+                <check if="{{ @need['resource'] != null }}">
+                    <tr>
+                        <td>{{@need['Guests_ClientId']}}</td>
+                        <td>{{@need['first']}} </td>
+                        <td>{{@need['last']}}</td>
+                        <td>{{@need['resource']}}</td>
+                        <td>{{@need['amount']}}</td>
+                        <td>{{@need['visitDate']}}</td>
+                    </tr>
+                </check>
             </repeat>
              </tbody>
              <tfoot>
