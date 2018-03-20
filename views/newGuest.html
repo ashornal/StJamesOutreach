@@ -16,7 +16,7 @@
     <include href="views/header.html"/>
 
     <div class="container">
-        <form action="#" method="post" id="formGuest">
+        <form action="home" method="post" id="formGuest">
             <h2>Outreach Contact Report</h2>
             <p id="obligitory"><i>* obligatory fields</i></p>
             <fieldset class="form-group">
@@ -132,7 +132,7 @@
                             <label class="d-block">Mental Disability:</label>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" id='mental' name='mental'
-                                <check if="{{ isset(@mental) }}">
+                                <check if="{{ @mental == 'on' }}">
                                     checked
                                 </check>>
                             </label>
@@ -143,7 +143,7 @@
                             <label class="d-block">Physical Disability:</label>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" id='physical' name='physical'
-                                <check if="{{ isset(@physical) }}">
+                                <check if="{{ @physical == 'on' }}">
                                     checked
                                 </check>>
                             </label>
@@ -154,7 +154,7 @@
                             <label class="d-block">Veteran:</label>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" id='veteran' name='veteran'
-                                <check if="{{ isset(@veteran) }}">
+                                <check if="{{ @veteran =='on' }}">
                                     checked
                                 </check>>
                             </label>
@@ -165,7 +165,7 @@
                             <label class="d-block">Homeless:</label>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" id='homeless' name='homeless'
-                                <check if="{{ isset(@homeless) }}">
+                                <check if="{{ @homeless == 'on' }}">
                                     checked
                                 </check>>
                             </label>
@@ -287,7 +287,7 @@
 
                     </span>
 
-                <button id="submit-vouchers">Submit Vouchers</button>
+               <button id="submit-vouchers">Submit Vouchers</button>
             </fieldset> <!-- Help Provided Fieldset -->
 
             <input id="preview" name="preview" type="button" value="Preview &raquo;" data-toggle='modal' data-target='#confirm-submit'>
@@ -319,7 +319,8 @@
 
     <script>
 
-        //var previousVouchers = [];
+        var previousVouchers = [];
+        var previousMembers = [];
 
         $(document).ready(function(){
             //when the document is ready (meaning rendered)
@@ -338,11 +339,18 @@
                     // console.log("success");
                     console.log("Voucher/Needs Results are:");
                     console.log(result);
-                    for(i = 0; i < result.length; i++) {
-                        // console.log("Result: " + result[i]);
-                        //call the add voucher button
-                        $( "#voucher-button" ).click();
-                        //set the result
+
+
+
+                    if(result != null) {
+                        for (i = 0; i < result.length; i++) {
+                            // console.log("Result: " + result[i]);
+                            //call the add voucher button
+                            $("#voucher-button").click();
+                            previousVouchers[i] = result;
+                            //set the result
+                        }
+                        console.log("Previous vouchers: " + previousVouchers)
                     }
 
                 },
@@ -361,12 +369,18 @@
                     // console.log("success");
                     console.log("Members/Household Results are:");
                     console.log(result);
-                    for(i = 0; i < result.length; i++) {
-                        console.log("Result: " + result[i]);
-                        //call the add voucher button
-                        $( "#member-button" ).click();
-                        //set the result
+                    if(result != null) {
+                        for(i = 0; i < result.length; i++) {
+                            console.log("Result: " + result[i]);
+                            console.log("Length: " + result.length);
+                            //call the add voucher button
+                            $( "#member-button" ).click();
+                            previousMembers[i] = result;
+                            //set the result
+                        }
+                        console.log("Previous members: " + previousMembers)
                     }
+
 
                 },
                 error: function (result, error) {
@@ -400,7 +414,7 @@
 
             var text = "<div class='new-member row' id='" + newMemberIdNumber + "'>";
                 text += "<div class='form-group col-5'>";
-                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' id='name' name='name'>";
+                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' id='name' name='name' >";
                 text+= "</div>";
 
                 text += "<div class='form-group col-2'>";
@@ -463,7 +477,7 @@
                         vouch += "<label class='d-block'></label>";
                         vouch += "<select class='form-control dropdown' id='resource' name='resource'>";
                             vouch += "<option value=''>-- select one --</option>";
-                            vouch += "<option value='thriftshop'>Thrift Shop</option>";
+                            vouch += "<option value='thrift'>Thrift Shop</option>";
                             vouch += "<option value='gas'>Gas</option>";
                             vouch += "<option value='waterbill'>Water Bill</option>";
                             vouch += "<option value='energybill'>Energy Bill</option>";
@@ -478,7 +492,7 @@
             $( "#voucher-div" ).append(vouch);
          });
 
-        function sumbitVouchersToDatabase() {
+        function submitVouchersToDatabase() {
              var vouchers = $(".new-voucher");
              var voucherArray = [];
             //var testString = "test";
@@ -515,8 +529,8 @@
                 data: { vouchers : voucherArray },
                 success: function(result){
                     // console.log("success");
-                    // console.log("Results are");
-                    // console.log(result);
+                     console.log("Results are");
+                     console.log(result);
 
                     //log results to global variable
                     //previousVouchers = result;
@@ -541,14 +555,15 @@
             //console.log(voucherArray);
         }
 
+
         $("#submit-vouchers").on("click", function(event) {
             event.preventDefault();
 
-            sumbitVouchersToDatabase();
+            submitVouchersToDatabase();
         });
 
 
-        function sumbitMembersToDatabase() {
+        function submitMembersToDatabase() {
             var members = $(".new-member");
             var memberArray = [];
             //var testString = "test";
@@ -582,8 +597,8 @@
                 data: { members : memberArray },
                 success: function(result){
                     // console.log("success");
-                     //console.log("Results are");
-                     //console.log(result);
+                     console.log("Results are");
+                     console.log(result);
 
                     //log results to global variable
                     //previousVouchers = result;
@@ -608,11 +623,13 @@
             //console.log(voucherArray);
         }
 
+
         $("#submit-members").on("click", function(event) {
             event.preventDefault();
 
-            sumbitMembersToDatabase();
+            submitMembersToDatabase();
         });
+
 
     </script>
 

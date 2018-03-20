@@ -153,53 +153,57 @@ $f3->route('POST /get-vouchers_JSON', function()
 $f3->route('GET|POST /newGuest', function($f3)
 {
 
-    $todaysDate = date("Y-m-d");
 
-    if(isset($_SESSION)){
-        echo "Vouchers Session <pre>";
-//        var_dump($_SESSION['stickyVouchers'][0][0]); // voucher number
-//        var_dump($_SESSION['stickyVouchers'][0][1]); //check number
+//    if(isset($_SESSION)){
+//        echo "Vouchers Session <pre>";
+////        var_dump($_SESSION['stickyVouchers'][0][0]); // voucher number
+////        var_dump($_SESSION['stickyVouchers'][0][1]); //check number
+////
+////        var_dump($_SESSION['stickyVouchers'][1][0]); //voucher number
+////        var_dump($_SESSION['stickyVouchers'][1][1]); //check number
 //
-//        var_dump($_SESSION['stickyVouchers'][1][0]); //voucher number
-//        var_dump($_SESSION['stickyVouchers'][1][1]); //check number
-
-        var_dump($_SESSION['stickyVouchers']);
-
-        echo "</pre>";
-        echo "<p>Length of stickyVouchers: ". sizeof($_SESSION['stickyVouchers'])."</p>";
-        echo "<p>Length of stickyMembers[0]: ". sizeof($_SESSION['stickyMembers'][0])."Data: ". $_SESSION['stickyMembers'][0][0]."</p>";
-
-
-        echo "Members session <pre>";
-        var_dump($_SESSION['stickyMembers']);
-        echo "</pre>";
-        //unset($_SESSION['stickyMembers']);
-        //unset($_SESSION['stickyVouchers']);
-    }
+//        var_dump($_SESSION['stickyVouchers']);
+//
+//        echo "</pre>";
+//        echo "<p>Length of stickyVouchers: ". sizeof($_SESSION['stickyVouchers'])."</p>";
+//        echo "<p>Length of stickyMembers[0]: ". sizeof($_SESSION['stickyMembers'][0])."Data: ". $_SESSION['stickyMembers'][0][0]."</p>";
+//
+//
+//        echo "Members session <pre>";
+//        var_dump($_SESSION['stickyMembers']);
+//        echo "</pre>";
+//        unset($_SESSION['stickyMembers']);
+//        unset($_SESSION['stickyVouchers']);
+//    }
 
     if(isset($_POST['submit'])){
-       $firstName = $_POST['first'];
-       $lastName = $_POST['last'];
-       $birthdate = $_POST['birthdate'];
-       $phone = $_POST['phone'];
-       $email = $_POST['email'];
-       $ethnicity = $_POST['ethnicity'];
-       $street = $_POST['street'];
-       $city = $_POST['city'];
-       $zip = $_POST['zip'];
-       $mental = $_POST['mental'];
-       $physical = $_POST['physical'];
-       $veteran = $_POST['veteran'];
-       $homeless = $_POST['homeless'];
-       $income = $_POST['income'];
-       $rent = $_POST['rent'];
-       $foodStamp = $_POST['foodStamp'];
-       $addSupport = $_POST['addSupport'];
-       $license = $_POST['license'];
-       $pse = $_POST['pse'];
-       $water = $_POST['water'];
-       $members = $_POST['members'];
-       $notes = $_POST['notes'];
+
+        if(isset($_SESSION['stickyMembers']) || isset($_SESSION['stickyVouchers'])){
+            unset($_SESSION['stickyMembers']);
+            unset($_SESSION['stickyVouchers']);
+        }
+        $firstName = $_POST['first'];
+        $lastName = $_POST['last'];
+        $birthdate = $_POST['birthdate'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $ethnicity = $_POST['ethnicity'];
+        $street = $_POST['street'];
+        $city = $_POST['city'];
+        $zip = $_POST['zip'];
+        $mental = $_POST['mental'];
+        $physical = $_POST['physical'];
+        $veteran = $_POST['veteran'];
+        $homeless = $_POST['homeless'];
+        $income = $_POST['income'];
+        $rent = $_POST['rent'];
+        $foodStamp = $_POST['foodStamp'];
+        $addSupport = $_POST['addSupport'];
+        $license = $_POST['license'];
+        $pse = $_POST['pse'];
+        $water = $_POST['water'];
+        $members = $_POST['members'];
+        $notes = $_POST['notes'];
 
 //        if(isset($_SESSION)){
 //            for($i = 0; $i < sizeof($_SESSION['stickyVouchers']);$i++){
@@ -301,6 +305,20 @@ $f3->route('GET|POST /newGuest', function($f3)
 
         if($isValid){
 
+            if($homeless == null){
+                $homeless = 0;
+            }
+            if($veteran == null){
+                $veteran = 0;
+            }
+            if($physical == null){
+                $physical = 0;
+            }
+            if($mental == null){
+                $mental = 0;
+            }
+
+
             $guest = new Guest($firstName,$lastName,$birthdate);
             //add setters for all variables
             $guest->setPhone($phone);
@@ -322,7 +340,6 @@ $f3->route('GET|POST /newGuest', function($f3)
             $guest->setWater($water);
             $guest->setNotes($notes);
 
-//            $needs = new Needs($todaysDate);
 //            $needs->setAmount($Vamount);
 //            $needs->setCheckNum($VcheckNum);
 //            $needs->setResource($Vresource);
@@ -333,18 +350,8 @@ $f3->route('GET|POST /newGuest', function($f3)
 
             $database = new Database();
 
-            //$todaysDate, for the visitDate
             //$database->insertHousehold(name, age, gender);
             //$database->insertNeeds(resource, visitDate, amount, voucher, checkNum);
-            for($i = 0; $i < sizeof($_SESSION['stickyVouchers']);$i++){
-                $database->insertNeeds($_SESSION['stickyVouchers'][i][3],$todaysDate,$_SESSION['stickyVouchers'][i][2],
-                    $_SESSION['stickyVouchers'][i][0],$_SESSION['stickyVouchers'][i][1]);
-
-            }
-
-            for($j = 0; $j < sizeof($_SESSION['stickyMembers']);$j++){
-                $database->insertHousehold($_SESSION['stickyMembers'][i][0],$_SESSION['stickyMembers'][i][1],$_SESSION['stickyMembers'][i][2]);
-            }
 
             $database->insertGuest($guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
@@ -352,8 +359,30 @@ $f3->route('GET|POST /newGuest', function($f3)
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getMembers(),$guest->getNotes());
 
+            if(isset($_SESSION['stickyVouchers'])) {
+                for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
+                    $database->insertNeeds($_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
+                        $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
+
+                }
+            } else{
+                $database->insertNeeds("","","","");
+            }
+
+            if(isset($_SESSION['stickyMembers'])) {
+                for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
+                    //echo "<p>Name: " . $_SESSION['stickyMembers'][$j][0] . ", Age: " . $_SESSION['stickyMembers'][$j][1] . ", gender: " . $_SESSION['stickyMembers'][$j][2] . "</p>";
+                    //($name, $age, $gender){
+                    $database->insertHousehold($_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+                }
+            }
+
+
 
         }
+
+        //unset($_SESSION['stickyMembers']);
+        //unset($_SESSION['stickyVouchers']);
 
     }
     $template = new Template();
@@ -390,7 +419,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
     $f3->set('homeless', $guest['homeless']);
     $f3->set('members', $guest['members']);
     $f3->set('notes', $guest['notes']);
-    //$f3->set('vouchernum', $guest['first']);
 
 
     if (isset($_POST['submit'])) {
@@ -415,9 +443,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $license = $_POST['license'];
         $pse = $_POST['pse'];
         $water = $_POST['water'];
-        $members = $_POST['members'];
         $notes = $_POST['notes'];
-        $vouchers = $_POST['vouchernum'];
 
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
@@ -439,9 +465,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $f3->set('license', $license);
         $f3->set('pse', $pse);
         $f3->set('water', $water);
-        $f3->set('members', $members);
         $f3->set('notes', $notes);
-        $f3->set('vouchers', $vouchers);
 
         include('model/validation.php');
         $isValid = true;
@@ -504,7 +528,20 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 
 
         if ($isValid) {
-            $todaysDate = date("Y-m-d");
+
+            if($homeless == null){
+                $homeless = 0;
+            }
+            if($veteran == null){
+                $veteran = 0;
+            }
+            if($physical == null){
+                $physical = 0;
+            }
+            if($mental == null){
+                $mental = 0;
+            }
+
             $guest = new Guest($firstName,$lastName,$birthdate);
             //add setters for all variables
             $guest->setPhone($phone);
@@ -525,10 +562,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             $guest->setPse($pse);
             $guest->setWater($water);
             $guest->setNotes($notes);
-            //$guest->setVoucherNum($vouchers);
-
-            //guest object(class)
-            //print_r($guest);
 
             $database = new Database();
             $database->EditGuest($id,$guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
@@ -537,8 +570,28 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
-        }
 
+            if(isset($_SESSION['stickyVouchers'])) {
+                for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
+                    $database->editNeeds($id,$_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
+                        $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
+
+                }
+            } else{
+                $database->insertNeeds("","","","");
+            }
+
+            if(isset($_SESSION['stickyMembers'])) {
+                for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
+                    //echo "<p>Name: " . $_SESSION['stickyMembers'][$j][0] . ", Age: " . $_SESSION['stickyMembers'][$j][1] . ", gender: " . $_SESSION['stickyMembers'][$j][2] . "</p>";
+                    //($name, $age, $gender){
+                    $database->editHousehold($id, $_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
+                }
+            }
+
+        }
+        //unset($_SESSION['stickyMembers']);
+        //unset($_SESSION['stickyVouchers']);
 
     }
 
@@ -549,8 +602,16 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 );
 
 //demographics
-$f3->route('GET /demographics', function()
+$f3->route('GET /demographics', function($f3)
 {
+    $database = new Database();
+    $ethnicity = $database->getEthnicity();
+    echo "<pre>";
+        var_dump($ethnicity);
+    echo "</pre>";
+
+    $f3->set('ethnicity',$ethnicity);
+
     $template = new Template();
     echo $template->render('views/demographics.html');
 }

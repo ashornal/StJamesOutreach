@@ -68,6 +68,7 @@ require_once '/home/pvashchu/config2.php';
 class Database
 {
     protected $dbh;
+    public $id;
 
     function __construct()
     {
@@ -122,10 +123,12 @@ class Database
         //4. Execute the query
         $statement->execute();
 
-        $id = $this->dbh->lastInsertId();
+        //$this->id = $this->dbh->lastInsertId();
+        $this->setLastId($this->dbh->lastInsertId());
+        //echo "<h2>".$this->id."</h2>";
     }
 
-    function getGuests()
+    function getNeeds()
     {
         // Define the query
         $sql = "SELECT * FROM Guests LEFT JOIN Needs ON  Guests.ClientId = Needs.Guests_ClientId ORDER BY visitDate";
@@ -152,24 +155,33 @@ class Database
     }
 
     function insertHousehold($name, $age, $gender){
-        $sql= "INSERT INTO Household (name, age, gender)
-                VALUES (:name,:age,:gender)";
+        //echo "<h3>insert: ". $this->getLastId()."</h3>";
+        $id = $this->getLastId();
+        $sql= "INSERT INTO Household (name, age, gender,Guests_ClientId)
+                VALUES (:name,:age,:gender,$id)";
         $statement = $this->dbh->prepare($sql);
 
         $statement->bindParam(':name', $name, PDO::PARAM_STR);
-        $statement->bindParam(':age', $name, PDO::PARAM_STR);
+        $statement->bindParam(':age', $age, PDO::PARAM_STR);
         $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
 
         $statement->execute();
     }
 
-    function insertNeeds($resource, $visitDate, $amount, $voucher, $checkNum){
-        $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum)
-                VALUES (:resource, :visitDate, :amount, :voucher, :checkNum)";
+    function setLastId($id){
+        $this->id = $id;
+    }
+    function getLastId(){
+        return $this->id;
+    }
+
+    function insertNeeds($resource, $amount, $voucher, $checkNum){
+        $id = $this->getLastId();
+        $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
+                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
         $statement = $this->dbh->prepare($sql);
 
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
-        $statement->bindParam(':visitDate', $visitDate, PDO::PARAM_STR);
         $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
         $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':checkNum', $checkNum, PDO::PARAM_STR);
@@ -190,6 +202,46 @@ class Database
         //echo"<pre>";var_dump($row);echo"</pre>";
 
         return $row;
+    }
+
+    function editNeeds($id,$resource, $amount, $voucher, $checkNum){
+        $sql = "DELETE FROM Needs WHERE Guests_ClientId = $id";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->execute();
+
+        $id = $this->getLastId();
+
+        $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
+                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
+        $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
+        $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
+        $statement->bindParam(':checkNum', $checkNum, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    function editHousehold($id, $name, $age, $gender){
+
+
+        $sql = "DELETE FROM Household  WHERE Guests_ClientId = $id";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->execute();
+
+        $id = $this->getLastId();
+        $sql= "INSERT INTO Household (name, age, gender,Guests_ClientId)
+                VALUES (:name,:age,:gender,$id)";
+        $statement = $this->dbh->prepare($sql);
+
+        $statement->bindParam(':name', $name, PDO::PARAM_STR);
+        $statement->bindParam(':age', $age, PDO::PARAM_STR);
+        $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
+
+        $statement->execute();
     }
 
     function editGuest($id, $first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license,
@@ -227,8 +279,6 @@ class Database
         $statement->bindParam(':physical', $physical, PDO::PARAM_STR);
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
-        //$statement->bindParam(':members', $members, PDO::PARAM_STR);
-        //$statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
 
 
@@ -236,6 +286,8 @@ class Database
 
         //4. Execute the query
         $statement->execute();
+
+        $this->setLastId($this->dbh->lastInsertId());
 
     }
 
@@ -364,6 +416,20 @@ class Database
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
 
+        return $row;
+    }
+
+    function validUser($un, $pw)
+    {
+
+        //Query the db
+        $sql = "SELECT * FROM `users`
+                    WHERE username='$un' and password=SHA1('$pw')";
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $row = $statement->execute();
+
+        //Return true if a match found, false otherwise
         return $row;
     }
 }
