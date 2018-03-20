@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `Needs` (
 ;
 
  */
-require_once '/home/pvashchu/config2.php';
+require_once '/home/ashornal/config.php';
 class Database
 {
     protected $dbh;
@@ -444,5 +444,143 @@ class Database
         return $row;
     }
 
+    //Get Ethinicity
+    function getEthnicity()
+    {
+        // Define the query
+        $sql = "select 'White' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'white'
+					union (
+					select 'Black' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'black' )
+					union (
+					select 'Histpanic' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'hispanic' )
+					union (
+					select 'Native' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'native' )
+					union (
+					select 'Asian' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'asian' )
+					union (
+					select 'Pacific' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'pacific' )
+					union (
+					select 'Eskimo' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'eskimo' )
+					union (
+					select 'Mixed' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'mixed' )
+					union (
+					select 'Other' as Label, count(ethnicity) as Value from Guests 
+					where ethnicity= 'other' )";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
 
+        return $row;
+    }
+    //Get Gender
+    function getGender()
+    {
+        // Define the query
+        $sql = "select 'Male' as Label, count(gender) as Value from Household where gender= 'male'
+					union (
+					  select 'Female' as Label, count(gender) as Value from Household where gender= 'female' )
+					union (
+					  select 'Other' as Label, count(gender) as Value from Household where gender= 'other' )";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    //Get Gender
+    function getZips()
+    {
+        // Define the query
+        $sql = "select '98058' as Label, count(zip) as Value from Guests 
+					where zip= '98058'
+					union (
+					select '98042' as Label, count(zip) as Value from Guests 
+					where zip= '98042' )
+					union (
+					select '98032' as Label, count(zip) as Value from Guests 
+					where zip= '98032' )
+					union (
+					select '98031' as Label, count(zip) as Value from Guests 
+					where zip= '98031' )
+					union (
+					select '98030' as Label, count(zip) as Value from Guests 
+					where zip= '98030' )
+					union (
+					select 'Other' as Label, count(zip) as Value from Guests 
+					where zip NOT IN ('98030', '98058', '98042', '98032', '98031') )
+					union (
+					select 'Homeless' as Label, count(homeless) as Value from Guests 
+					where homeless = 'on' )";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    //Get Disabilities
+    function getDisabilities()
+    {
+        // Define the query
+        $sql = "select 'Mental' as Label, count(mental) as Value from Guests 
+					where mental= 'on'
+					union (
+					select 'Physical' as Label, count(physical) as Value from Guests 
+					where physical= 'on' )
+					union (
+					select 'Both' as Label, count(physical) as Value from Guests 
+					where physical= 'on' AND mental = 'on' )
+					union (
+					select 'Neither' as Label, count(physical) as Value from Guests 
+					where physical = '0' AND mental = '0' )";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+    //Get Veterans
+    function getVeterans()
+    {
+        // Define the query
+        $sql = "select 'Veteran' as Label, count(veteran) as Value from Guests 
+					where veteran= 'on'
+					union (
+					select 'Non-veteran' as Label, count(veteran) as Value from Guests 
+					where veteran = '0' )";
+        // Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+
+    //fix
 }
