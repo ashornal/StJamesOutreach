@@ -1,12 +1,15 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Pavel
+ * User: Pavel, Alex
  * Date: 3/14/18
  * Time: 12:40 PM
  */
 
-class Needs
+/**
+ * Class Needs.class represents the needs needed for the guests
+ */
+class Needs extends Guest
 {
     protected $resource;
     protected $visitDate;
@@ -14,12 +17,17 @@ class Needs
     protected $voucher;
     protected $checkNum;
 
+    /**
+     * Needs constructor.
+     * @param $visitDate visit date of guest
+     */
     function __construct($visitDate){
         $this->visitDate = $visitDate;
     }
 
     /**
-     * @return mixed
+     * Getter for resources
+     * @return resource needed for guest
      */
     public function getResource()
     {
@@ -27,7 +35,8 @@ class Needs
     }
 
     /**
-     * @param mixed $resource
+     * Setter for resource
+     * @param $resource resource needed for guest
      */
     public function setResource($resource)
     {
@@ -35,7 +44,8 @@ class Needs
     }
 
     /**
-     * @return mixed
+     * Getter for visit date
+     * @return visitDate of guest
      */
     public function getVisitDate()
     {
@@ -43,7 +53,8 @@ class Needs
     }
 
     /**
-     * @param mixed $visitDate
+     * Setter for visit date
+     * @param $visitDate visit date of guest
      */
     public function setVisitDate($visitDate)
     {
@@ -51,7 +62,8 @@ class Needs
     }
 
     /**
-     * @return mixed
+     * Getter for amount needed for guest
+     * @return amount needed for guest
      */
     public function getAmount()
     {
@@ -59,7 +71,8 @@ class Needs
     }
 
     /**
-     * @param mixed $amount
+     * Setter for amount
+     * @param $amount amount needed for guest
      */
     public function setAmount($amount)
     {
@@ -67,7 +80,8 @@ class Needs
     }
 
     /**
-     * @return mixed
+     * Getter for voucher number
+     * @return voucher number for guest
      */
     public function getVoucher()
     {
@@ -75,7 +89,8 @@ class Needs
     }
 
     /**
-     * @param mixed $voucher
+     * Setter for voucher number
+     * @param $voucher voucher number for guest
      */
     public function setVoucher($voucher)
     {
@@ -83,7 +98,8 @@ class Needs
     }
 
     /**
-     * @return mixed
+     * Getter for check number
+     * @return checkNum check number for guest
      */
     public function getCheckNum()
     {
@@ -91,12 +107,11 @@ class Needs
     }
 
     /**
-     * @param mixed $checkNum
+     * Setter for check number
+     * @param $checkNum check number for guest
      */
     public function setCheckNum($checkNum)
     {
         $this->checkNum = $checkNum;
     }
-
-
 }

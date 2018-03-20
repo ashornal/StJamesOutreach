@@ -1,24 +1,32 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Pavel
+ * User: Pavel, Alex
  * Date: 3/14/18
  * Time: 12:40 PM
  */
 
-class Household
+/**
+ * Class Household.class represents the households from a guest
+ */
+class Household extends Guest
 {
 
     protected $_name;
     protected $_age;
     protected $_gender;
 
+    /**
+     * Household constructor.
+     * @param $name name of household member
+     */
     function __construct($name){
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * Getter for name
+     * @return name of household member
      */
     public function getName()
     {
@@ -26,7 +34,8 @@ class Household
     }
 
     /**
-     * @param mixed $name
+     * Setter for name
+     * @param $name name of member
      */
     public function setName($name)
     {
@@ -34,7 +43,8 @@ class Household
     }
 
     /**
-     * @return mixed
+     * Getter for age
+     * @return age of household member
      */
     public function getAge()
     {
@@ -42,7 +52,8 @@ class Household
     }
 
     /**
-     * @param mixed $age
+     * Setter for age
+     * @param $age age of member
      */
     public function setAge($age)
     {
@@ -50,7 +61,8 @@ class Household
     }
 
     /**
-     * @return mixed
+     * Getter of gender
+     * @return gender of household member
      */
     public function getGender()
     {
@@ -58,14 +70,11 @@ class Household
     }
 
     /**
-     * @param mixed $gender
+     * Setter for gender
+     * @param $gender gender of household member
      */
     public function setGender($gender)
     {
         $this->gender = $gender;
     }
-
-
-
-
 }
