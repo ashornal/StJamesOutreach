@@ -31,3 +31,6 @@ clicked, creating a new input field with a unique id/name. Ajax
 was the used to send the array of the inputs to the index.php from the newGuest.
 This way we could pull each peice from the array and store it into the database
 for later reference.
+
+
+![alt text](screenshot(16).png)
