@@ -283,6 +283,35 @@ class Database
         return $row;
     }
 
+    function getUserNeeds($id){
+
+        $sql = "SELECT * FROM `Needs` WHERE `Guests_ClientId` = $id";
+
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+
+
+    }
+
+    function getUserHousehold($id){
+        $sql = "SELECT * FROM `Household` WHERE `Guests_ClientId` = $id";
+
+        $statement = $this->dbh->prepare($sql);
+        // Execute the statement
+        $statement->execute();
+        // Process the result
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //echo"<pre>";var_dump($row);echo"</pre>";
+
+        return $row;
+    }
+
     /**
      * edit needs, removes the old and replaces with a new set of values
      * @param $id

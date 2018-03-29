@@ -165,3 +165,16 @@ div.modal-content
 	width: 180%;
 	right: -40%;
 }
+.btn-member-delete {
+	margin-left: 20px;
+	margin-top: 30px;
+	width: 100px;
+	height: 40px;
+}
+
+.btn-voucher-delete {
+	margin-left: 20px;
+	margin-top: 30px;
+	width: 100px;
+	height: 40px;
+}

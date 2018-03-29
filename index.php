@@ -18,7 +18,8 @@ $f3 = Base::instance();
 
 
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
-
+$f3->set('listResources', array('thriftshop','gas','waterbill','energybill','food','dol','other'));
+$f3->set('listGenders', array('male','female','other'));
 
 //logout route
 $f3->route('GET|POST /logout', function($f3,$params)
@@ -150,29 +151,6 @@ $f3->route('GET|POST /reports', function($f3,$params)
 }
 );
 
-//json backside for storing member information
-$f3->route('POST /get-membersSticky_JSON', function() {
-
-    echo json_encode($_SESSION['stickyMembers']);
-});
-
-//json backside of storing vouchers information
-$f3->route('POST /get-vouchersSticky_JSON', function() {
-
-    echo json_encode($_SESSION['stickyVouchers']);
-});
-
-//setting the json/ajax call to a session
-$f3->route('POST /get-members_JSON', function(){
-    $_SESSION['stickyMembers'] = $_POST['members'];
-});
-
-//setting the json/ajax call to a session
-$f3->route('POST /get-vouchers_JSON', function()
-{
-    $_SESSION['stickyVouchers'] = $_POST['vouchers'];
-
-});
 
 //newGuest
 $f3->route('GET|POST /newGuest', function($f3)
@@ -184,6 +162,8 @@ $f3->route('GET|POST /newGuest', function($f3)
     }
 
     if(isset($_POST['submit'])){
+
+
 
         //setting variables
         $firstName = $_POST['first'];
@@ -206,8 +186,17 @@ $f3->route('GET|POST /newGuest', function($f3)
         $license = $_POST['license'];
         $pse = $_POST['pse'];
         $water = $_POST['water'];
-        $members = $_POST['members'];
         $notes = $_POST['notes'];
+
+
+        $voucher = $_POST['voucher'];
+        $checkNum = $_POST['checkNum'];
+        $amount = $_POST['amount'];
+        $resource = $_POST['resource'];
+
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $gender = $_POST['gender'];
 
         //set to hive
         $f3->set('firstName', $firstName);
@@ -230,8 +219,30 @@ $f3->route('GET|POST /newGuest', function($f3)
         $f3->set('license', $license);
         $f3->set('pse', $pse);
         $f3->set('water', $water);
-        $f3->set('members', $members);
         $f3->set('notes', $notes);
+
+
+        $mainVouch = array();
+        for($i = 0; $i < sizeof($voucher);$i++){
+            if(!empty($voucher[$i])) {
+                $temp = array();
+                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i], $resource[$i]);
+                array_push($mainVouch,$temp);
+            }
+        }
+
+        $mainMem = array();
+        for($i = 0; $i < sizeof($name);$i++){
+            if(!empty($name[$i])) {
+                $temp = array();
+                array_push($temp, $name[$i], $age[$i], $gender[$i]);
+                array_push($mainMem,$temp);
+            }
+        }
+
+        $f3->set('vouchers', $mainVouch);
+        $f3->set('members', $mainMem);
+
 
         include('model/validation.php');
         $isValid = true;
@@ -284,8 +295,6 @@ $f3->route('GET|POST /newGuest', function($f3)
             $isValid = false;
         }
 
-        //validate gender
-
         //validate addsupport
         if(!validAddSupport($addSupport)){
             $f3->set('invalidAddSupport', "invalid");
@@ -294,6 +303,8 @@ $f3->route('GET|POST /newGuest', function($f3)
 
 
         if($isValid){
+
+            $f3->set('formIsSubmited','true');
 
             //replace values for easier access later
             if($homeless == null){
@@ -334,6 +345,7 @@ $f3->route('GET|POST /newGuest', function($f3)
 
             $database = new Database();
 
+
             //insert the guest into the database
             $database->insertGuest($guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
@@ -341,25 +353,23 @@ $f3->route('GET|POST /newGuest', function($f3)
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
-            //insert the vouchers into the database
-            if(isset($_SESSION['stickyVouchers'])) {
-                for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
-                    if($_SESSION['stickyVouchers'][$i][0] != null) {
-                        $database->insertNeeds($_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
-                            $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
-                    }
+            $lastId = $database->getLastId();
+            $f3->set('lastId', $lastId);
+
+            if(!empty($mainVouch)){
+                for($i = 0; $i < sizeof($mainVouch);$i++){
+                    $database->insertNeeds($mainVouch[$i][3],$mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
                 }
             }
 
-            //insert the members into the database
-            if(isset($_SESSION['stickyMembers'])) {
-                for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
-                    if ($_SESSION['stickyMembers'][$j][0] != null) {
-                        $database->insertHousehold($_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
 
-                    }
+            if(!empty($mainMem)) {
+                for ($i = 0; $i < sizeof($mainMem); $i++) {
+                    $database->insertHousehold($mainMem[$i][0], $mainMem[$i][1], $mainMem[$i][2]);
                 }
             }
+
+            $f3->reroute('/'.$lastId);
 
         }
 
@@ -380,6 +390,28 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
     $database = new Database();
     $guest = $database->getGuest($id);
 
+    $mainVouch = array();
+    $mainMem = array();
+
+    $tempVouch = $database->getUserNeeds($id);
+    $tempMem = $database->getUserHousehold($id);
+
+
+    for($x = 0; $x < sizeof($tempVouch);$x++){
+        if(!empty($tempVouch[$x])) {
+            $temp = array();
+            array_push($temp, $tempVouch[$x]['voucher'], $tempVouch[$x]['checkNum'], $tempVouch[$x]['amount'], $tempVouch[$x]['resource']);
+            array_push($mainVouch,$temp);
+        }
+    }
+
+    for($x = 0; $x < sizeof($tempMem);$x++){
+        if(!empty($tempMem[$x])) {
+            $temp = array();
+            array_push($temp, $tempMem[$x]['name'], $tempMem[$x]['age'], $tempMem[$x]['gender']);
+            array_push($mainMem,$temp);
+        }
+    }
 
 
     $f3->set('firstName', $guest['first']);
@@ -404,6 +436,9 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
     $f3->set('homeless', $guest['homeless']);
     $f3->set('members', $guest['members']);
     $f3->set('notes', $guest['notes']);
+
+    $f3->set('vouchers', $mainVouch);
+    $f3->set('members', $mainMem);
 
 
     if (isset($_POST['submit'])) {
@@ -430,6 +465,16 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $water = $_POST['water'];
         $notes = $_POST['notes'];
 
+
+        $voucher = $_POST['voucher'];
+        $checkNum = $_POST['checkNum'];
+        $amount = $_POST['amount'];
+        $resource = $_POST['resource'];
+
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $gender = $_POST['gender'];
+
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
         $f3->set('birthdate', $birthdate);
@@ -451,6 +496,31 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $f3->set('pse', $pse);
         $f3->set('water', $water);
         $f3->set('notes', $notes);
+
+
+        $mainVouch = array();
+        for($i = 0; $i < sizeof($voucher);$i++){
+            if(!empty($voucher[$i])) {
+                $temp = array();
+                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i], $resource[$i]);
+                array_push($mainVouch,$temp);
+            }
+        }
+
+        $mainMem = array();
+        for($i = 0; $i < sizeof($name);$i++){
+            if(!empty($name[$i])) {
+                $temp = array();
+                array_push($temp, $name[$i], $age[$i], $gender[$i]);
+                array_push($mainMem,$temp);
+            }
+        }
+
+        $f3->set('vouchers', $mainVouch);
+        $f3->set('members', $mainMem);
+
+
+
 
         include('model/validation.php');
         $isValid = true;
@@ -503,8 +573,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             $isValid = false;
         }
 
-        //validate gender
-
         //validate addsupport
         if (!validAddSupport($addSupport)) {
             $f3->set('invalidAddSupport', "invalid");
@@ -513,6 +581,8 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 
 
         if ($isValid) {
+
+            $f3->set('formIsSubmited','true');
 
             if($homeless == null){
                 $homeless = 0;
@@ -555,24 +625,21 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
-            if(isset($_SESSION['stickyVouchers'])) {
-                for ($i = 0; $i < sizeof($_SESSION['stickyVouchers']); $i++) {
-                    if($_SESSION['stickyVouchers'][$i][0] != null) {
-                        $database->editNeeds($id, $_SESSION['stickyVouchers'][$i][3], $_SESSION['stickyVouchers'][$i][2],
-                            $_SESSION['stickyVouchers'][$i][0], $_SESSION['stickyVouchers'][$i][1]);
-                    }
 
+            if(!empty($mainVouch)){
+                for($i = 0; $i < sizeof($mainVouch);$i++){
+                    $database->editNeeds($id,$mainVouch[$i][3],$mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
                 }
             }
 
-            if(isset($_SESSION['stickyMembers'])) {
-                for ($j = 0; $j < sizeof($_SESSION['stickyMembers']); $j++) {
-                    if ($_SESSION['stickyMembers'][$j][0] != null) {
-                        $database->editHousehold($id, $_SESSION['stickyMembers'][$j][0], $_SESSION['stickyMembers'][$j][1], $_SESSION['stickyMembers'][$j][2]);
-                    }
+
+            if(!empty($mainMem)){
+                for($i = 0; $i < sizeof($mainMem);$i++){
+                    $database->editHousehold($id,$mainMem[$i][0],$mainMem[$i][1],$mainMem[$i][2]);
                 }
             }
 
+            $f3->reroute('/home');
 
         }
     }
