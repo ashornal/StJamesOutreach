@@ -5,7 +5,6 @@
  * Date: 3/9/2018
  * Time: 11:31 AM
  */
-
 /*
  * CREATE TABLE IF NOT EXISTS `Guests` (
   `ClientId` INT NOT NULL AUTO_INCREMENT,
@@ -32,7 +31,6 @@
   `notes` TEXT NULL,
   PRIMARY KEY (`ClientId`))
 ;
-
 CREATE TABLE IF NOT EXISTS `Household` (
   `name` VARCHAR(100) NOT NULL,
   `age` INT(3) NULL,
@@ -45,8 +43,6 @@ CREATE TABLE IF NOT EXISTS `Household` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
-
-
 CREATE TABLE IF NOT EXISTS `Needs` (
   `resource` VARCHAR(50) NULL,
   `visitDate` DATE NULL,
@@ -61,10 +57,8 @@ CREATE TABLE IF NOT EXISTS `Needs` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
-
  */
 require_once '/home/pvashchu/config2.php';
-
 /**
  * Class Database, preforms sql statements to insert/delete/update/view
  */
@@ -72,7 +66,6 @@ class Database
 {
     protected $dbh;
     public $id;
-
     /**
      * Database constructor. connects to the database
      */
@@ -86,11 +79,8 @@ class Database
         }
         catch (PDOException $e) {
             echo $e->getMessage();
-
         }
     }
-
-
     /**
      * Inserts a new guest into the database
      * @param $first
@@ -118,15 +108,11 @@ class Database
     function insertGuest($first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license, $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes)
     {
         //global $dbh;
-
         //1. Define the query
-         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, notes)
+        $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, notes)
 						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :notes)";
-
         //2. Prepare the statement
         $statement = $this->dbh->prepare($sql);
-
-
         //3. Bind parameters
         $statement->bindParam(':first', $first, PDO::PARAM_STR);
         $statement->bindParam(':last', $last, PDO::PARAM_STR);
@@ -149,13 +135,10 @@ class Database
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
-
         //4. Execute the query
         $statement->execute();
-
         $this->setLastId($this->dbh->lastInsertId());
     }
-
     /**
      * getter for all the guests in the database
      * @return array of guests
@@ -172,7 +155,6 @@ class Database
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $row;
     }
-
     /**
      * getter for all the needs in the database
      * @return array of needs
@@ -189,7 +171,6 @@ class Database
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $row;
     }
-
     /**
      * getter for a single guest to edit
      * @param $id, the guest id
@@ -207,7 +188,6 @@ class Database
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
-
     /**
      * insert new into the household table/database
      * @param $name
@@ -219,14 +199,11 @@ class Database
         $sql= "INSERT INTO Household (name, age, gender,Guests_ClientId)
                 VALUES (:name,:age,:gender,$id)";
         $statement = $this->dbh->prepare($sql);
-
         $statement->bindParam(':name', $name, PDO::PARAM_STR);
         $statement->bindParam(':age', $age, PDO::PARAM_STR);
         $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
-
         $statement->execute();
     }
-
     /**
      * setter for the last id
      * @param $id
@@ -234,7 +211,6 @@ class Database
     function setLastId($id){
         $this->id = $id;
     }
-
     /**
      * getter for the last id
      * @return id
@@ -242,7 +218,6 @@ class Database
     function getLastId(){
         return $this->id;
     }
-
     /**
      * insert new needs into the database
      * @param $resource
@@ -250,20 +225,18 @@ class Database
      * @param $voucher
      * @param $checkNum
      */
-    function insertNeeds($resource, $amount, $voucher, $checkNum){
+    function insertNeeds($resource, $date, $amount, $voucher, $checkNum){
         $id = $this->getLastId();
         $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
-                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
+                VALUES (:resource, :date , :amount, :voucher, :checkNum, $id)";
         $statement = $this->dbh->prepare($sql);
-
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
         $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
         $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':checkNum', $checkNum, PDO::PARAM_STR);
-
+        $statement->bindParam(':date', $date, PDO::PARAM_STR);
         $statement->execute();
     }
-
     /**
      * getter for the households database table
      * @return array of household
@@ -279,39 +252,28 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     function getUserNeeds($id){
-
         $sql = "SELECT * FROM `Needs` WHERE `Guests_ClientId` = $id";
-
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
-
-
     }
-
     function getUserHousehold($id){
         $sql = "SELECT * FROM `Household` WHERE `Guests_ClientId` = $id";
-
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $statement->execute();
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * edit needs, removes the old and replaces with a new set of values
      * @param $id
@@ -320,26 +282,21 @@ class Database
      * @param $voucher
      * @param $checkNum
      */
-    function editNeeds($id,$resource, $amount, $voucher, $checkNum){
+    function editNeeds($id,$resource,$date, $amount, $voucher, $checkNum){
         $sql = "DELETE FROM Needs WHERE Guests_ClientId = $id";
         $statement = $this->dbh->prepare($sql);
-
         $statement->execute();
-
         $id = $this->getLastId();
-
         $sql= "INSERT INTO Needs (resource, visitDate, amount, voucher, checkNum, Guests_ClientId)
-                VALUES (:resource, CURRENT_DATE , :amount, :voucher, :checkNum, $id)";
+                VALUES (:resource, :date , :amount, :voucher, :checkNum, $id)";
         $statement = $this->dbh->prepare($sql);
-
         $statement->bindParam(':resource', $resource, PDO::PARAM_STR);
         $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
         $statement->bindParam(':voucher', $voucher, PDO::PARAM_STR);
         $statement->bindParam(':checkNum', $checkNum, PDO::PARAM_STR);
-
+        $statement->bindParam(':date', $date, PDO::PARAM_STR);
         $statement->execute();
     }
-
     /**
      * edit households, removes the old and replaces witha new set of values
      * @param $id
@@ -348,25 +305,18 @@ class Database
      * @param $gender
      */
     function editHousehold($id, $name, $age, $gender){
-
-
         $sql = "DELETE FROM Household  WHERE Guests_ClientId = $id";
         $statement = $this->dbh->prepare($sql);
-
         $statement->execute();
-
         $id = $this->getLastId();
         $sql= "INSERT INTO Household (name, age, gender,Guests_ClientId)
                 VALUES (:name,:age,:gender,$id)";
         $statement = $this->dbh->prepare($sql);
-
         $statement->bindParam(':name', $name, PDO::PARAM_STR);
         $statement->bindParam(':age', $age, PDO::PARAM_STR);
         $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
-
         $statement->execute();
     }
-
     /**
      * edit guest, removes the old and replaces with new set of values
      * @param $id
@@ -395,17 +345,11 @@ class Database
     function editGuest($id, $first, $last, $birthdate, $phone, $email, $ethnicity, $street, $city, $zip, $license,
                        $pse, $water, $income, $rent, $foodStamp, $addSupport, $mental, $physical, $veteran, $homeless, $notes){
         $sql = "DELETE FROM Guests WHERE ClientID = $id";
-
         $statement = $this->dbh->prepare($sql);
-
         $statement->execute();
-
         $sql= "INSERT INTO Guests (first, last, birthdate, phone, email, ethnicity, street, city, zip, license, pse, water, income, rent, foodStamp, addSupport, mental, physical, veteran, homeless, notes)
 						VALUES (:first, :last,:birthdate, :phone, :email, :ethnicity, :street, :city, :zip, :license, :pse, :water, :income, :rent, :foodStamp, :addSupport, :mental, :physical, :veteran, :homeless, :notes)";
-
         $statement = $this->dbh->prepare($sql);
-
-
         //3. Bind parameters
         $statement->bindParam(':first', $first, PDO::PARAM_STR);
         $statement->bindParam(':last', $last, PDO::PARAM_STR);
@@ -428,17 +372,10 @@ class Database
         $statement->bindParam(':veteran', $veteran, PDO::PARAM_STR);
         $statement->bindParam(':homeless', $homeless, PDO::PARAM_STR);
         $statement->bindParam(':notes', $notes, PDO::PARAM_STR);
-
-
-
-
         //4. Execute the query
         $statement->execute();
-
         $this->setLastId($this->dbh->lastInsertId());
-
     }
-
     /**
      * getter method for thrift values
      * @param $start
@@ -458,10 +395,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the gas values
      * @param $start
@@ -481,10 +416,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the water values
      * @param $start
@@ -504,10 +437,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the energy values
      * @param $start
@@ -527,10 +458,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the food values
      * @param $start
@@ -550,10 +479,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the dol values
      * @param $start
@@ -573,10 +500,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the other values
      * @param $start
@@ -596,10 +521,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter fo the total values
      * @param $start
@@ -618,10 +541,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * validates the user by checking the users in the database
      * @param $username
@@ -630,18 +551,15 @@ class Database
      */
     function validUser($username, $password)
     {
-
         //Query the db
         $sql = "SELECT * FROM Users
                     WHERE username=$username and password= $password";
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
         $row = $statement->execute();
-
         //Return true if a match found, false otherwise
         return $row;
     }
-
     /**
      * getter for the ethnicity
      * @return array
@@ -682,10 +600,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the gender information
      * @return array
@@ -705,10 +621,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the zip data
      * @return array
@@ -743,10 +657,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the disabilities data
      * @return array
@@ -772,10 +684,8 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
     /**
      * getter for the veterans data
      * @return array
@@ -795,8 +705,6 @@ class Database
         // Process the result
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         //echo"<pre>";var_dump($row);echo"</pre>";
-
         return $row;
     }
-
 }

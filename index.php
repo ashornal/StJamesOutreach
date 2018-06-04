@@ -5,33 +5,25 @@
  * Date: 3/7/2018
  * Time: 12:25 PM
  */
-
 //Require the autoload file
 require_once('vendor/autoload.php');
 session_start();
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
 //Create an instance of the Base Class
 $f3 = Base::instance();
-
-
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
 $f3->set('listResources', array('thriftshop','gas','waterbill','energybill','food','dol','other'));
 $f3->set('listGenders', array('male','female','other'));
-
 //logout route
 $f3->route('GET|POST /logout', function($f3,$params)
 {
     //unsets the session variables
-   unset($_SESSION['username']);
-   unset($_SESSION['password']);
-
+    unset($_SESSION['username']);
+    unset($_SESSION['password']);
     $template = new Template();
     echo $template->render('views/login.html');
 });
-
 $f3->route('GET|POST /', function($f3,$params)
 {
     $_SESSION['username'] = "";
@@ -63,7 +55,6 @@ $f3->route('GET|POST /', function($f3,$params)
     echo $template->render('views/login.html');
 }
 );
-
 //Define a default route(home)
 $f3->route('GET /home', function($f3,$params)
 {
@@ -73,21 +64,16 @@ $f3->route('GET /home', function($f3,$params)
         $f3->reroute('/');
     }
     $database = new Database();
-
     $guest = $database->getGuests();
     $f3->set('guests', $guest);
-
     $needs = $database->getNeeds();
     $f3->set('needs', $needs);
-
     $households = $database->getHouseholds();
     $f3->set('households', $households);
-
     $template = new Template();
     echo $template->render('views/home.html');
 }
 );
-
 //reports
 $f3->route('GET|POST /reports', function($f3,$params)
 {
@@ -99,7 +85,6 @@ $f3->route('GET|POST /reports', function($f3,$params)
     // initialize variable
     $start = date("Y-m-01");
     $end = date("Y-m-d");
-
     // set to new value when submitting
     if (isset($_POST['submit']))
     {
@@ -114,44 +99,30 @@ $f3->route('GET|POST /reports', function($f3,$params)
     }
     $f3->set('start', $start);
     $f3->set('end', $end);
-
-
     $database = new Database();
-
     //setters for the hive
     $needs = $database->getNeeds();
     $f3->set('needs', $needs);
-
     $thrift = $database->getThrift($start,$end);
     $f3->set('thrift', $thrift);
-
     $gas = $database->getGas($start,$end);
     $f3->set('gas', $gas);
-
     $water = $database->getWater($start,$end);
     $f3->set('water', $water);
-
     $energy = $database->getEnergy($start,$end);
     $f3->set('energy', $energy);
-
     $food = $database->getFood($start,$end);
     $f3->set('food', $food);
-
     $dol = $database->getDol($start,$end);
     $f3->set('dol', $dol);
-
     $other = $database->getOther($start,$end);
     $f3->set('other', $other);
-
     $total = $database->getTotal($start,$end);
     $f3->set('total', $total);
-
     $template = new Template();
     echo $template->render('views/reports.html');
 }
 );
-
-
 //newGuest
 $f3->route('GET|POST /newGuest', function($f3)
 {
@@ -160,11 +131,7 @@ $f3->route('GET|POST /newGuest', function($f3)
     {
         $f3->reroute('/');
     }
-
     if(isset($_POST['submit'])){
-
-
-
         //setting variables
         $firstName = $_POST['first'];
         $lastName = $_POST['last'];
@@ -187,17 +154,14 @@ $f3->route('GET|POST /newGuest', function($f3)
         $pse = $_POST['pse'];
         $water = $_POST['water'];
         $notes = $_POST['notes'];
-
-
         $voucher = $_POST['voucher'];
         $checkNum = $_POST['checkNum'];
         $amount = $_POST['amount'];
+        $date = $_POST['date'];
         $resource = $_POST['resource'];
-
         $name = $_POST['name'];
         $age = $_POST['age'];
         $gender = $_POST['gender'];
-
         //set to hive
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
@@ -220,13 +184,11 @@ $f3->route('GET|POST /newGuest', function($f3)
         $f3->set('pse', $pse);
         $f3->set('water', $water);
         $f3->set('notes', $notes);
-
-
         $mainVouch = array();
         for($i = 0; $i < sizeof($voucher);$i++){
-            if(!empty($voucher[$i])) {
+            if(!empty($voucher[$i]) || !empty($resource[$i])) {
                 $temp = array();
-                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i], $resource[$i]);
+                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i], $date[$i], $resource[$i]);
                 array_push($mainVouch,$temp);
             }
         }
@@ -239,73 +201,57 @@ $f3->route('GET|POST /newGuest', function($f3)
                 array_push($mainMem,$temp);
             }
         }
-
         $f3->set('vouchers', $mainVouch);
         $f3->set('members', $mainMem);
-
-
         include('model/validation.php');
         $isValid = true;
-
         //validate first Name
         if(!validFirst($firstName)){
             $f3->set('invalidFirstName', "invalid");
             $isValid  = false;
         }
-
         //validate last name
         if (!validLast($lastName)) {
             $f3->set('invalidLastName', "invalid");
             $isValid = false;
         }
-
         //validate birthdate
         if(!validBirth($birthdate)){
             $f3->set('invalidBirthdate', "invalid");
             $isValid = false;
         }
-
         //validate phone number
         if(!validPhone($phone)){
             $f3->set('invalidPhone', "invalid");
             $isValid = false;
         }
-
         //validate zipcode
         if(!validZip($zip)){
             $f3->set('invalidZip', "invalid");
             $isValid = false;
         }
-
         //validate monthly income
         if(!validIncome($income)){
             $f3->set('invalidIncome', "invalid");
             $isValid = false;
         }
-
         //validate monthly rent
         if(!validRent($rent)) {
             $f3->set('invalidRent', "invalid");
             $isValid = false;
         }
-
         //validate foodstamps
         if(!validfoodstamps($foodStamp)){
             $f3->set('invalidFoodstamps', "invalid");
             $isValid = false;
         }
-
         //validate addsupport
         if(!validAddSupport($addSupport)){
             $f3->set('invalidAddSupport', "invalid");
             $isValid = false;
         }
-
-
         if($isValid){
-
             $f3->set('formIsSubmited','true');
-
             //replace values for easier access later
             if($homeless == null){
                 $homeless = 0;
@@ -319,8 +265,6 @@ $f3->route('GET|POST /newGuest', function($f3)
             if($mental == null){
                 $mental = 0;
             }
-
-
             //setter for the guest object
             $guest = new Guest($firstName,$lastName,$birthdate);
             //add setters for all variables
@@ -342,43 +286,37 @@ $f3->route('GET|POST /newGuest', function($f3)
             $guest->setPse($pse);
             $guest->setWater($water);
             $guest->setNotes($notes);
-
             $database = new Database();
-
-
             //insert the guest into the database
             $database->insertGuest($guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
                 $guest->getLicense(),$guest->getPse(),$guest->getWater(),$guest->getIncome(),$guest->getRent(),
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
-
             $lastId = $database->getLastId();
             $f3->set('lastId', $lastId);
 
+            echo "<pre>";
+                var_dump($mainVouch);
+            echo "</pre>";
+
             if(!empty($mainVouch)){
                 for($i = 0; $i < sizeof($mainVouch);$i++){
-                    $database->insertNeeds($mainVouch[$i][3],$mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
+                    $database->insertNeeds($mainVouch[$i][4],$mainVouch[$i][3], $mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
                 }
             }
-
-
             if(!empty($mainMem)) {
                 for ($i = 0; $i < sizeof($mainMem); $i++) {
                     $database->insertHousehold($mainMem[$i][0], $mainMem[$i][1], $mainMem[$i][2]);
                 }
             }
-
             $f3->reroute('/'.$lastId);
-
         }
-
     }
     $template = new Template();
     echo $template->render('views/newGuest.html');
 }
 );
-
 //edit guest
 $f3->route('GET|POST /@client_id', function($f3,$params) {
     if(empty($_SESSION['username']) || empty($_SESSION['password']))
@@ -386,25 +324,19 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $f3->reroute('/');
     }
     $id = $params['client_id'];
-
     $database = new Database();
     $guest = $database->getGuest($id);
-
     $mainVouch = array();
     $mainMem = array();
-
     $tempVouch = $database->getUserNeeds($id);
     $tempMem = $database->getUserHousehold($id);
-
-
     for($x = 0; $x < sizeof($tempVouch);$x++){
         if(!empty($tempVouch[$x])) {
             $temp = array();
-            array_push($temp, $tempVouch[$x]['voucher'], $tempVouch[$x]['checkNum'], $tempVouch[$x]['amount'], $tempVouch[$x]['resource']);
+            array_push($temp, $tempVouch[$x]['voucher'], $tempVouch[$x]['checkNum'], $tempVouch[$x]['amount'], $tempVouch[$x]['visitDate'],$tempVouch[$x]['resource']);
             array_push($mainVouch,$temp);
         }
     }
-
     for($x = 0; $x < sizeof($tempMem);$x++){
         if(!empty($tempMem[$x])) {
             $temp = array();
@@ -412,8 +344,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             array_push($mainMem,$temp);
         }
     }
-
-
     $f3->set('firstName', $guest['first']);
     $f3->set('lastName', $guest['last']);
     $f3->set('birthdate', $guest['birthdate']);
@@ -436,13 +366,9 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
     $f3->set('homeless', $guest['homeless']);
     $f3->set('members', $guest['members']);
     $f3->set('notes', $guest['notes']);
-
     $f3->set('vouchers', $mainVouch);
     $f3->set('members', $mainMem);
-
-
     if (isset($_POST['submit'])) {
-
         $firstName = $_POST['first'];
         $lastName = $_POST['last'];
         $birthdate = $_POST['birthdate'];
@@ -464,17 +390,14 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $pse = $_POST['pse'];
         $water = $_POST['water'];
         $notes = $_POST['notes'];
-
-
         $voucher = $_POST['voucher'];
         $checkNum = $_POST['checkNum'];
         $amount = $_POST['amount'];
+        $date = $_POST['date'];
         $resource = $_POST['resource'];
-
         $name = $_POST['name'];
         $age = $_POST['age'];
         $gender = $_POST['gender'];
-
         $f3->set('firstName', $firstName);
         $f3->set('lastName', $lastName);
         $f3->set('birthdate', $birthdate);
@@ -496,17 +419,14 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
         $f3->set('pse', $pse);
         $f3->set('water', $water);
         $f3->set('notes', $notes);
-
-
         $mainVouch = array();
         for($i = 0; $i < sizeof($voucher);$i++){
-            if(!empty($voucher[$i])) {
+            if(!empty($voucher[$i]) || !empty($resource[$i]) ) {
                 $temp = array();
-                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i], $resource[$i]);
+                array_push($temp, $voucher[$i], $checkNum[$i], $amount[$i],$date[$i], $resource[$i]);
                 array_push($mainVouch,$temp);
             }
         }
-
         $mainMem = array();
         for($i = 0; $i < sizeof($name);$i++){
             if(!empty($name[$i])) {
@@ -515,75 +435,57 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
                 array_push($mainMem,$temp);
             }
         }
-
         $f3->set('vouchers', $mainVouch);
         $f3->set('members', $mainMem);
-
-
-
-
         include('model/validation.php');
         $isValid = true;
-
         //validate first Name
         if (!validFirst($firstName)) {
             $f3->set('invalidFirstName', "invalid");
             $isValid = false;
         }
-
         //validate last name
         if (!validLast($lastName)) {
             $f3->set('invalidLastName', "invalid");
             $isValid = false;
         }
-
         //validate birthdate
         if (!validBirth($birthdate)) {
             $f3->set('invalidBirthdate', "invalid");
             $isValid = false;
         }
-
         //validate phone number
         if (!validPhone($phone)) {
             $f3->set('invalidPhone', "invalid");
             $isValid = false;
         }
-
         //validate zipcode
         if (!validZip($zip)) {
             $f3->set('invalidZip', "invalid");
             $isValid = false;
         }
-
         //validate monthly income
         if (!validIncome($income)) {
             $f3->set('invalidIncome', "invalid");
             $isValid = false;
         }
-
         //validate monthly rent
         if (!validRent($rent)) {
             $f3->set('invalidRent', "invalid");
             $isValid = false;
         }
-
         //validate foodstamps
         if (!validfoodstamps($foodStamp)) {
             $f3->set('invalidFoodstamps', "invalid");
             $isValid = false;
         }
-
         //validate addsupport
         if (!validAddSupport($addSupport)) {
             $f3->set('invalidAddSupport', "invalid");
             $isValid = false;
         }
-
-
         if ($isValid) {
-
             $f3->set('formIsSubmited','true');
-
             if($homeless == null){
                 $homeless = 0;
             }
@@ -596,7 +498,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             if($mental == null){
                 $mental = 0;
             }
-
             $guest = new Guest($firstName,$lastName,$birthdate);
             //add setters for all variables
             $guest->setPhone($phone);
@@ -617,7 +518,6 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
             $guest->setPse($pse);
             $guest->setWater($water);
             $guest->setNotes($notes);
-
             $database = new Database();
             $database->EditGuest($id,$guest->getfname(),$guest->getlname(),$guest->getBirthdate(),$guest->getPhone(),
                 $guest->getEmail(),$guest->getEthnicity(),$guest->getStreet(),$guest->getCity(),$guest->getZip(),
@@ -625,31 +525,24 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
                 $guest->getFoodStamp(),$guest->getAddSupport(),$guest->getMental(),$guest->getPhysical(),
                 $guest->getVeteran(),$guest->getHomeless(),$guest->getNotes());
 
-
             if(!empty($mainVouch)){
                 for($i = 0; $i < sizeof($mainVouch);$i++){
-                    $database->editNeeds($id,$mainVouch[$i][3],$mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
+                    $database->editNeeds($id,$mainVouch[$i][4],$mainVouch[$i][3],$mainVouch[$i][2],$mainVouch[$i][0],$mainVouch[$i][1]);
+
                 }
             }
-
-
             if(!empty($mainMem)){
                 for($i = 0; $i < sizeof($mainMem);$i++){
                     $database->editHousehold($id,$mainMem[$i][0],$mainMem[$i][1],$mainMem[$i][2]);
                 }
             }
-
             $f3->reroute('/home');
-
         }
     }
-
     $template = new Template();
     echo $template->render('views/newGuest.html');
-
 }
 );
-
 //demographics
 $f3->route('GET /demographics', function($f3)
 {
@@ -664,18 +557,15 @@ $f3->route('GET /demographics', function($f3)
     $zips = $database->getZips();
     $disabilities = $database->getDisabilities();
     $veterans = $database->getVeterans();
-
 //
     $f3->set('ethnicity', $ethnicity);
     $f3->set('gender', $gender);
     $f3->set('zips', $zips);
     $f3->set('disabilities', $disabilities);
     $f3->set('veterans', $veterans);
-
     $template = new Template();
     echo $template->render('views/demographics.html');
 }
 );
-
 //Run Fat-Free
 $f3->run();
