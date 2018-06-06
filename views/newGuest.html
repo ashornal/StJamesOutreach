@@ -19,13 +19,7 @@
     <div class="container">
 
         <form action="#" method="post" id="formGuest">
-            <h2>Outreach Contact Report
-            <span class="text-success">
-                <check if=" {{isset(@formIsSubmited)}}">
-                    - Form Submitted
-                </check>
-            </span>
-            </h2>
+            <h2>Outreach Contact Report</h2>
             <p id="obligitory"><i>* obligatory fields</i></p>
             <fieldset class="form-group">
                 <legend>Guest's Information</legend>
@@ -381,10 +375,10 @@
                                 <repeat group="{{ @vouchers }}" value="{{ @voucher }}">
 
                                     <div class='row'>
-                                        <div class='form-group col-3'>
+                                        <div class='form-group col-2'>
                                             <label class='form-control-label'>Voucher#:</label><input class='form-control' type='text' name='voucher[]' value='{{ @voucher[0] }}'>
                                         </div>
-                                        <div class='form-group col-3'>
+                                        <div class='form-group col-2'>
                                             <label class='form-control-label'>Check#:</label><input class='form-control' type='text'name='checkNum[]' value='{{ @voucher[1] }}'>
                                         </div>
                                         <div class='form-group col-2'>
@@ -393,15 +387,18 @@
                                                 <span class='input-group-addon'>$</span><input class='form-control' type='amount' name='amount[]' value='{{ @voucher[2] }}'>
                                             </div>
                                         </div>
+                                        <div class="form-group col-2">
+                                            <label class="form-control-label">Date:</label><input class='form-control' type='text'name='date[]' value="{{ @voucher[3] }}" readonly>
+                                        </div>
                                         <div class='form-group col-2'>
-                                            <label class='form-check-label'>Resource needed:</label>
+                                            <label class='form-check-label'>Resource:</label>
                                             <label class='d-block'></label>
 
                                             <select class="form-control dropdown" name="resource[]">
                                                 <option value="">-- select one --</option>
 
                                                 <repeat group="{{@listResources}}" value="{{@thisResource}}">
-                                                    <option <check if="{{ @thisResource == @voucher[3] }}">selected</check>  value="{{ @thisResource }}" > {{ @thisResource }}</option>
+                                                    <option <check if="{{ @thisResource == @voucher[4] }}">selected</check>  value="{{ @thisResource }}" > {{ @thisResource }}</option>
                                                 </repeat>
                                             </select>
 
@@ -417,10 +414,10 @@
 
                         <span id="voucher-div" name="voucher-div">
                         <div class='row'>
-                            <div class='form-group col-3'>
+                            <div class='form-group col-2'>
                                 <label class='form-control-label'>Voucher#:</label><input class='form-control' type='text' name='voucher[]'>
                             </div>
-                            <div class='form-group col-3'>
+                            <div class='form-group col-2'>
                                 <label class='form-control-label'>Check#:</label><input class='form-control' type='text'name='checkNum[]'>
                             </div>
                             <div class='form-group col-2'>
@@ -429,8 +426,13 @@
                                     <span class='input-group-addon'>$</span><input class='form-control' type='amount' name='amount[]'>
                                 </div>
                             </div>
+                            <div class="form-group col-2">
+                                <label class="form-control-label">Date:</label><input class='form-control' type='text' name='date[]'
+                                                                                      value="{{ @dateToday }}" readonly>
+                            </div>
+
                             <div class='form-group col-2'>
-                                <label class='form-check-label'>Resource needed:</label>
+                                <label class='form-check-label'>Resource:</label>
                                 <label class='d-block'></label>
 
                                 <select class="form-control dropdown" name="resource[]">
@@ -482,6 +484,22 @@
 
 
     <script>
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        }
+
+        if(mm<10) {
+            mm = '0'+mm
+        }
+        date = yyyy + '-' + mm + '-' + dd;
+
+
         //Remove a direction from the direction list
         $('.btn-voucher-delete').click(function() {
             var parent = this.parentElement;
@@ -494,10 +512,10 @@
             const CLONE_HTML =
 
         '<div class="row">\n' +
-            '<div class="form-group col-3">\n' +
+            '<div class="form-group col-2">\n' +
                 '<label class="form-control-label">Voucher#:</label><input class="form-control" type="text" name="voucher[]">\n' +
             '</div>\n' +
-            '<div class="form-group col-3">\n' +
+            '<div class="form-group col-2">\n' +
                 '<label class="form-control-label">Check#:</label><input class="form-control" type="text" name="checkNum[]" >\n' +
             '</div>\n' +
             '<div class="form-group col-2">\n' +
@@ -505,9 +523,14 @@
                 '<div class="input-group">\n' +
                     '<span class="input-group-addon">$</span><input class="form-control" type="amount" name="amount[]">\n' +
                 '</div>\n' +
+
+            '</div>\n' +
+
+            '<div class="form-group col-2">\n' +
+                '<label class="form-control-label">Date:</label><input class="form-control" type="text" name="date[]" value="'+date+'" readonly>\n' +
             '</div>\n' +
             '<div class="form-group col-2"> \n' +
-                '<label class="form-check-label">Resource needed:</label> \n' +
+                '<label class="form-check-label">Resource:</label> \n' +
                 '<label class="d-block"></label> \n' +
                 '<select class="form-control dropdown" name="resource[]">\n' +
                     '<option value="">-- select one --</option> \n' +
@@ -582,244 +605,7 @@
             });
         });
     </script>
-    <!--
-    <script>
 
-        var previousVouchers = [];
-        var previousMembers = [];
-
-        $(document).ready(function(){
-            //when the document is ready (meaning rendered)
-            //make ajax call to php route for json_encoded array of the stickyVouchers
-            //assign to results to previousVouchers
-
-            $.ajax({
-                url: "./get-vouchersSticky_JSON",
-                method: "POST",
-                dataType: "json",
-                success: function(result){
-                    console.log("Voucher/Needs Results are:");
-                    console.log(result);
-
-
-
-                    if(result != null) {
-                        for (i = 0; i < result.length; i++) {
-                            // console.log("Result: " + result[i]);
-                            //call the add voucher button
-                            $("#voucher-button").click();
-                            previousVouchers[i] = result;
-                            //set the result
-                        }
-                        //console.log("Previous vouchers: " + previousVouchers)
-                    }
-
-                },
-                error: function (result, error) {
-                }
-            });
-
-            $.ajax({
-                url: "./get-membersSticky_JSON",
-                method: "POST",
-                dataType: "json",
-                success: function(result){
-                    if(result != null) {
-                        for(i = 0; i < result.length; i++) {
-                            //call the add voucher button
-                            $( "#member-button" ).click();
-                            previousMembers[i] = result;
-                            //set the result
-                        }
-                    }
-                },
-                error: function (result, error) {
-                }
-            });
-
-        });
-
-        $( "#member-button" ).click(function(event) { // event,the click
-            //doesnt jump to top
-            event.preventDefault();
-
-            //if there are members on page
-            var anyMembersOnPage = $('.new-member');
-
-            var newMemberIdNumber = "";
-            //if more than one
-            if(anyMembersOnPage.length > 0) {
-                //find the last element on the page
-                var lastElement = anyMembersOnPage[anyMembersOnPage.length-1];
-
-                //the new number that it'll be
-                newIncrement = parseInt(($(lastElement).attr("id")).substring(6)) + 1;
-                //set that number to member
-                newMemberIdNumber = "member" + newIncrement;
-            } else {
-                //if less than one then set to one
-                newMemberIdNumber = "member1"
-            }
-
-            //input for the member
-            var text = "<div class='new-member row' id='" + newMemberIdNumber + "'>";
-                text += "<div class='form-group col-5'>";
-                    text += "<label class='form-control-label'>Name:</label><input class='form-control' type='text' id='name' name='name' >";
-                text+= "</div>";
-
-                text += "<div class='form-group col-2'>";
-                    text += "<label class='form-control-label'>Age:</label><input class='form-control' type='text' id='age' name='age' maxlength='3'>";
-                text += "</div>";
-
-                text += "<div class='form-group col-2'>";
-                    text += "<label class='form-check-label'>Gender:</label>";
-                    text += "<label class='d-block'></label>";
-                    text += "<select class='form-control dropdown' name='gender' id='gender'>";
-                        text += "<option value=''>select one</option>";
-                        text += "<option value='male'>Male</option>";
-                        text += "<option value='female'>Female</option>";
-                        text += "<option value='other'>Other</option>";
-                    text += "</select>";
-                text += "</div>";
-            text += "</div>";
-
-            //add to existing
-            $( "#member-div" ).append(text);
-        });
-
-
-        $( "#voucher-button" ).click(function(event) { // event,the click
-            event.preventDefault();
-
-            var anyVouchersOnPage = $('.new-voucher');
-
-            var newVoucherIdNumber = "";
-            if(anyVouchersOnPage.length > 0) {
-
-                var lastElement = anyVouchersOnPage[anyVouchersOnPage.length-1];
-
-                newIncrement = parseInt(($(lastElement).attr("id")).substring(7)) + 1;
-                newVoucherIdNumber = "Voucher" + newIncrement;
-            } else {
-                //if less than one then set to one
-                newVoucherIdNumber = "voucher1"
-            }
-
-            //input for voucher
-            var vouch = "<div class='new-voucher' id='" + newVoucherIdNumber + "'>";
-                vouch += "<div class='row' id='need'>";
-                    vouch += "<div class='form-group col-3'>";
-                        vouch += "<label class='form-control-label'>Voucher#:</label><input class='form-control' type='text' id='voucher' name='voucher'>";
-                    vouch += "</div>";
-                    vouch += "<div class='form-group col-3'>";
-                        vouch += "<label class='form-control-label'>Check#:</label><input class='form-control' type='text' id='checkNum' name='checkNum'>";
-                    vouch += "</div>";
-                    vouch += "<div class='form-group col-2'>";
-                        vouch += "<label class='form-control-label'>Amount:</label>";
-                        vouch += "<div class='input-group'>";
-                            vouch += "<span class='input-group-addon'>$</span><input class='form-control' type='amount' id='amount' name='amount'>";
-                        vouch += "</div>";
-                    vouch += "</div>";
-                    vouch += "<div class='form-group col-3'>";
-                        vouch += "<label class='form-check-label'>Resource needed:</label>";
-                        vouch += "<label class='d-block'></label>";
-                        vouch += "<select class='form-control dropdown' id='resource' name='resource'>";
-                            vouch += "<option value=''>-- select one --</option>";
-                            vouch += "<option value='thrift'>Thrift Shop</option>";
-                            vouch += "<option value='gas'>Gas</option>";
-                            vouch += "<option value='waterbill'>Water Bill</option>";
-                            vouch += "<option value='energybill'>Energy Bill</option>";
-                            vouch += "<option value='food'>Food</option>";
-                            vouch += "<option value='dol'>Dept of Lisencing</option>";
-                            vouch += "<option value='other'>Other</option>";
-                        vouch += "</select>";
-                    vouch += "</div>";
-                vouch += "</div>";
-            vouch += "</div>";
-
-            //add to existing
-            $( "#voucher-div" ).append(vouch);
-         });
-
-        function submitVouchersToDatabase() {
-            var vouchers = $(".new-voucher");
-            var voucherArray = [];
-
-            vouchers.each(function () {
-                var tempArray = [];
-                //add each input into the temp array
-                tempArray.push($(this).find("#voucher").val());
-                tempArray.push($(this).find("#checkNum").val());
-                tempArray.push($(this).find("#amount").val());
-                tempArray.push($(this).find("#resource").val());
-                //add the temp array to the array that will be used
-                voucherArray.push(tempArray);
-            });
-
-            //send to index, set to session in index
-            $.ajax({
-                url: "./get-vouchers_JSON",
-                method: "POST",
-                //dataType: "json",
-                data: {vouchers: voucherArray},
-                success: function (result) {
-
-                },
-                error: function (result, error) {
-
-                }
-            });
-        }
-
-
-            //everytime the submit voucher is clicked the submitVouchersTodatabase is called
-            $("#submit-vouchers").on("click", function (event) {
-                event.preventDefault();
-
-                submitVouchersToDatabase();
-            });
-
-
-            function submitMembersToDatabase() {
-                var members = $(".new-member");
-                var memberArray = [];
-
-                members.each(function () {
-                    var tempArray = [];
-                    //add each input into the temp array
-                    tempArray.push($(this).find("#name").val());
-                    tempArray.push($(this).find("#age").val());
-                    tempArray.push($(this).find("#gender").val());
-                    //add the temp array to the array that will be used
-                    memberArray.push(tempArray);
-                });
-
-                //send to index, set to session in index
-                $.ajax({
-                    url: "./get-members_JSON",
-                    method: "POST",
-                    //dataType: "json",
-                    data: {members: memberArray},
-                    success: function (result) {
-                    },
-                    error: function (result, error) {
-                    }
-                });
-
-
-                //console.log(voucherArray);
-            }
-
-
-            $("#submit-members").on("click", function (event) {
-                event.preventDefault();
-
-                submitMembersToDatabase();
-            });
-
-
-    </script>
-    -->
 
 
 

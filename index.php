@@ -126,11 +126,16 @@ $f3->route('GET|POST /reports', function($f3,$params)
 //newGuest
 $f3->route('GET|POST /newGuest', function($f3)
 {
+
     //if logged in
     if(empty($_SESSION['username']) || empty($_SESSION['password']))
     {
         $f3->reroute('/');
     }
+
+    $dateToday = date("Y-m-d");
+    $f3->set('dateToday',$dateToday);
+
     if(isset($_POST['submit'])){
         //setting variables
         $firstName = $_POST['first'];
@@ -184,6 +189,8 @@ $f3->route('GET|POST /newGuest', function($f3)
         $f3->set('pse', $pse);
         $f3->set('water', $water);
         $f3->set('notes', $notes);
+
+
         $mainVouch = array();
         for($i = 0; $i < sizeof($voucher);$i++){
             if(!empty($voucher[$i]) || !empty($resource[$i])) {
