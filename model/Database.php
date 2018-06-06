@@ -32,10 +32,12 @@
   PRIMARY KEY (`ClientId`))
 ;
 CREATE TABLE IF NOT EXISTS `Household` (
+  `HouseholdId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `age` INT(3) NULL,
   `gender` VARCHAR(6) NOT NULL,
   `Guests_ClientId` INT NOT NULL,
+PRIMARY KEY (`HouseId`),
   INDEX `fk_Household_Guests1_idx` (`Guests_ClientId` ASC),
   CONSTRAINT `fk_Household_Guests1`
     FOREIGN KEY (`Guests_ClientId`)
@@ -44,12 +46,14 @@ CREATE TABLE IF NOT EXISTS `Household` (
     ON UPDATE NO ACTION)
 ;
 CREATE TABLE IF NOT EXISTS `Needs` (
+   `NeedsId` INT NOT NULL AUTO_INCREMENT,
   `resource` VARCHAR(50) NULL,
   `visitDate` DATE NULL,
   `amount` FLOAT(10,2) NULL,
   `voucher` VARCHAR(15) NULL,
   `checkNum` VARCHAR(15) NULL,
   `Guests_ClientId` INT NOT NULL,
+PRIMARY KEY (`NeedsId`),
   INDEX `fk_Needs_Guests1_idx` (`Guests_ClientId` ASC),
   CONSTRAINT `fk_Needs_Guests1`
     FOREIGN KEY (`Guests_ClientId`)
