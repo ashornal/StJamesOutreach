@@ -565,5 +565,16 @@ $f3->route('GET /demographics', function($f3)
     echo $template->render('views/demographics.html');
 }
 );
+$f3->route('GET|POST /profile', function($f3,$params) {
+    if(empty($_SESSION['username']))
+    {
+        $f3->reroute('/');
+    }
+    $database = new Database();
+
+    $template = new Template();
+    echo $template->render('views/profile.html');
+}
+);
 //Run Fat-Free
 $f3->run();
