@@ -20,35 +20,26 @@ $f3->route('GET|POST /logout', function($f3,$params)
 {
     //unsets the session variables
     unset($_SESSION['username']);
-    unset($_SESSION['password']);
-    $template = new Template();
-    echo $template->render('views/login.html');
+    $f3->reroute('/');
 });
 $f3->route('GET|POST /', function($f3,$params)
 {
-    $_SESSION['username'] = "";
-    $_SESSION['password'] = "";
     $database = new Database();
     //if submitted login form
     if(isset($_POST['login']))
     {
-        //if the username and password are not null
-        if(!is_null($_POST['username'] && !is_null($_POST['password'])))
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        //checks the database if the credentials are correct
+        $user = $database->getUser($username,$password);
+        //returns 1 if correct, and nothing if incorrect
+        if(!empty($user))
         {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            //checks the database if the credentail are correct
-            $data = $database->validUser($username,$password);
-            //returns 1 if correct, and nothing if inncorrect
-            if($data == 1)
-            {
-                //sets the session
-                $_SESSION['username'] = $username;
-                $_SESSION['password'] = $password;
-                $f3->reroute('/home');
-            } else {
-                $f3->set('error', 'Incorrect Login');
-            }
+            //sets the session
+            $_SESSION['username'] = $username;
+            $f3->reroute('/home');
+        } else {
+            $f3->set('error', 'Incorrect Login');
         }
     }
     $template = new Template();
@@ -59,7 +50,7 @@ $f3->route('GET|POST /', function($f3,$params)
 $f3->route('GET /home', function($f3,$params)
 {
     //if logged in
-    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    if(empty($_SESSION['username']))
     {
         $f3->reroute('/');
     }
@@ -78,7 +69,7 @@ $f3->route('GET /home', function($f3,$params)
 $f3->route('GET|POST /reports', function($f3,$params)
 {
     //if logged in
-    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    if(empty($_SESSION['username']))
     {
         $f3->reroute('/');
     }
@@ -128,7 +119,7 @@ $f3->route('GET|POST /newGuest', function($f3)
 {
 
     //if logged in
-    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    if(empty($_SESSION['username']))
     {
         $f3->reroute('/');
     }
@@ -326,7 +317,7 @@ $f3->route('GET|POST /newGuest', function($f3)
 );
 //edit guest
 $f3->route('GET|POST /@client_id', function($f3,$params) {
-    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    if(empty($_SESSION['username']))
     {
         $f3->reroute('/');
     }
@@ -553,7 +544,7 @@ $f3->route('GET|POST /@client_id', function($f3,$params) {
 //demographics
 $f3->route('GET /demographics', function($f3)
 {
-    if(empty($_SESSION['username']) || empty($_SESSION['password']))
+    if(empty($_SESSION['username']))
     {
         $f3->reroute('/');
     }

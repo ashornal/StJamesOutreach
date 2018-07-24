@@ -62,7 +62,7 @@ PRIMARY KEY (`NeedsId`),
     ON UPDATE NO ACTION)
 ;
  */
-require_once '/home/pvashchu/config2.php';
+require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
 /**
  * Class Database, preforms sql statements to insert/delete/update/view
  */
@@ -548,21 +548,27 @@ class Database
         return $row;
     }
     /**
-     * validates the user by checking the users in the database
+     * returns user by the username
      * @param $username
-     * @param $password
      * @return bool
      */
-    function validUser($username, $password)
+    function getUser($username, $password)
     {
+        $password = sha1($password);
         //Query the db
         $sql = "SELECT * FROM Users
-                    WHERE username=$username and password= $password";
+                    WHERE username = :username AND password = :password";
         $statement = $this->dbh->prepare($sql);
+
+        $statement->bindParam(":username", $username, PDO::PARAM_STR);
+        $statement->bindParam(":password", $password, PDO::PARAM_STR);
+
         // Execute the statement
-        $row = $statement->execute();
-        //Return true if a match found, false otherwise
-        return $row;
+        $statement->execute();
+
+        // Process the result
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
     /**
      * getter for the ethnicity
