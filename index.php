@@ -571,6 +571,34 @@ $f3->route('GET|POST /profile', function($f3,$params) {
         $f3->reroute('/');
     }
     $database = new Database();
+    $username = $_SESSION['username'];
+    $f3->set("username" , $username);
+
+    if (isset($_POST['changePassword'])) {
+
+        $currentPassword = $_POST['currentPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
+        $newPassword = $_POST['newPassword'];
+
+        $user = $database->getUser($username, $currentPassword);
+
+        // if usernam and password is correct, it will retrieve it from the database
+        if(!empty($user)) {
+            // if the passwords match
+            if ($currentPassword == $confirmPassword) {
+                if (strlen($newPassword) > 5) {
+                    $database->changePassword($username, $newPassword);
+                    $f3->set('passChanged', true);
+                } else {
+                    $f3->set('error', 'Password must be at least 6 characters');
+                }
+            } else {
+                $f3->set('error', 'Passwords do not match');
+            }
+        } else {
+            $f3->set('error', 'Password incorrect');
+        }
+    }
 
     $template = new Template();
     echo $template->render('views/profile.html');

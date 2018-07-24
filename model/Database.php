@@ -570,6 +570,32 @@ class Database
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    /**
+     * change password for the user
+     * @param $username
+     * @param $newPassword
+     */
+    function changePassword($username, $newPassword) {
+
+        // encrypt password
+        $newPassword = sha1($newPassword);
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE Users
+            SET password = :password
+            WHERE username = :username";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":username", $username, PDO::PARAM_STR);
+        $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }
+
     /**
      * getter for the ethnicity
      * @return array
