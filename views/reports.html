@@ -116,16 +116,18 @@
         </thead>
         <tbody>
         <repeat group="{{ @needs}}" value="{{ @need }}">
-            <tr>
-                <td>{{@need['ClientId']}} </td>
-                <td>{{@need['first']}} </td>
-                <td>{{@need['last']}}</td>
-                <td>{{@need['voucher']}}</td>
-                <td>{{@need['checkNum']}}</td>
-                <td>{{@need['resource']}}</td>
-                <td>{{@need['amount']}}</td>
-                <td>{{@need['visitDate']}}</td>
-            </tr>
+            <check if="{{ @need['hidden'] != 'y' }}">
+                <tr>
+                    <td>{{@need['ClientId']}} </td>
+                    <td>{{@need['first']}} </td>
+                    <td>{{@need['last']}}</td>
+                    <td>{{@need['voucher']}}</td>
+                    <td>{{@need['checkNum']}}</td>
+                    <td>{{@need['resource']}}</td>
+                    <td>{{@need['amount']}}</td>
+                    <td>{{@need['visitDate']}}</td>
+                </tr>
+            </check>
         </repeat>
         </tbody>
         <tfoot>

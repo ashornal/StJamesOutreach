@@ -390,8 +390,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'thrift'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'thrift' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -411,8 +412,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'gas'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'gas' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -432,8 +434,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'waterbill'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'waterbill' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -453,8 +456,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'energybill'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'energybill' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -474,8 +478,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'food'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'food' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -495,8 +500,9 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'dol'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'dol' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -515,9 +521,10 @@ class Database
     function getOther($start, $end)
     {
         // Define the query
-        $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'
-								AND resource = 'other'";
+        $sql = "SELECT COUNT(amount), SUM(amount) FROM 
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end'
+                        AND resource = 'other' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -537,7 +544,8 @@ class Database
     {
         // Define the query
         $sql = "SELECT COUNT(amount), SUM(amount) FROM Needs
-								WHERE visitDate BETWEEN '$start' AND '$end'";
+                        LEFT JOIN Guests ON Needs.Guests_ClientId = Guests.ClientId
+                        WHERE visitDate BETWEEN '$start' AND '$end' AND hidden != 'y'";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
