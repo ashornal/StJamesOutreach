@@ -98,6 +98,36 @@ a.clickForm:hover
     text-decoration: none;
 }
 
+/* Delete Form */
+button#delete
+{
+    margin-left: 8px;
+    background: #ed2b16;
+    background-image: -webkit-linear-gradient(top, #ed2b16, #c40100);
+    background-image: -moz-linear-gradient(top, #ed2b16, #c40100);
+    background-image: -ms-linear-gradient(top, #ed2b16, #c40100);
+    background-image: -o-linear-gradient(top, #ed2b16, #c40100);
+    background-image: linear-gradient(to bottom, #ed2b16, #c40100);
+    border: none;
+    -webkit-border-radius: 12;
+    -moz-border-radius: 12;
+    border-radius: 12px;
+    color: #ffffff;
+    padding: 6px 10px;
+    text-decoration: none;
+}
+
+button#delete:hover
+{
+    background: #ff4b2f;
+    background-image: -webkit-linear-gradient(top, #ff4b2f, #ed2b16);
+    background-image: -moz-linear-gradient(top, #ff4b2f, #ed2b16);
+    background-image: -ms-linear-gradient(top, #ff4b2f, #ed2b16);
+    background-image: -o-linear-gradient(top, #ff4b2f, #ed2b16);
+    background-image: linear-gradient(to bottom, #ff4b2f, #ed2b16);
+    text-decoration: none;
+}
+
 /* Submit Button */
 input#submit
 {
@@ -138,3 +168,5 @@ p#changed
     font-size: 1.8em;
     color: green;
 }
+
+/* Delete Confirmation Screen */
