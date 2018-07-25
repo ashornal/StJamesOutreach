@@ -169,4 +169,10 @@ p#changed
     color: green;
 }
 
-/* Delete Confirmation Screen */
+p.text-warning
+{
+    font-weight: bold;
+    font-size: 1.2em;
+    position: absolute;
+    left: 3%;
+}
