@@ -69,17 +69,19 @@
             </thead>
             <tbody>
             <repeat group="{{ @guests}}" value="{{ @guest }}">
-                <tr>
-                    <td>{{@guest['ClientId']}}</td>
-                    <td>{{@guest['first']}} </td>
-                    <td>{{@guest['last']}}</td>
-                    <td>{{@guest['birthdate']}}</td>
-                    <td>{{@guest['phone']}}</td>
-                    <td>
-                        <a href="{{ @BASE }}/{{@guest['ClientId']}}" class="clickForm">View/Edit</a>
-                        <button type="button" id="delete" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    </td>
-                </tr>
+                <check if="{{ @guest['hidden'] != 'y' }}">
+                    <tr>
+                        <td>{{@guest['ClientId']}}</td>
+                        <td>{{@guest['first']}} </td>
+                        <td>{{@guest['last']}}</td>
+                        <td>{{@guest['birthdate']}}</td>
+                        <td>{{@guest['phone']}}</td>
+                        <td>
+                            <a href="{{ @BASE }}/{{@guest['ClientId']}}" class="clickForm">View/Edit</a>
+                            <button type="button" id="delete" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        </td>
+                    </tr>
+                </check>
             </repeat>
             </tbody>
             <tfoot>
@@ -110,7 +112,7 @@
             </thead>
             <tbody>
             <repeat group="{{ @needs}}" value="{{ @need }}">
-                <check if="{{ @need['resource'] != null }}">
+                <check if="{{ @need['resource'] != null && @need['hidden'] != 'y' }}">
                     <tr>
                         <td>{{@need['Guests_ClientId']}}</td>
                         <td>{{@need['first']}} </td>
@@ -151,15 +153,17 @@
             </thead>
             <tbody>
             <repeat group="{{ @guests}}" value="{{ @guest }}">
-                <tr>
-                    <td>{{@guest['ClientId']}}</td>
-                    <td>{{@guest['first']}} </td>
-                    <td>{{@guest['last']}}</td>
-                    <td>{{@guest['income']}}</td>
-                    <td>{{@guest['rent']}}</td>
-                    <td>{{@guest['foodStamp']}}</td>
-                    <td>{{@guest['addSupport']}}</td>
-                </tr>
+                <check if="{{ @guest['hidden'] != 'y' }}">
+                    <tr>
+                        <td>{{@guest['ClientId']}}</td>
+                        <td>{{@guest['first']}} </td>
+                        <td>{{@guest['last']}}</td>
+                        <td>{{@guest['income']}}</td>
+                        <td>{{@guest['rent']}}</td>
+                        <td>{{@guest['foodStamp']}}</td>
+                        <td>{{@guest['addSupport']}}</td>
+                    </tr>
+                </check>
             </repeat>
                </tbody>
                <tfoot>
@@ -191,15 +195,17 @@
             </thead>
             <tbody>
             <repeat group="{{ @guests}}" value="{{ @guest }}">
-                <tr>
-                    <td>{{@guest['ClientId']}}</td>
-                    <td>{{@guest['first']}} </td>
-                    <td>{{@guest['last']}}</td>
-                    <td>{{@guest['city']}}</td>
-                    <td>{{@guest['street']}}</td>
-                    <td>{{@guest['zip']}}</td>
-                    <td>{{@guest['email']}}</td>
-                </tr>
+                <check if="{{ @guest['hidden'] != 'y' }}">
+                    <tr>
+                        <td>{{@guest['ClientId']}}</td>
+                        <td>{{@guest['first']}} </td>
+                        <td>{{@guest['last']}}</td>
+                        <td>{{@guest['city']}}</td>
+                        <td>{{@guest['street']}}</td>
+                        <td>{{@guest['zip']}}</td>
+                        <td>{{@guest['email']}}</td>
+                    </tr>
+                </check>
             </repeat>
              </tbody>
              <tfoot>
@@ -231,10 +237,10 @@
             </thead>
             <tbody>
             <repeat group="{{ @households}}" value="{{ @household }}">
-                <check if="{{ @household['name'] != null }}">
+                <check if="{{ @household['name'] != null && @household['hidden'] != 'y' }}">
                     <tr>
                         <td>{{@household['ClientId']}}</td>
-                        <td>{{@household['first']}} </td>
+                        <td>{{@household['first']}}</td>
                         <td>{{@household['last']}}</td>
                         <td>{{@household['name']}}</td>
                         <td>{{@household['age']}}</td>

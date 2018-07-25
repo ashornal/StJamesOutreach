@@ -15,15 +15,16 @@ $f3 = Base::instance();
 $f3->set('ethnicities', array('white', 'black', 'hispanic', 'native', 'asian', 'pacific', 'eskimo','mixed','other' ));
 $f3->set('listResources', array('thriftshop','gas','waterbill','energybill','food','dol','other'));
 $f3->set('listGenders', array('male','female','other'));
+
 //logout route
-$f3->route('GET|POST /logout', function($f3,$params)
-{
+$f3->route('GET|POST /logout', function($f3,$params) {
     //unsets the session variables
     unset($_SESSION['username']);
     $f3->reroute('/');
 });
-$f3->route('GET|POST /', function($f3,$params)
-{
+
+//login
+$f3->route('GET|POST /', function($f3,$params) {
     $database = new Database();
     //if submitted login form
     if(isset($_POST['login']))
