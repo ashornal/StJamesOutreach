@@ -1,15 +1,15 @@
 	/* Team AZAP
 	 * Alex, Zach, Antonio, Pavel
 	 * http://azap.greenrivertech.net/index.php */
-	
+
 // adds a listener to window.onload
 $(document).ready(function() {
 	// test jQuery install
 	formSubmit();
 	// set number of fields from member value
-	showHouseholdMembers($("#members option:selected").text());
+	//showHouseholdMembers($("#members option:selected").text());
 	// set number of fields from voucher amount value
-	showAmountOfVouchers($("#vouchernum option:selected").text());
+	//showAmountOfVouchers($("#vouchernum option:selected").text());
 });
 
 function formSubmit()
@@ -20,15 +20,15 @@ function formSubmit()
 	$checkVoucher = $("#checkvoucher"); // voucher amount form group
 	$vouchers = $("#vouchernum"); // number of vouchers in voucher dropdown
 	$numVouchers = $("#vouchernum option:selected").text(); // number of vouchers selected value
-	
+
 	$previewForm = $("#previewForm"); // preview modal content
 	$preview = $("#preview"); // preview button
 	$close = $("#close"); // close preview box
 	$formPost = $("#formGuest"); // post method
 	$update = $("#update"); // update or submit new dropdown
-	
+
 	$name = "";
-	
+
 	// $members.on({
 	// 	// after selecting field
 	// 	click : function() {
@@ -45,7 +45,7 @@ function formSubmit()
 	// 		showAmountOfVouchers($numVouchers);
 	// 	}
 	// });
-	
+
 	$preview.on({
 		// after selecting field
 		click : function() {
@@ -96,20 +96,20 @@ function formSubmit()
 			// */
 		}
 	});
-	
+
 	$close.on({
 		click : function() {
 			$("#previewForm p").remove(); // remove content
 		}
 	});
-	
+
 	$("#first").on({
 		// clicking out of field
 		blur : function() {
 			$name = $("#first").val() + " ";
 		}
 	});
-	
+
 	$("#last").on({
 		// clicking out of field
 		blur : function() {
@@ -120,7 +120,7 @@ function formSubmit()
 			}
 		}
 	});
-	
+
 	$("#birthdate").on({
 		blur : function() {
 			var bdate = $("#birthdate").val(); // only take year
@@ -131,13 +131,13 @@ function formSubmit()
 			$('#age1').val(age);
 		}
 	});
-	
+
 	$('#submitBtn').click(function(){
 		//when the submit button in the modal is clicked, submit the form
 		alert('submitting');
 		$('#formfield').submit();
 	});
-	
+
 	$update.on({
 		click : function() {
 			var method = $("#update").val(); // selected value
@@ -152,5 +152,20 @@ function formSubmit()
 				$formPost.attr("action", "newGuest.php"); // submit to newGuest.php
 			}
 		}
+	});
+
+	$("input[name='first']").focus(function() {
+		console.log($("input[name='first']").val());
+	});
+
+	$("input[name='name[]']").first().focus(function() {
+		console.log($("input[name='name[]']").first().val());
+	});
+
+	// prevents form from submitting twice
+	$("#submit").submit(function(){
+		$("#submit").submit(function(){
+			return false;
+		});
 	});
 }
