@@ -612,31 +612,31 @@ class Database
     {
         // Define the query
         $sql = "select 'White' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'white'
+					where ethnicity= 'white' AND hidden != 'y'
 					union (
 					select 'Black' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'black' )
+					where ethnicity= 'black' AND hidden != 'y')
 					union (
 					select 'Histpanic' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'hispanic' )
+					where ethnicity= 'hispanic' AND hidden != 'y')
 					union (
 					select 'Native' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'native' )
+					where ethnicity= 'native' AND hidden != 'y')
 					union (
 					select 'Asian' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'asian' )
+					where ethnicity= 'asian' AND hidden != 'y')
 					union (
 					select 'Pacific' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'pacific' )
+					where ethnicity= 'pacific' AND hidden != 'y')
 					union (
 					select 'Eskimo' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'eskimo' )
+					where ethnicity= 'eskimo'AND hidden != 'y' )
 					union (
 					select 'Mixed' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'mixed' )
+					where ethnicity= 'mixed' AND hidden != 'y')
 					union (
 					select 'Other' as Label, count(ethnicity) as Value from Guests 
-					where ethnicity= 'other' )";
+					where ethnicity= 'other' AND hidden != 'y')";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -653,11 +653,17 @@ class Database
     function getGender()
     {
         // Define the query
-        $sql = "select 'Male' as Label, count(gender) as Value from Household where gender= 'male'
+        $sql = "select 'Male' as Label, count(gender) as Value from Household
+                    LEFT JOIN Guests ON Household.Guests_ClientId = Guests.ClientId
+                    where gender= 'male' AND hidden != 'y'
 					union (
-					  select 'Female' as Label, count(gender) as Value from Household where gender= 'female' )
+					    select 'Female' as Label, count(gender) as Value from Household
+					    LEFT JOIN Guests ON Household.Guests_ClientId = Guests.ClientId
+                        where gender= 'female' AND hidden != 'y')
 					union (
-					  select 'Other' as Label, count(gender) as Value from Household where gender= 'other' )";
+					    select 'Other' as Label, count(gender) as Value from Household
+					    LEFT JOIN Guests ON Household.Guests_ClientId = Guests.ClientId
+					    where gender= 'other' AND hidden != 'y')";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -675,25 +681,25 @@ class Database
     {
         // Define the query
         $sql = "select '98058' as Label, count(zip) as Value from Guests 
-					where zip= '98058'
+					where zip= '98058' AND hidden != 'y'
 					union (
 					select '98042' as Label, count(zip) as Value from Guests 
-					where zip= '98042' )
+					where zip= '98042' AND hidden != 'y')
 					union (
 					select '98032' as Label, count(zip) as Value from Guests 
-					where zip= '98032' )
+					where zip= '98032' AND hidden != 'y')
 					union (
 					select '98031' as Label, count(zip) as Value from Guests 
-					where zip= '98031' )
+					where zip= '98031' AND hidden != 'y')
 					union (
 					select '98030' as Label, count(zip) as Value from Guests 
-					where zip= '98030' )
+					where zip= '98030' AND hidden != 'y')
 					union (
 					select 'Other' as Label, count(zip) as Value from Guests 
-					where zip NOT IN ('98030', '98058', '98042', '98032', '98031') )
+					where zip NOT IN ('98030', '98058', '98042', '98032', '98031') AND hidden != 'y')
 					union (
 					select 'Homeless' as Label, count(homeless) as Value from Guests 
-					where homeless = 'on' )";
+					where homeless = 'on' AND hidden != 'y')";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -711,16 +717,16 @@ class Database
     {
         // Define the query
         $sql = "select 'Mental' as Label, count(mental) as Value from Guests 
-					where mental= 'on'
+					where mental= 'on' AND hidden != 'y'
 					union (
 					select 'Physical' as Label, count(physical) as Value from Guests 
-					where physical= 'on' )
+					where physical= 'on' AND hidden != 'y')
 					union (
 					select 'Both' as Label, count(physical) as Value from Guests 
-					where physical= 'on' AND mental = 'on' )
+					where physical= 'on' AND mental = 'on' AND hidden != 'y')
 					union (
 					select 'Neither' as Label, count(physical) as Value from Guests 
-					where physical = '0' AND mental = '0' )";
+					where physical = '0' AND mental = '0' AND hidden != 'y')";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
@@ -738,10 +744,10 @@ class Database
     {
         // Define the query
         $sql = "select 'Veteran' as Label, count(veteran) as Value from Guests 
-					where veteran= 'on'
+					where veteran= 'on' AND hidden != 'y'
 					union (
 					select 'Non-veteran' as Label, count(veteran) as Value from Guests 
-					where veteran = '0' )";
+					where veteran = '0' AND hidden != 'y')";
         // Prepare the statement
         $statement = $this->dbh->prepare($sql);
         // Execute the statement
