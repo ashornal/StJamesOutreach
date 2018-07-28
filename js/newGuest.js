@@ -154,13 +154,38 @@ function formSubmit()
 		}
 	});
 
-	$("input[name='first']").focus(function() {
-		console.log($("input[name='first']").val());
+	// autofilling first household member
+	var first = $("input[name='first']");
+	var last = $("input[name='last']");
+	var dob = $("input[name='birthdate']");
+	var houseName = $("input[name='name[]']").first();
+	var houseAge = $("input[name='age[]']").first();
+
+	first.blur(function() {
+		// if both values are filled, put it into thee first household input
+		if(first.val().length > 0 && last.val().length > 0) {
+			var name = first.val() + " " + last.val();
+			houseName.val(name);
+		}
 	});
 
-	$("input[name='name[]']").first().focus(function() {
-		console.log($("input[name='name[]']").first().val());
+	last.blur(function() {
+		// if both values are filled, put it into thee first household input
+		if(first.val().length > 0 && last.val().length > 0) {
+			var name = first.val() + " " + last.val();
+			houseName.val(name);
+		}
 	});
+
+	dob.blur(function() {
+		// if both values are filled, put it into thee first household input
+		var birthdate = new Date(dob.val());
+		var ageDiff = Date.now() - birthdate.getTime();
+		var ageDate = new Date(ageDiff); // in milliseconds
+		var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+		houseAge.val(age);
+	});
+
 
 	// prevents form from submitting twice
 	$("#submit").submit(function(){
