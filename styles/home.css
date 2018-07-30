@@ -56,13 +56,13 @@ div#guestInfo_filter label, div#needInfo_filter label, div#incomeInfo_filter lab
 
 /* Data table styles */
 
-div#info
+div#needs
 {
     display: block;
     padding-bottom: 2%;
 }
 
-div#needs, div#address, div#household, div#income
+div#info, div#address, div#household, div#income
 {
     display: none;
     padding-bottom: 2%;

@@ -270,11 +270,21 @@
     <script src="js/showTables.js"></script>
     <script src="js/deleteGuest.js"></script>
     <script>
-        $("#guestInfo").DataTable();
-        $("#needInfo").DataTable();
-        $("#incomeInfo").DataTable();
-        $("#addressInfo").DataTable();
-        $("#houseInfo").DataTable();
+        $("#guestInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#needInfo").DataTable( {
+            "order": [[ 5, "asc" ]]
+        });
+        $("#incomeInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#addressInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#houseInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
     </script>
 
 </body>
