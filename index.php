@@ -309,7 +309,7 @@ $f3->route('GET|POST /newGuest', function($f3)
                     $database->insertHousehold($mainMem[$i][0], $mainMem[$i][1], $mainMem[$i][2]);
                 }
             }
-            $f3->reroute('/'.$lastId);
+            $f3->reroute('/home');
         }
     }
     $template = new Template();
@@ -578,15 +578,14 @@ $f3->route('GET|POST /profile', function($f3,$params) {
     if (isset($_POST['changePassword'])) {
 
         $currentPassword = $_POST['currentPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
         $newPassword = $_POST['newPassword'];
-
+        $confirmPassword = $_POST['confirmPassword'];
         $user = $database->getUser($username, $currentPassword);
 
-        // if usernam and password is correct, it will retrieve it from the database
+        // if username and password is correct, it will retrieve it from the database
         if(!empty($user)) {
             // if the passwords match
-            if ($currentPassword == $confirmPassword) {
+            if ($newPassword == $confirmPassword) {
                 if (strlen($newPassword) > 5) {
                     $database->changePassword($username, $newPassword);
                     $f3->set('passChanged', true);

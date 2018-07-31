@@ -6,10 +6,7 @@
 $(document).ready(function() {
 	// test jQuery install
 	formSubmit();
-	// set number of fields from member value
-	showHouseholdMembers($("#members option:selected").text());
-	// set number of fields from voucher amount value
-	showAmountOfVouchers($("#vouchernum option:selected").text());
+
 });
 
 function formSubmit()
@@ -20,32 +17,32 @@ function formSubmit()
 	$checkVoucher = $("#checkvoucher"); // voucher amount form group
 	$vouchers = $("#vouchernum"); // number of vouchers in voucher dropdown
 	$numVouchers = $("#vouchernum option:selected").text(); // number of vouchers selected value
-	
+
 	$previewForm = $("#previewForm"); // preview modal content
 	$preview = $("#preview"); // preview button
 	$close = $("#close"); // close preview box
 	$formPost = $("#formGuest"); // post method
 	$update = $("#update"); // update or submit new dropdown
-	
+
 	$name = "";
-	
-	$members.on({
-		// after selecting field
-		click : function() {
-			$numMembers = $("#members option:selected").text();
-			showHouseholdMembers($numMembers);
-		}
-	});
-	
-	$vouchers.on({
-		// after selecting field
-		click : function() {
-			$numVouchers = $("#vouchernum option:selected").text();
-			console.log($numVouchers);
-			showAmountOfVouchers($numVouchers);
-		}
-	});
-	
+
+	// $members.on({
+	// 	// after selecting field
+	// 	click : function() {
+	// 		$numMembers = $("#members option:selected").text();
+	// 		showHouseholdMembers($numMembers);
+	// 	}
+	// });
+	//
+	// $vouchers.on({
+	// 	// after selecting field
+	// 	click : function() {
+	// 		$numVouchers = $("#vouchernum option:selected").text();
+	// 		console.log($numVouchers);
+	// 		showAmountOfVouchers($numVouchers);
+	// 	}
+	// });
+
 	$preview.on({
 		// after selecting field
 		click : function() {
@@ -66,42 +63,50 @@ function formSubmit()
 			$previewForm.append("<p>Homeless: " + $("#homeless").is(":checked") + "</p>");
 			$previewForm.append("<p>Monthy Income: " + $("#income").val() + "</p>");
 			$previewForm.append("<p>Monthly Rent: " + $("#rent").val() + "</p>");
-			$previewForm.append("<p>Food Stamps: " + $("#foodstamp").val() + "</p>");
-			$previewForm.append("<p>Additional Support: " + $("#support").val() + "</p>");
-			$previewForm.append("<p>Driver License or Photo ID #: " + $("#photoid").val() + "</p>");
-			$previewForm.append("<p>Puget Sound Energy Account #: " + $("#pugetsound").val() + "</p>");
+			$previewForm.append("<p>Food Stamps: " + $("#foodStamp").val() + "</p>");
+			$previewForm.append("<p>Additional Support: " + $("#addSupport").val() + "</p>");
+			$previewForm.append("<p>Driver License or Photo ID #: " + $("#license").val() + "</p>");
+			$previewForm.append("<p>Puget Sound Energy Account #: " + $("#pse").val() + "</p>");
 			$previewForm.append("<p>Water Account #: " + $("#water").val() + "</p>");
-			$previewForm.append("<p>Members in household: " + $numMembers + "</p>");
-			$("#previewForm p:even").css({"float": "left", "width": "50%"});
-			for(var i = 1; i <= $numMembers; i++)
-			{
-				$previewForm.append("<div style=\"float:left; width:50%;\"><p>Name: " + $("#name" + i).val() + "</p>");
-				$previewForm.append("<p>Age: " + $("#age" + i).val() + "</p><style>");
-				$previewForm.append("<p>Gender: " + $("#gender" + i).val() + "</p></div.");
-			}
-			for(var j = 1; j <= $numVouchers; j++)
-			{
-				$previewForm.append("<div style=\"float:left; width:50%;\"><p>Voucher: " + $("#voucherNum" + j).val() + "</p>");
-				$previewForm.append("<p>Check: " + $("#checkNum" + j).val() + "</p><style>");
-				$previewForm.append("<p>Amount: " + $("#amount" + j).val() + "</p></div.");
-				$previewForm.append("<p>Resource needed: " + $("#resource" + j).val() + "</p></div.");
-			}
+			// $previewForm.append("<p>Members in household: " + $numMembers + "</p>");
+			// $("#previewForm p:even").css({"float": "left", "width": "50%"});
+			// for(var i = 1; i <= $numMembers; i++)
+			// {
+			// 	$previewForm.append("<div style=\"float:left; width:50%;\"><p>Name: " + $("#name" + i).val() + "</p>");
+			// 	$previewForm.append("<p>Age: " + $("#age" + i).val() + "</p><style>");
+			// 	$previewForm.append("<p>Gender: " + $("#gender" + i).val() + "</p></div.");
+			// }
+			// for(var j = 1; j <= $numVouchers; j++)
+			// {
+			// 	$previewForm.append("<div style=\"float:left; width:50%;\"><p>Voucher: " + $("#voucherNum" + j).val() + "</p>");
+			// 	$previewForm.append("<p>Check: " + $("#checkNum" + j).val() + "</p><style>");
+			// 	$previewForm.append("<p>Amount: " + $("#amount" + j).val() + "</p></div.");
+			// 	$previewForm.append("<p>Resource needed: " + $("#resource" + j).val() + "</p></div.");
+			// }
+            //
+			// /*
+			// $text = "<div>";
+			// 	$text += "<p>Something</p>";
+			// $text += "</div>";
+            //
+			// $("#someDiv").append($text);
+			// */
 		}
 	});
-	
+
 	$close.on({
 		click : function() {
 			$("#previewForm p").remove(); // remove content
 		}
 	});
-	
+
 	$("#first").on({
 		// clicking out of field
 		blur : function() {
 			$name = $("#first").val() + " ";
 		}
 	});
-	
+
 	$("#last").on({
 		// clicking out of field
 		blur : function() {
@@ -112,7 +117,7 @@ function formSubmit()
 			}
 		}
 	});
-	
+
 	$("#birthdate").on({
 		blur : function() {
 			var bdate = $("#birthdate").val(); // only take year
@@ -123,13 +128,13 @@ function formSubmit()
 			$('#age1').val(age);
 		}
 	});
-	
+
 	$('#submitBtn').click(function(){
 		//when the submit button in the modal is clicked, submit the form
 		alert('submitting');
 		$('#formfield').submit();
 	});
-	
+
 	$update.on({
 		click : function() {
 			var method = $("#update").val(); // selected value
@@ -145,36 +150,4 @@ function formSubmit()
 			}
 		}
 	});
-}
-
-function showHouseholdMembers($numMembers)
-{
-	// add select field for each number served
-	for(var i = 1; i <= 10; i++)
-	{
-		if(i <= $numMembers)
-		{
-			$("#house" + i).css("display", "flex");
-		}
-		else
-		{
-			$("#house" + i).css("display", "none");
-		}
-	}
-}
-
-function showAmountOfVouchers($numVouchers)
-{
-	// add select field for each number served
-	for(var i = 1; i <= 5; i++)
-	{
-		if(i <= $numVouchers)
-		{
-			$("#need" + i).css("display", "flex");
-		}
-		else
-		{
-			$("#need" + i).css("display", "none");
-		}
-	}
 }
