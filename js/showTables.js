@@ -4,7 +4,22 @@
 	
 // adds a listener to window.onload
 $(document).ready(function() {
-	// test jQuery install
+	$("#guestInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#needInfo").DataTable( {
+            "order": [[ 5, "asc" ]]
+        });
+        $("#incomeInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#addressInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+        $("#houseInfo").DataTable( {
+            "order": [[ 2, "asc" ]]
+        });
+
 	showTable();
 });
 

@@ -2,25 +2,23 @@
 
 // adds a listener to window.onload
 $(document).ready(function() {
-    $("p.text-warning").hide();
+    $("p.text-warning").hide()
 
-    $("button#delete").click(function() {
-        // navigates to the table row
-        var info = $(this).parent().parent().text();
-        // reads text and split by spaces
-        info = info.trim().split(" ");
-        var newInfo = new Array();
-        for (var i = 0; i < info.length; i++) {
-            if (info[i] != " ") newInfo.push(info[i]);
-        }
-        console.log(newInfo);
-        var id = info[0].trim();
-        var name = info[20].trim() + " " + info[41].trim();
+    var table = $('#guestInfo').DataTable();
+    var id;
+    var name;
+
+    // save table rows when clicking on them
+    $('#guestInfo tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        var id = data[0];
+        var name = data[1] + " " + data[2];
+
+        // update message for deletion confirmation
         var message = "Are you sure you want to delete " + name + " (#" + id + ")?";
-
         $("#deleteMessage").html(message);
-        // delete the guest by id
 
+        // delete the guest
         $("#confirmDelete").click(function() {
             var hideGuest = $.post('model/hideGuest.php', {id: id});
 

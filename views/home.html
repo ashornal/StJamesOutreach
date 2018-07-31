@@ -78,7 +78,7 @@
                         <td>{{@guest['phone']}}</td>
                         <td>
                             <a href="{{ @BASE }}/{{@guest['ClientId']}}" class="clickForm">View/Edit</a>
-                            <button type="button" id="delete" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                            <button type="button" class="delete" data-toggle="modal" data-target="#deleteModal">Delete</button>
                         </td>
                     </tr>
                 </check>
@@ -269,23 +269,5 @@
     <script src="js/zipValidate.js"></script>
     <script src="js/showTables.js"></script>
     <script src="js/deleteGuest.js"></script>
-    <script>
-        $("#guestInfo").DataTable( {
-            "order": [[ 2, "asc" ]]
-        });
-        $("#needInfo").DataTable( {
-            "order": [[ 5, "asc" ]]
-        });
-        $("#incomeInfo").DataTable( {
-            "order": [[ 2, "asc" ]]
-        });
-        $("#addressInfo").DataTable( {
-            "order": [[ 2, "asc" ]]
-        });
-        $("#houseInfo").DataTable( {
-            "order": [[ 2, "asc" ]]
-        });
-    </script>
-
 </body>
 </html>
